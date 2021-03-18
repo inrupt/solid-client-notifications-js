@@ -1,5 +1,5 @@
 /**
- * Copyright 2020 Inrupt Inc.
+ * Copyright 2021 Inrupt Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal in
@@ -19,31 +19,43 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import { t, ClientFunction, Selector } from "testcafe";
-import { screen } from "@testing-library/testcafe";
+import { UrlString } from "@inrupt/solid-client";
+import EventEmitter from "events";
+import { NotImplementedError } from "./errors";
 
-export class CognitoPage {
-  usernameInput;
-  passwordInput;
-  submitButton;
+import BaseNotification, {
+  protocols,
+  BaseNotificationOptions,
+} from "./notification";
 
-  constructor() {
-    // The Cognito sign-in page contains the sign-in form twice and is basically confusing
-    // TestCafe/testing-library, hence the cumbersome selectors rather than selecting by label text.
-    this.usernameInput = screen.getByRole("textbox");
-    this.passwordInput = Selector(".visible-lg input[type=password]");
-    this.submitButton = Selector(".visible-lg input[type=submit]");
+export default class LiveNotification extends BaseNotification {
+  protocol?: protocols;
+
+  emitter: EventEmitter;
+
+  // TODO move constructor options to options instead of arguments
+  constructor(
+    topic: UrlString,
+    fetchFn: typeof window.fetch,
+    protocolList: protocols[],
+    options?: BaseNotificationOptions
+  ) {
+    super(topic, fetchFn, protocolList, options);
+    this.emitter = new EventEmitter();
   }
 
-  async login(username: string, password: string) {
-    await onCognitoPage();
-    await t
-      .typeText(this.usernameInput, username)
-      .typeText(this.passwordInput, password)
-      .click(this.submitButton);
-  }
-}
+  connect = (): void => {
+    this.status = "closed";
+    throw new NotImplementedError();
+  };
 
-export async function onCognitoPage() {
-  await t.expect(Selector("form[name=cognitoSignInForm]").exists).ok();
+  disconnect = (): void => {
+    this.status = "closed";
+    throw new NotImplementedError();
+  };
+
+  /* eslint @typescript-eslint/no-explicit-any: 0 */
+  on = (eventName: string, eventFn: (arg?: any) => void): void => {
+    this.emitter.on(eventName, eventFn);
+  };
 }

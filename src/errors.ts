@@ -1,5 +1,5 @@
 /**
- * Copyright 2020 Inrupt Inc.
+ * Copyright 2021 Inrupt Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal in
@@ -19,31 +19,26 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import { t, ClientFunction, Selector } from "testcafe";
-import { screen } from "@testing-library/testcafe";
+// This file is meant to contain multiple error classes; disable this rule.
+/* eslint max-classes-per-file: 0 */
+export class FetchError extends Error {
+  response: Response;
 
-export class CognitoPage {
-  usernameInput;
-  passwordInput;
-  submitButton;
-
-  constructor() {
-    // The Cognito sign-in page contains the sign-in form twice and is basically confusing
-    // TestCafe/testing-library, hence the cumbersome selectors rather than selecting by label text.
-    this.usernameInput = screen.getByRole("textbox");
-    this.passwordInput = Selector(".visible-lg input[type=password]");
-    this.submitButton = Selector(".visible-lg input[type=submit]");
-  }
-
-  async login(username: string, password: string) {
-    await onCognitoPage();
-    await t
-      .typeText(this.usernameInput, username)
-      .typeText(this.passwordInput, password)
-      .click(this.submitButton);
+  constructor(
+    url: string,
+    statusCode: number,
+    statusText: string,
+    fetchDescription: string,
+    response: Response
+  ) {
+    super(statusText);
+    this.message = `Unable to fetch ${fetchDescription}: ${url} returned [${statusCode}] ${statusText}`;
+    this.response = response;
   }
 }
 
-export async function onCognitoPage() {
-  await t.expect(Selector("form[name=cognitoSignInForm]").exists).ok();
+export class NotImplementedError extends Error {
+  constructor(message = "Not implemented by base class") {
+    super(message);
+  }
 }

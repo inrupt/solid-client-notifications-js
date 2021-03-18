@@ -1,7 +1,7 @@
 {
-  "name": "template-ts-sandbox",
+  "name": "solid-client-notifications-sandbox",
   "version": "1.0.0",
-  "description": "Example project calling out to template-ts",
+  "description": "Example project calling out to @inrupt/solid-client-notifications",
   "main": "index.html",
   "scripts": {
     "start": "webpack serve --open-page index.html",
@@ -10,8 +10,8 @@
   },
   "dependencies": {
     "@inrupt/solid-client": "^1.4.0",
-    "@inrupt/solid-client-authn-browser": "0.2.2 - 1.x",
-    "@inrupt/template-ts": "file:../.."
+    "@inrupt/solid-client-authn-browser": "^1.7.2",
+    "@inrupt/solid-client-notifications": "file:../.."
   },
   "devDependencies": {
     "buffer": "^6.0.3",

@@ -48,10 +48,11 @@ config({
 fixture("End-to-end tests").page("http://localhost:1234/end-to-end-test.html");
 
 // eslint-disable-next-line jest/expect-expect, jest/no-done-callback
-test("template-ts example functions", async (t: TestController) => {
-  const sampleModuleFn = ClientFunction(() => E2eHelpers.sampleModuleFn());
-
+test("solid-client-notifications example functions", async (t: TestController) => {
   await essUserLogin(t);
 
-  await t.expect(sampleModuleFn()).eql("Hello, world- from a module.");
+  const connectWebsocket = ClientFunction(() => E2eHelpers.connectWebsocket());
+  const notification = await connectWebsocket();
+
+  await t.expect(notification.status).eql("connected", { timeout: 10000 });
 });
