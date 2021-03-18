@@ -24,6 +24,8 @@ module.exports = {
   testEnvironment: "jsdom",
   clearMocks: true,
   collectCoverage: true,
+  automock: false,
+  setupFiles: ["./jest.setup.js"],
   coverageThreshold: {
     global: {
       branches: 100,
@@ -39,5 +41,4 @@ module.exports = {
     "/src/e2e-node/",
     "/src/e2e-browser/",
   ],
-  injectGlobals: false,
 };

@@ -19,10 +19,120 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import { sampleModuleFn } from "../../src/index";
+import { jest } from "@jest/globals";
+import { Session } from "@inrupt/solid-client-authn-node";
+import { config } from "dotenv-flow";
+import * as openidClient from "openid-client";
 
-describe("sampleModuleFn", () => {
-  it("returns a module Hello World string", () => {
-    expect(sampleModuleFn()).toEqual("Hello, world- from a module.");
-  });
+import { WebsocketNotification } from "../../src/index";
+
+config({
+  path: __dirname,
+  // In CI, actual environment variables will overwrite values from .env files.
+  // We don't need warning messages in the logs for that:
+  silent: process.env.CI === "true",
 });
+
+type NotificationGateway = string;
+type OidcIssuer = string;
+type ClientId = string;
+type ClientSecret = string;
+type RefreshToken = string;
+type Pod = string;
+
+type AuthDetails = [
+  NotificationGateway,
+  Pod,
+  OidcIssuer,
+  ClientId,
+  ClientSecret,
+  RefreshToken
+];
+
+// Instructions for obtaining these credentials can be found here:
+// https://github.com/inrupt/solid-client-authn-js/blob/1a97ef79057941d8ac4dc328fff18333eaaeb5d1/packages/node/example/bootstrappedApp/README.md
+const serversUnderTest: AuthDetails[] = [
+  // pod.inrupt.com:
+  [
+    process.env.E2E_TEST_ESS_NOTIFICATION_GATEWAY!,
+    process.env.E2E_TEST_ESS_POD!,
+    process.env.E2E_TEST_ESS_IDP_URL!,
+    process.env.E2E_TEST_ESS_CLIENT_ID!,
+    process.env.E2E_TEST_ESS_CLIENT_SECRET!,
+    process.env.E2E_TEST_ESS_REFRESH_TOKEN!,
+  ],
+  // pod-compat.inrupt.com, temporarily disabled while WSS is in dev:
+  /*
+  [
+    process.env.E2E_TEST_ESS_NOTIFICATION_GATEWAY!,
+    process.env.E2E_TEST_ESS_COMPAT_POD!,
+    process.env.E2E_TEST_ESS_COMPAT_IDP_URL!,
+    process.env.E2E_TEST_ESS_COMPAT_CLIENT_ID!,
+    process.env.E2E_TEST_ESS_COMPAT_CLIENT_SECRET!,
+    process.env.E2E_TEST_ESS_COMPAT_REFRESH_TOKEN!,
+  ],
+  */
+];
+
+describe.each(serversUnderTest)(
+  "Authenticated end-to-end tests against Pod [%s] and OIDC Issuer [%s]:",
+  (
+    notificationGateway,
+    rootContainer,
+    oidcIssuer,
+    clientId,
+    clientSecret,
+    refreshToken
+  ) => {
+    let ws: WebsocketNotification | undefined;
+
+    afterEach(() => {
+      if (ws) {
+        ws.disconnect();
+      }
+    });
+
+    async function getSession() {
+      const session = new Session();
+      await session.login({
+        oidcIssuer: oidcIssuer,
+        clientId: clientId,
+        clientName: "Solid Client End-2-End Test Client App - Node.js",
+        clientSecret: clientSecret,
+        refreshToken: refreshToken,
+      });
+      return session;
+    }
+
+    it("can connect to a websocket on the root container", async () => {
+      // Lots of requests being made; we'll give it some extra time.
+      jest.setTimeout(10000);
+      openidClient.custom.setHttpOptionsDefaults({ timeout: 5000 });
+
+      const session = await getSession();
+
+      ws = new WebsocketNotification(rootContainer, session.fetch, {
+        gateway: notificationGateway,
+      });
+
+      expect(ws.status).toEqual("closed");
+
+      ws.connect();
+
+      expect(ws.status).toEqual("connecting");
+
+      await (() => {
+        return new Promise((res, rej) => {
+          ws?.on("connect", () => res(undefined));
+          ws?.on("error", (e: Error) => rej(e));
+        });
+      })();
+
+      expect(ws.status).toEqual("connected");
+
+      ws.disconnect();
+
+      expect(ws.status).toEqual("closed");
+    });
+  }
+);

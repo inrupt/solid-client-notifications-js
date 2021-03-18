@@ -57,5 +57,5 @@ export default {
       },
     }),
   ],
-  external: [],
+  external: ["events"],
 };
