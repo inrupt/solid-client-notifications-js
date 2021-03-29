@@ -79,10 +79,10 @@ describe("BaseNotification", () => {
       expect(BaseNotification.getRootDomain(fullUrl)).toEqual(domain);
     });
 
-    test("getWellKnownUrl returns the solid well-known url for a given domain", () => {
+    test("getSolidWellKnownUrl returns the solid well-known url for a given domain", () => {
       const domain = "https://fake.url";
 
-      expect(BaseNotification.getWellKnownUrl(domain)).toEqual(
+      expect(BaseNotification.getSolidWellKnownUrl(domain)).toEqual(
         `${domain}/.well-known/solid`
       );
     });
