@@ -74,8 +74,8 @@ export default class BaseNotification {
   }
 
   /** @internal */
-  static getWellKnownUrl(host: UrlString): UrlString {
-    return `${host}/.well-known/solid`;
+  static getSolidWellKnownUrl(host: UrlString): UrlString {
+    return new URL("/.well-known/solid", host).href;
   }
 
   constructor(
