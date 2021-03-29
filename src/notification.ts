@@ -100,7 +100,7 @@ export default class BaseNotification {
     }
 
     const response = await this.fetch(
-      BaseNotification.getWellKnownUrl(this.host)
+      BaseNotification.getSolidWellKnownUrl(this.host)
     );
 
     if (response.status !== 200) {
