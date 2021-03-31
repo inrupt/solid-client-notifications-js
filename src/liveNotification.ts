@@ -19,8 +19,7 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import { UrlString } from "@inrupt/solid-client";
-import EventEmitter from "events";
+import { EventEmitter } from "events";
 import { NotImplementedError } from "./errors";
 
 import BaseNotification, {
@@ -35,7 +34,7 @@ export default class LiveNotification extends BaseNotification {
 
   // TODO move constructor options to options instead of arguments
   constructor(
-    topic: UrlString,
+    topic: string,
     fetchFn: typeof window.fetch,
     protocolList: protocols[],
     options?: BaseNotificationOptions

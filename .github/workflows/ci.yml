@@ -35,16 +35,12 @@ jobs:
       # end-to-end tests only need to run on one OS:
       if: runner.os == 'Linux' && matrix.node-version == '14.x'
       env:
+        E2E_TEST_ESS_NOTIFICATION_GATEWAY: ${{secrets.E2E_TEST_ESS_PROD_NOTIFICATION_GATEWAY}}
         E2E_TEST_ESS_POD: ${{ secrets.E2E_TEST_ESS_PROD_POD }}
         E2E_TEST_ESS_IDP_URL: ${{ secrets.E2E_TEST_ESS_PROD_IDP_URL }}
         E2E_TEST_ESS_REFRESH_TOKEN: ${{ secrets.E2E_TEST_ESS_PROD_REFRESH_TOKEN }}
         E2E_TEST_ESS_CLIENT_ID: ${{ secrets.E2E_TEST_ESS_PROD_CLIENT_ID }}
         E2E_TEST_ESS_CLIENT_SECRET: ${{ secrets.E2E_TEST_ESS_PROD_CLIENT_SECRET }}
-        E2E_TEST_ESS_COMPAT_POD: ${{ secrets.E2E_TEST_ESS_COMPAT_PROD_POD }}
-        E2E_TEST_ESS_COMPAT_IDP_URL: ${{ secrets.E2E_TEST_ESS_COMPAT_PROD_IDP_URL }}
-        E2E_TEST_ESS_COMPAT_REFRESH_TOKEN: ${{ secrets.E2E_TEST_ESS_COMPAT_PROD_REFRESH_TOKEN }}
-        E2E_TEST_ESS_COMPAT_CLIENT_ID: ${{ secrets.E2E_TEST_ESS_COMPAT_PROD_CLIENT_ID }}
-        E2E_TEST_ESS_COMPAT_CLIENT_SECRET: ${{ secrets.E2E_TEST_ESS_COMPAT_PROD_CLIENT_SECRET }}
     # Ideally, we'd autodetect installed browsers and run them headlessly.
     # See https://github.com/DevExpress/testcafe/issues/5641
     - name: Prepare browser-based end-to-end tests
@@ -64,6 +60,7 @@ jobs:
       # does not cause end-to-end tests to stop running.)
       if: matrix.node-version != '10.x' && matrix.node-version != '12.x' && runner.os == 'Linux'
       env:
+        E2E_TEST_ESS_NOTIFICATION_GATEWAY: ${{secrets.E2E_TEST_ESS_PROD_NOTIFICATION_GATEWAY}}
         E2E_TEST_ESS_IDP_URL: ${{ secrets.E2E_TEST_ESS_PROD_IDP_URL }}
         E2E_TEST_ESS_POD: ${{ secrets.E2E_TEST_ESS_PROD_POD }}
         E2E_TEST_ESS_COGNITO_USER: ${{ secrets.E2E_TEST_ESS_PROD_COGNITO_USER }}
@@ -78,6 +75,7 @@ jobs:
       # does not cause end-to-end tests to stop running.)
       if: matrix.node-version != '10.x' && matrix.node-version != '12.x' && runner.os == 'Windows'
       env:
+        E2E_TEST_ESS_NOTIFICATION_GATEWAY: ${{secrets.E2E_TEST_ESS_PROD_NOTIFICATION_GATEWAY}}
         E2E_TEST_ESS_IDP_URL: ${{ secrets.E2E_TEST_ESS_PROD_IDP_URL }}
         E2E_TEST_ESS_POD: ${{ secrets.E2E_TEST_ESS_PROD_POD }}
         E2E_TEST_ESS_COGNITO_USER: ${{ secrets.E2E_TEST_ESS_PROD_COGNITO_USER }}
@@ -110,6 +108,7 @@ jobs:
       # does not cause end-to-end tests to stop running.)
       if: matrix.node-version != '10.x' && matrix.node-version != '12.x' && runner.os == 'macOS'
       env:
+        E2E_TEST_ESS_NOTIFICATION_GATEWAY: ${{secrets.E2E_TEST_ESS_PROD_NOTIFICATION_GATEWAY}}
         E2E_TEST_ESS_IDP_URL: ${{ secrets.E2E_TEST_ESS_PROD_IDP_URL }}
         E2E_TEST_ESS_POD: ${{ secrets.E2E_TEST_ESS_PROD_POD }}
         E2E_TEST_ESS_COGNITO_USER: ${{ secrets.E2E_TEST_ESS_PROD_COGNITO_USER }}

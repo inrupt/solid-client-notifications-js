@@ -1,7 +1,7 @@
 // Verify that imports from the main export work:
-import { sampleModuleFn as mainModuleFn } from "@inrupt/solid-client-notifications";
+import { Notification } from "@inrupt/solid-client-notifications";
 // Verify that submodule imports work:
-import { sampleModuleFn } from "@inrupt/solid-client-notifications/module";
+import WebsocketNotification from "@inrupt/solid-client-notifications/websocketNotification";
 
-console.log(mainModuleFn());
-console.log(sampleModuleFn());
+console.log(Notification);
+console.log(WebsocketNotification);

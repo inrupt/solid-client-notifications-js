@@ -1,3 +1,3 @@
-import { sampleModuleFn } from "@inrupt/solid-client-notifications";
+import { WebsocketNotification } from "@inrupt/solid-client-notifications";
 
-console.log(sampleModuleFn());
+console.log(WebsocketNotification);

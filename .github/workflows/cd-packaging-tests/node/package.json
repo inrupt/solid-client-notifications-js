@@ -2,6 +2,7 @@
   "name": "cd-packaging-test-node",
   "private": true,
   "dependencies": {
-    "@inrupt/solid-client-notifications": "0.0.1"
+    "@inrupt/solid-client-notifications": "0.0.1",
+    "ws": "^7.4.4"
   }
 }

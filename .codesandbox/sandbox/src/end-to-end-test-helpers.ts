@@ -10,16 +10,11 @@ export function getHelpers(podRoot: string, session: Session) {
     });
 
     notification.connect();
-    console.log(notification);
 
-    console.log("connected");
-
-    await (() => {
-      return new Promise((res, rej) => {
-        notification.on("connect", () => res(undefined));
-        notification.on("error", (e: Error) => rej(e));
-      });
-    })();
+    await new Promise((resolve, reject) => {
+      notification.on("connected", () => resolve(undefined));
+      notification.on("error", (e: Error) => reject(e));
+    });
 
     return notification;
   }

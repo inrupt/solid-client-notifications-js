@@ -133,7 +133,7 @@ describe("BaseNotification", () => {
     });
   });
 
-  describe("fetchProtocolNegotationInfo", () => {
+  describe("fetchProtocolNegotiationInfo", () => {
     test("does not fetch the gateway if it is already defined", async () => {
       const gateway = "https://fake.url/notifications/";
       const topic = "https://fake.url/some-resource";
@@ -147,7 +147,7 @@ describe("BaseNotification", () => {
 
       fetch.mockResponseOnce("{}");
 
-      await notification.fetchProtocolNegotationInfo();
+      await notification.fetchProtocolNegotiationInfo();
 
       expect(notification.fetchNegotiationGatewayUrl).not.toHaveBeenCalled();
     });
@@ -163,10 +163,10 @@ describe("BaseNotification", () => {
       // Mock gateway fetch
       fetch.mockResponseOnce(JSON.stringify({ notificationGateway: gateway }));
 
-      // Mock fetchProtocolNegotationInfo fetch
+      // Mock fetchProtocolNegotiationInfo fetch
       fetch.mockResponseOnce("{}");
 
-      await notification.fetchProtocolNegotationInfo();
+      await notification.fetchProtocolNegotiationInfo();
 
       expect(fetch).toHaveBeenCalled();
       expect(notification.gateway).toEqual(gateway);
@@ -185,9 +185,9 @@ describe("BaseNotification", () => {
         features: { ttl: 10 },
       });
 
-      const info = await notification.fetchProtocolNegotationInfo();
+      const info = await notification.fetchProtocolNegotiationInfo();
 
-      expect(info).toEqual(response);
+      expect(info).toStrictEqual(response);
 
       expect(fetch).toHaveBeenCalledWith(gateway, {
         method: "POST",
@@ -216,7 +216,7 @@ describe("BaseNotification", () => {
       });
 
       await expect(
-        notification.fetchProtocolNegotationInfo()
+        notification.fetchProtocolNegotiationInfo()
       ).rejects.toThrow();
     });
   });
@@ -228,7 +228,7 @@ describe("BaseNotification", () => {
       const protocol = ["ws"] as Array<protocols>;
       const notification = new BaseNotification(topic, fetch, protocol);
 
-      notification.fetchProtocolNegotationInfo = jest
+      notification.fetchProtocolNegotiationInfo = jest
         .fn()
         .mockResolvedValue({ endpoint });
 
@@ -236,7 +236,7 @@ describe("BaseNotification", () => {
 
       await notification.fetchNotificationConnectionInfo();
 
-      expect(notification.fetchProtocolNegotationInfo).toHaveBeenCalled();
+      expect(notification.fetchProtocolNegotiationInfo).toHaveBeenCalled();
     });
 
     test("throws a FetchError if the negotiation connection info fetch fails", async () => {
@@ -245,7 +245,7 @@ describe("BaseNotification", () => {
       const protocol = ["ws"] as Array<protocols>;
       const notification = new BaseNotification(topic, fetch, protocol);
 
-      notification.fetchProtocolNegotationInfo = jest
+      notification.fetchProtocolNegotiationInfo = jest
         .fn()
         .mockResolvedValue({ endpoint });
 
@@ -272,7 +272,7 @@ describe("BaseNotification", () => {
         moreJsonValues: 10,
       };
 
-      notification.fetchProtocolNegotationInfo = jest
+      notification.fetchProtocolNegotiationInfo = jest
         .fn()
         .mockResolvedValue({ endpoint });
 
