@@ -20,7 +20,6 @@
  */
 
 export {
-  default as Notification,
   protocols,
   features,
   statuses,
@@ -29,8 +28,6 @@ export {
   BaseNotificationOptions,
   Features,
 } from "./notification";
-
-export { default as LiveNotification } from "./liveNotification";
 
 export { default as WebsocketNotification } from "./websocketNotification";
 
