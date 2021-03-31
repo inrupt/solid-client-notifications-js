@@ -19,30 +19,29 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import { UrlString } from "@inrupt/solid-client";
 import { FetchError } from "./errors";
 
-export type protocols = "ws";
+export type protocols = "ws" | string;
 
-export type features = "state" | "ttl" | "rate" | "filter";
+export type features = "state" | "ttl" | "rate" | "filter" | string;
 export type statuses = "connecting" | "connected" | "closing" | "closed";
 
 export type NegotiationInfo = {
-  endpoint: UrlString;
+  endpoint: string;
   procotol: protocols;
   features: Features;
 };
 
 export type NotificationConnectionInfo = {
-  endpoint: UrlString;
+  endpoint: string;
   protocol: protocols;
   subprotocol: string;
 };
 
 export type BaseNotificationOptions = {
   features?: Features;
-  gateway?: UrlString;
-  host?: UrlString;
+  gateway?: string;
+  host?: string;
 };
 
 export type Features = {
@@ -53,11 +52,11 @@ export type Features = {
 };
 
 export default class BaseNotification {
-  topic: UrlString;
+  topic: string;
 
-  host: UrlString;
+  host: string;
 
-  gateway?: UrlString;
+  gateway?: string;
 
   fetch: typeof window.fetch;
 
@@ -68,18 +67,18 @@ export default class BaseNotification {
   status: statuses = "closed";
 
   /** @internal */
-  static getRootDomain(topic: UrlString): UrlString {
+  static getRootDomain(topic: string): string {
     const parsedUrl = new URL(topic);
     return `${parsedUrl.protocol}//${parsedUrl.hostname}`;
   }
 
   /** @internal */
-  static getSolidWellKnownUrl(host: UrlString): UrlString {
+  static getSolidWellKnownUrl(host: string): string {
     return new URL("/.well-known/solid", host).href;
   }
 
   constructor(
-    topic: UrlString,
+    topic: string,
     fetchFn: typeof window.fetch,
     protocolList: protocols[],
     options: BaseNotificationOptions = {}
@@ -119,7 +118,7 @@ export default class BaseNotification {
     return notificationGateway;
   }
 
-  async fetchProtocolNegotationInfo(): Promise<NegotiationInfo> {
+  async fetchProtocolNegotiationInfo(): Promise<NegotiationInfo> {
     if (!this.gateway) {
       await this.fetchNegotiationGatewayUrl();
     }
@@ -129,7 +128,7 @@ export default class BaseNotification {
     // Also, this initial request is unauthenticated; use the global fetch.
     /* eslint @typescript-eslint/ban-ts-comment: 0 */
     // @ts-ignore
-    const response = await fetch(this.gateway, {
+    const response = await this.fetch(this.gateway, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -154,7 +153,7 @@ export default class BaseNotification {
   }
 
   async fetchNotificationConnectionInfo(): Promise<NotificationConnectionInfo> {
-    const { endpoint } = await this.fetchProtocolNegotationInfo();
+    const { endpoint } = await this.fetchProtocolNegotiationInfo();
 
     const response = await this.fetch(endpoint, {
       method: "POST",

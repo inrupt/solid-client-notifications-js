@@ -1,5 +1,5 @@
 const {
-  sampleModuleFn,
+  WebsocketNotification,
 } = require("@inrupt/solid-client-notifications");
 
-console.log(sampleModuleFn());
+console.log(WebsocketNotification);

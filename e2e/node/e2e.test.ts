@@ -106,7 +106,7 @@ describe.each(serversUnderTest)(
 
     it("can connect to a websocket on the root container", async () => {
       // Lots of requests being made; we'll give it some extra time.
-      jest.setTimeout(10000);
+      jest.setTimeout(15000);
       openidClient.custom.setHttpOptionsDefaults({ timeout: 5000 });
 
       const session = await getSession();
@@ -119,18 +119,27 @@ describe.each(serversUnderTest)(
 
       ws.connect();
 
-      expect(ws.status).toEqual("connecting");
-
-      await (() => {
-        return new Promise((res, rej) => {
-          ws?.on("connect", () => res(undefined));
-          ws?.on("error", (e: Error) => rej(e));
+      await new Promise((resolve, reject) => {
+        ws?.on("connected", () => {
+          resolve(undefined);
         });
-      })();
+        ws?.on("error", (e: Error) => {
+          reject(e);
+        });
+      });
 
       expect(ws.status).toEqual("connected");
 
       ws.disconnect();
+
+      await new Promise((resolve, reject) => {
+        ws?.on("closed", () => {
+          resolve(undefined);
+        });
+        ws?.on("error", (e: Error) => {
+          reject(e);
+        });
+      });
 
       expect(ws.status).toEqual("closed");
     });
