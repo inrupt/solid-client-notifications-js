@@ -20,8 +20,6 @@
  */
 
 import {
-  Notification as BaseNotification,
-  LiveNotification,
   WebsocketNotification,
   FetchError,
   NotImplementedError,
@@ -29,8 +27,6 @@ import {
 
 describe("Index exports", () => {
   test("exposes expected things", () => {
-    expect(BaseNotification).toBeDefined();
-    expect(LiveNotification).toBeDefined();
     expect(WebsocketNotification).toBeDefined();
     expect(FetchError).toBeDefined();
     expect(NotImplementedError).toBeDefined();
