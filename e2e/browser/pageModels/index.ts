@@ -59,10 +59,10 @@ export class IndexPage {
 
 export async function isIndexPage() {
   return (
-    // The contents of `ClientFunction` do not execute in this Node environment,
-    // but are injected into a browser script by TestCafe. Thus, while it will have
-    // `window` available when running, we need an assertion to `any` here.
-    (await ClientFunction(() => (window as any).location.origin)()) ===
+    // Absolutely no idea why, but Typescript is throwing in CI, but not locally with the same
+    // environment, with the complaint that `window` cannot be found. Go away, Typescript.
+    // @ts-ignore
+    (await ClientFunction(() => window.location.origin)()) ===
     "http://localhost:1234"
   );
 }
