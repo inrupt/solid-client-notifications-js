@@ -24,7 +24,7 @@ import { BaseNotificationOptions } from "./notification";
 import LiveNotification from "./liveNotification";
 
 export default class WebsocketNotification extends LiveNotification {
-  webSocket?: WebSocket;
+  webSocket?: WebSocket | IsoWebSocket;
 
   constructor(
     topic: string,
@@ -62,28 +62,21 @@ export default class WebsocketNotification extends LiveNotification {
 
     this.webSocket = new WebsocketConstructor(endpoint, subprotocol);
 
-    // Typescript, for some reason, things this.webSocket can be undefined. It can't. You can
-    // see the code just a couple lines up there. It is a mystery.
-    /* eslint @typescript-eslint/ban-ts-comment: 0 */
-    // @ts-ignore
     this.webSocket.onopen = () => {
       this.status = "connected";
       this.emitter.emit("connected");
     };
 
-    // @ts-ignore
     this.webSocket.onmessage = (e: any) => {
       this.emitter.emit("message", e.data);
     };
 
     // TODO auto-reconnect once we get a TTL from notification connection info
-    // @ts-ignore
     this.webSocket.onclose = () => {
       this.status = "closed";
       this.emitter.emit("closed");
     };
 
-    // @ts-ignore
     this.webSocket.onerror = (e: Event) => {
       this.emitter.emit("error", e);
     };
