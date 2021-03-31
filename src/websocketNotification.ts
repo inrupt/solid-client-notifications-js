@@ -56,6 +56,7 @@ export default class WebsocketNotification extends LiveNotification {
     // the global WebSocket.
     // This code right here is why we had to lower test coverage. Maybe someone far cleverer than
     // I can figure out how to get all of this to interoperate.
+    /* istanbul ignore next  */
     const WebsocketConstructor =
       typeof WebSocket !== "undefined" ? WebSocket : IsoWebSocket;
 
