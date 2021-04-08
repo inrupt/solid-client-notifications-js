@@ -19,7 +19,9 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import IsoWebSocket from "isomorphic-ws";
+// Typescript and eslint are fighting over whether these are globals
+/* eslint no-shadow: 0 */
+import IsoWebSocket, { MessageEvent, ErrorEvent } from "isomorphic-ws";
 import { BaseNotificationOptions } from "./notification";
 import LiveNotification from "./liveNotification";
 
@@ -53,7 +55,7 @@ export default class WebsocketNotification extends LiveNotification {
       this.emitter.emit("connected");
     };
 
-    this.webSocket.onmessage = (e: any) => {
+    this.webSocket.onmessage = (e: MessageEvent) => {
       this.emitter.emit("message", e.data);
     };
 
@@ -63,7 +65,7 @@ export default class WebsocketNotification extends LiveNotification {
       this.emitter.emit("closed");
     };
 
-    this.webSocket.onerror = (e: any) => {
+    this.webSocket.onerror = (e: ErrorEvent) => {
       this.emitter.emit("error", e);
     };
   };

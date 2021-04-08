@@ -23,14 +23,10 @@
 /* eslint no-shadow: 0 */
 
 import fetch from "jest-fetch-mock";
-import { getDefaultSession } from "@inrupt/solid-client-authn-browser";
+import { fetch as fetchFn } from "@inrupt/solid-client-authn-browser";
 import BaseNotification, { protocols } from "./notification";
 
 jest.mock("@inrupt/solid-client-authn-browser");
-
-(getDefaultSession as jest.Mock).mockReturnValue(() => ({
-  fetch: jest.fn(),
-}));
 
 describe("BaseNotification", () => {
   describe("constructor", () => {
@@ -290,9 +286,7 @@ describe("BaseNotification", () => {
 
   describe("defaultSession import", () => {
     it("attempts to import the default session and uses its fetch function", async () => {
-      expect(await BaseNotification.getDefaultSessionFetch()).toEqual(
-        getDefaultSession().fetch
-      );
+      expect(await BaseNotification.getDefaultSessionFetch()).toEqual(fetchFn);
     });
 
     it("uses BaseNotification.getDefaultSessionFetch if fetch is not passed in", async () => {
