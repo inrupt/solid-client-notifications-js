@@ -34,7 +34,6 @@
       "import": "./dist/index.mjs"
     },
     "./errors": "./dist/errors.mjs",
-    "./liveNotification": "./dist/liveNotification.mjs",
     "./websocketNotification": "./dist/websocketNotification.mjs"
   },
   "files": [
