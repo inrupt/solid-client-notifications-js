@@ -20,7 +20,7 @@
  */
 
 import EventEmitter from "events";
-import LiveNotification from "./liveNotification";
+import { LiveNotification } from "./liveNotification";
 import { protocols } from "./notification";
 
 describe("LiveNotification", () => {

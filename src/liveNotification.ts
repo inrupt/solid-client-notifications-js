@@ -22,12 +22,13 @@
 import { EventEmitter } from "events";
 import { NotImplementedError } from "./errors";
 
-import BaseNotification, {
-  protocols,
+import {
+  BaseNotification,
   BaseNotificationOptions,
+  protocols,
 } from "./notification";
 
-export default class LiveNotification extends BaseNotification {
+export class LiveNotification extends BaseNotification {
   protocol?: protocols;
 
   emitter: EventEmitter;

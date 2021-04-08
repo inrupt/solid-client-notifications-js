@@ -28,6 +28,6 @@ export {
   FeatureOptions,
 } from "./notification";
 
-export { default as WebsocketNotification } from "./websocketNotification";
+export { WebsocketNotification } from "./websocketNotification";
 
 export { FetchError, NotImplementedError } from "./errors";

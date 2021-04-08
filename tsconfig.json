@@ -68,6 +68,8 @@
     "entryPoints": [
       // The source files of everything listed under `exports` in our package.json
       // (i.e. public API's that should be documented) should be listed here:
+      "src/liveNotification.ts",
+      "src/notification.ts",
       "src/websocketNotification.ts",
       "src/errors.ts",
     ],
