@@ -1,8 +1,8 @@
 :orphan:
 
-================
-solid-client API
-================
+==============================
+solid-client-notifications API
+==============================
 
 
 .. toctree::
@@ -10,6 +10,5 @@ solid-client API
    :titlesonly:
 
    /modules/**
-   /interfaces/**
    /classes/**
 
