@@ -51,7 +51,7 @@ export type FeatureOptions = {
   filter?: string;
 };
 
-export default class BaseNotification {
+export class BaseNotification {
   topic: string;
 
   host: string;
@@ -77,7 +77,7 @@ export default class BaseNotification {
     return new URL("/.well-known/solid", host).href;
   }
 
-  // Dynamically import solid-client-authn-browser so that BaseNotifiction doesn't have a hard
+  // Dynamically import solid-client-authn-browser so that Notifiction doesn't have a hard
   // dependency.
   /* eslint consistent-return: 0 */
   static async getDefaultSessionFetch(): Promise<

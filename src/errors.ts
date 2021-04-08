@@ -19,8 +19,6 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// This file is meant to contain multiple error classes; disable this rule.
-/* eslint max-classes-per-file: 0 */
 export class FetchError extends Error {
   response: Response;
 

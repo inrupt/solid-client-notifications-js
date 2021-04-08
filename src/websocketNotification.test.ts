@@ -23,7 +23,7 @@
 /* eslint no-shadow: 0 */
 import { MessageEvent, OpenEvent, CloseEvent, ErrorEvent } from "isomorphic-ws";
 
-import WebsocketNotification from "./websocketNotification";
+import { WebsocketNotification } from "./websocketNotification";
 
 jest.mock("isomorphic-ws");
 

@@ -23,9 +23,9 @@
 /* eslint no-shadow: 0 */
 import IsoWebSocket, { MessageEvent, ErrorEvent } from "isomorphic-ws";
 import { BaseNotificationOptions } from "./notification";
-import LiveNotification from "./liveNotification";
+import { LiveNotification } from "./liveNotification";
 
-export default class WebsocketNotification extends LiveNotification {
+export class WebsocketNotification extends LiveNotification {
   webSocket?: IsoWebSocket;
 
   constructor(topic: string, options?: BaseNotificationOptions) {
