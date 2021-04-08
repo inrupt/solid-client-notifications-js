@@ -23,23 +23,28 @@
 /* eslint no-shadow: 0 */
 
 import fetch from "jest-fetch-mock";
+import { getDefaultSession } from "@inrupt/solid-client-authn-browser";
 import BaseNotification, { protocols } from "./notification";
+
+jest.mock("@inrupt/solid-client-authn-browser");
+
+(getDefaultSession as jest.Mock).mockReturnValue(() => ({
+  fetch: jest.fn(),
+}));
 
 describe("BaseNotification", () => {
   describe("constructor", () => {
     it("sets required properties topic, fetch, and protocols", () => {
       const topic = "https://fake.url/some-resource";
-      const fetchFn = jest.fn();
       const protocol = ["ws"] as Array<protocols>;
 
-      const notification = new BaseNotification(topic, fetchFn, protocol);
+      const notification = new BaseNotification(topic, protocol);
 
       expect(notification.topic).toEqual(topic);
-      expect(notification.fetch).toEqual(fetchFn);
       expect(notification.protocols).toEqual(protocol);
     });
 
-    it("sets optional properties features, gateway, and host", () => {
+    it("sets optional properties fetch, features, gateway, and host", () => {
       const topic = "https://fake.url/some-resource";
       const fetchFn = jest.fn();
       const protocol = ["ws"] as Array<protocols>;
@@ -47,14 +52,10 @@ describe("BaseNotification", () => {
         features: { ttl: 500 },
         gateway: "https://fake.url/notification-gateway",
         host: "https://fake.url",
+        fetch: fetchFn,
       };
 
-      const notification = new BaseNotification(
-        topic,
-        fetchFn,
-        protocol,
-        options
-      );
+      const notification = new BaseNotification(topic, protocol, options);
 
       expect(notification.features).toEqual(options.features);
       expect(notification.gateway).toEqual(options.gateway);
@@ -63,10 +64,9 @@ describe("BaseNotification", () => {
 
     it("sets the host from the domain of the topic if no host was given", () => {
       const topic = "https://fake.url/some-resource";
-      const fetchFn = jest.fn();
       const protocol = ["ws"] as Array<protocols>;
 
-      const notification = new BaseNotification(topic, fetchFn, protocol);
+      const notification = new BaseNotification(topic, protocol);
 
       expect(notification.host).toEqual("https://fake.url");
     });
@@ -95,8 +95,9 @@ describe("BaseNotification", () => {
       const protocol = ["ws"] as Array<protocols>;
       const fetchFn = jest.fn();
 
-      const notification = new BaseNotification(topic, fetchFn, protocol, {
+      const notification = new BaseNotification(topic, protocol, {
         gateway,
+        fetch: fetchFn,
       });
 
       const notificationGateway = await notification.fetchNegotiationGatewayUrl();
@@ -112,7 +113,7 @@ describe("BaseNotification", () => {
       const topic = "https://fake.url/some-resource";
       const protocol = ["ws"] as Array<protocols>;
 
-      const notification = new BaseNotification(topic, fetch, protocol);
+      const notification = new BaseNotification(topic, protocol, { fetch });
       const notificationGateway = await notification.fetchNegotiationGatewayUrl();
 
       expect(notificationGateway).toEqual(gateway);
@@ -127,7 +128,7 @@ describe("BaseNotification", () => {
       const topic = "https://fake.url/some-resource";
       const protocol = ["ws"] as Array<protocols>;
 
-      const notification = new BaseNotification(topic, fetch, protocol);
+      const notification = new BaseNotification(topic, protocol, { fetch });
 
       await expect(notification.fetchNegotiationGatewayUrl()).rejects.toThrow();
     });
@@ -139,8 +140,9 @@ describe("BaseNotification", () => {
       const topic = "https://fake.url/some-resource";
       const protocol = ["ws"] as Array<protocols>;
 
-      const notification = new BaseNotification(topic, fetch, protocol, {
+      const notification = new BaseNotification(topic, protocol, {
         gateway,
+        fetch,
       });
 
       notification.fetchNegotiationGatewayUrl = jest.fn();
@@ -156,7 +158,7 @@ describe("BaseNotification", () => {
       const topic = "https://fake.url/some-resource";
       const protocol = ["ws"] as Array<protocols>;
 
-      const notification = new BaseNotification(topic, fetch, protocol);
+      const notification = new BaseNotification(topic, protocol, { fetch });
 
       const gateway = "https://fake.url/notifications/";
 
@@ -180,9 +182,10 @@ describe("BaseNotification", () => {
       const response = { endpoint: "https://fake.url/some-endpoint" };
       fetch.mockResponseOnce(JSON.stringify(response));
 
-      const notification = new BaseNotification(topic, fetch, protocol, {
+      const notification = new BaseNotification(topic, protocol, {
         gateway,
         features: { ttl: 10 },
+        fetch,
       });
 
       const info = await notification.fetchProtocolNegotiationInfo();
@@ -211,8 +214,9 @@ describe("BaseNotification", () => {
       const topic = "https://fake.url/some-resource";
       const protocol = ["ws"] as Array<protocols>;
 
-      const notification = new BaseNotification(topic, fetch, protocol, {
+      const notification = new BaseNotification(topic, protocol, {
         gateway,
+        fetch,
       });
 
       await expect(
@@ -226,7 +230,7 @@ describe("BaseNotification", () => {
       const endpoint = "https://fake.url/some-endpoint";
       const topic = "https://fake.url/some-resource";
       const protocol = ["ws"] as Array<protocols>;
-      const notification = new BaseNotification(topic, fetch, protocol);
+      const notification = new BaseNotification(topic, protocol, { fetch });
 
       notification.fetchProtocolNegotiationInfo = jest
         .fn()
@@ -243,7 +247,7 @@ describe("BaseNotification", () => {
       const endpoint = "https://fake.url/some-endpoint";
       const topic = "https://fake.url/some-resource";
       const protocol = ["ws"] as Array<protocols>;
-      const notification = new BaseNotification(topic, fetch, protocol);
+      const notification = new BaseNotification(topic, protocol, { fetch });
 
       notification.fetchProtocolNegotiationInfo = jest
         .fn()
@@ -263,7 +267,7 @@ describe("BaseNotification", () => {
       const endpoint = "https://fake.url/some-endpoint";
       const topic = "https://fake.url/some-resource";
       const protocol = ["ws"] as Array<protocols>;
-      const notification = new BaseNotification(topic, fetch, protocol);
+      const notification = new BaseNotification(topic, protocol, { fetch });
 
       const jsonResponse = {
         endpoint: "wss://fake.url/some-resource?extraInfo=some-code",
@@ -281,6 +285,30 @@ describe("BaseNotification", () => {
       const response = await notification.fetchNotificationConnectionInfo();
 
       expect(response).toEqual(jsonResponse);
+    });
+  });
+
+  describe("defaultSession import", () => {
+    it("attempts to import the default session and uses its fetch function", async () => {
+      expect(await BaseNotification.getDefaultSessionFetch()).toEqual(
+        getDefaultSession().fetch
+      );
+    });
+
+    it("uses BaseNotification.getDefaultSessionFetch if fetch is not passed in", async () => {
+      const topic = "https://fake.url/some-resource";
+      const protocol = ["ws"] as Array<protocols>;
+      const oldFetch = BaseNotification.getDefaultSessionFetch;
+
+      BaseNotification.getDefaultSessionFetch = jest
+        .fn()
+        .mockResolvedValue(undefined);
+
+      /* eslint no-new: 0 */
+      new BaseNotification(topic, protocol);
+
+      expect(BaseNotification.getDefaultSessionFetch).toHaveBeenCalled();
+      BaseNotification.getDefaultSessionFetch = oldFetch;
     });
   });
 });

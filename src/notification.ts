@@ -19,17 +19,16 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+import { fetch as crossFetch } from "cross-fetch";
 import { FetchError } from "./errors";
 
 export type protocols = "ws" | string;
-
-export type features = "state" | "ttl" | "rate" | "filter" | string;
 export type statuses = "connecting" | "connected" | "closing" | "closed";
 
 export type NegotiationInfo = {
   endpoint: string;
   procotol: protocols;
-  features: Features;
+  features: FeatureOptions;
 };
 
 export type NotificationConnectionInfo = {
@@ -39,12 +38,13 @@ export type NotificationConnectionInfo = {
 };
 
 export type BaseNotificationOptions = {
-  features?: Features;
+  features?: FeatureOptions;
   gateway?: string;
   host?: string;
+  fetch?: typeof crossFetch;
 };
 
-export type Features = {
+export type FeatureOptions = {
   state?: string;
   ttl?: number;
   rate?: number;
@@ -58,11 +58,11 @@ export default class BaseNotification {
 
   gateway?: string;
 
-  fetch: typeof window.fetch;
+  fetch: typeof crossFetch;
 
   protocols: Array<protocols>;
 
-  features: Features;
+  features: FeatureOptions;
 
   status: statuses = "closed";
 
@@ -77,20 +77,48 @@ export default class BaseNotification {
     return new URL("/.well-known/solid", host).href;
   }
 
+  // Dynamically import solid-client-authn-browser so that BaseNotifiction doesn't have a hard
+  // dependency.
+  /* eslint consistent-return: 0 */
+  static async getDefaultSessionFetch(): Promise<
+    typeof crossFetch | undefined
+  > {
+    try {
+      const { getDefaultSession } = await import(
+        "@inrupt/solid-client-authn-browser"
+      );
+
+      return getDefaultSession().fetch;
+      /* eslint no-empty: 0 */
+    } catch (e) {}
+  }
+
   constructor(
     topic: string,
-    fetchFn: typeof window.fetch,
     protocolList: protocols[],
     options: BaseNotificationOptions = {}
   ) {
-    this.topic = topic;
-    this.fetch = fetchFn;
-    this.protocols = protocolList;
-    this.features = options.features || {};
-    this.gateway = options.gateway;
+    const { gateway, host, features = {}, fetch: fetchFn } = options;
 
-    this.host = options.host || BaseNotification.getRootDomain(topic);
+    this.topic = topic;
+    this.protocols = protocolList;
+    this.features = features;
+    this.gateway = gateway;
+    this.fetch = fetchFn || crossFetch;
+
+    // Attempt to load the fetch function from the default session if no fetchFn was passed in.
+    if (!fetchFn) {
+      BaseNotification.getDefaultSessionFetch()
+        .then(this.setSessionFetch)
+        .catch(() => {});
+    }
+
+    this.host = host || BaseNotification.getRootDomain(topic);
   }
+
+  setSessionFetch = (sessionFetch: typeof crossFetch = crossFetch): void => {
+    this.fetch = sessionFetch;
+  };
 
   /** @internal */
   async fetchNegotiationGatewayUrl(): Promise<string> {
@@ -125,7 +153,6 @@ export default class BaseNotification {
 
     // Typescript doesn't notice that this.gateway was changed in fetchNegotiationGatewayUrl,
     // so we'll have to ignore it.
-    // Also, this initial request is unauthenticated; use the global fetch.
     /* eslint @typescript-eslint/ban-ts-comment: 0 */
     // @ts-ignore
     const response = await this.fetch(this.gateway, {

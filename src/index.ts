@@ -21,12 +21,11 @@
 
 export {
   protocols,
-  features,
   statuses,
   NegotiationInfo,
   NotificationConnectionInfo,
   BaseNotificationOptions,
-  Features,
+  FeatureOptions,
 } from "./notification";
 
 export { default as WebsocketNotification } from "./websocketNotification";

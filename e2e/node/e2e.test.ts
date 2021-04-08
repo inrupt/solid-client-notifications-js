@@ -111,11 +111,12 @@ describe.each(serversUnderTest)(
 
       const session = await getSession();
 
-      ws = new WebsocketNotification(rootContainer, session.fetch, {
+      ws = new WebsocketNotification(rootContainer, {
         gateway: notificationGateway,
+        fetch: session.fetch,
       });
 
-      expect(ws.status).toEqual("closed");
+      expect(ws.status).toBe("closed");
 
       ws.connect();
 
@@ -128,7 +129,7 @@ describe.each(serversUnderTest)(
         });
       });
 
-      expect(ws.status).toEqual("connected");
+      expect(ws.status).toBe("connected");
 
       ws.disconnect();
 
@@ -141,7 +142,7 @@ describe.each(serversUnderTest)(
         });
       });
 
-      expect(ws.status).toEqual("closed");
+      expect(ws.status).toBe("closed");
     });
   }
 );
