@@ -1,4 +1,10 @@
 {
   "name": "cd-packaging-test-webpack",
-  "private": true
+  "private": true,
+  "dependencies": {
+    "@inrupt/solid-client-authn-browser": "^1.7.2",
+    "buffer": "^6.0.3",
+    "webpack": "^5.31.0",
+    "webpack-cli": "^4.6.0"
+  }
 }
