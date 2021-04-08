@@ -84,11 +84,11 @@ export default class BaseNotification {
     typeof crossFetch | undefined
   > {
     try {
-      const { getDefaultSession } = await import(
+      const { fetch: fetchFn } = await import(
         "@inrupt/solid-client-authn-browser"
       );
 
-      return getDefaultSession().fetch;
+      return fetchFn;
       /* eslint no-empty: 0 */
     } catch (e) {}
   }
