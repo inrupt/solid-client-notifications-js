@@ -108,9 +108,9 @@ export default class BaseNotification {
 
     // Attempt to load the fetch function from the default session if no fetchFn was passed in.
     if (!fetchFn) {
-      BaseNotification.getDefaultSessionFetch()
-        .then(this.setSessionFetch)
-        .catch(() => {});
+      // We don't care if this errors.
+      /* eslint @typescript-eslint/no-floating-promises: 0 */
+      BaseNotification.getDefaultSessionFetch().then(this.setSessionFetch);
     }
 
     this.host = host || BaseNotification.getRootDomain(topic);
