@@ -5,7 +5,8 @@ const gateway = "https://notification.dev-ess.inrupt.com/";
 
 export function getHelpers(podRoot: string, session: Session) {
   async function connectWebsocket() {
-    const notification = new WebsocketNotification(podRoot, session.fetch, {
+    const notification = new WebsocketNotification(podRoot, {
+      fetch: session.fetch,
       gateway,
     });
 

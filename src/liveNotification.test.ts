@@ -26,18 +26,16 @@ import { protocols } from "./notification";
 describe("LiveNotification", () => {
   test("has an EventEmitter", () => {
     const topic = "https://fake.url/some-resource";
-    const fetchFn = jest.fn();
     const protocol = ["ws"] as Array<protocols>;
-    const notification = new LiveNotification(topic, fetchFn, protocol);
+    const notification = new LiveNotification(topic, protocol);
 
     expect(notification.emitter).toBeInstanceOf(EventEmitter);
   });
 
   test("throws an error on unimplemented connect", () => {
     const topic = "https://fake.url/some-resource";
-    const fetchFn = jest.fn();
     const protocol = ["ws"] as Array<protocols>;
-    const notification = new LiveNotification(topic, fetchFn, protocol);
+    const notification = new LiveNotification(topic, protocol);
 
     expect(notification.connect).toThrow("Not implemented");
     expect(notification.status).toEqual("closed");
@@ -45,9 +43,8 @@ describe("LiveNotification", () => {
 
   test("throws an error on unimplemented disconnect", () => {
     const topic = "https://fake.url/some-resource";
-    const fetchFn = jest.fn();
     const protocol = ["ws"] as Array<protocols>;
-    const notification = new LiveNotification(topic, fetchFn, protocol);
+    const notification = new LiveNotification(topic, protocol);
 
     expect(notification.disconnect).toThrow("Not implemented");
     expect(notification.status).toEqual("closed");
@@ -55,9 +52,8 @@ describe("LiveNotification", () => {
 
   test("on forwards events from the eventemitter", () => {
     const topic = "https://fake.url/some-resource";
-    const fetchFn = jest.fn();
     const protocol = ["ws"] as Array<protocols>;
-    const notification = new LiveNotification(topic, fetchFn, protocol);
+    const notification = new LiveNotification(topic, protocol);
 
     const channel = "message";
     const message = "hello";

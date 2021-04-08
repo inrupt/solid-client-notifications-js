@@ -35,11 +35,10 @@ export default class LiveNotification extends BaseNotification {
   // TODO move constructor options to options instead of arguments
   constructor(
     topic: string,
-    fetchFn: typeof window.fetch,
     protocolList: protocols[],
     options?: BaseNotificationOptions
   ) {
-    super(topic, fetchFn, protocolList, options);
+    super(topic, protocolList, options);
     this.emitter = new EventEmitter();
   }
 

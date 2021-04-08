@@ -24,15 +24,11 @@ import { BaseNotificationOptions } from "./notification";
 import LiveNotification from "./liveNotification";
 
 export default class WebsocketNotification extends LiveNotification {
-  webSocket?: WebSocket | IsoWebSocket;
+  webSocket?: IsoWebSocket;
 
-  constructor(
-    topic: string,
-    fetchFn: typeof window.fetch,
-    options?: BaseNotificationOptions
-  ) {
+  constructor(topic: string, options?: BaseNotificationOptions) {
     // Hardcode the protocol to WS to ask the server specifically for a websocket connection
-    super(topic, fetchFn, ["ws"], options);
+    super(topic, ["ws"], options);
   }
 
   connect = async (
@@ -50,17 +46,7 @@ export default class WebsocketNotification extends LiveNotification {
       subprotocol = connectionInfo.subprotocol;
     }
 
-    // This weirdness handles all of the cases: the global websocket client mock in tests, which
-    // uses WebSocket; node.js, which uses IsoWebsocket; and the browser, which uses the global
-    // WebSocket. We wouldn't need this except for the fact that the test mock library overrides
-    // the global WebSocket.
-    // This code right here is why we had to lower test coverage. Maybe someone far cleverer than
-    // I can figure out how to get all of this to interoperate.
-    /* istanbul ignore next  */
-    const WebsocketConstructor =
-      typeof WebSocket !== "undefined" ? WebSocket : IsoWebSocket;
-
-    this.webSocket = new WebsocketConstructor(endpoint, subprotocol);
+    this.webSocket = new IsoWebSocket(endpoint, subprotocol);
 
     this.webSocket.onopen = () => {
       this.status = "connected";
@@ -77,7 +63,7 @@ export default class WebsocketNotification extends LiveNotification {
       this.emitter.emit("closed");
     };
 
-    this.webSocket.onerror = (e: Event) => {
+    this.webSocket.onerror = (e: any) => {
       this.emitter.emit("error", e);
     };
   };
