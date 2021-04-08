@@ -12,3 +12,5 @@ docs/dist/
 docs/.DS_Store
 .env*.local
 .cache
+.github/workflows/cd-packaging-tests/bundler-webpack/package-lock.json
+.github/workflows/cd-packaging-tests/bundler-parcel/package-lock.json

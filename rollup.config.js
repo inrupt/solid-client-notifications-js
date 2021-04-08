@@ -57,5 +57,10 @@ export default {
       },
     }),
   ],
-  external: ["events"],
+  external: [
+    "@inrupt/solid-client-authn-browser",
+    "events",
+    "cross-fetch",
+    "isomorphic-ws",
+  ],
 };
