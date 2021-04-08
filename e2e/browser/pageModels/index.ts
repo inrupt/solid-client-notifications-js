@@ -58,10 +58,11 @@ export class IndexPage {
 }
 
 export async function isIndexPage() {
+  // Pretend that `window` actually is defined (even though the `window`
+  // referred to in the ClientFunction is actually in a different runtime),
+  // so static analysis does not stumble over this:
+  const window: any = undefined;
   return (
-    // Absolutely no idea why, but Typescript is throwing in CI, but not locally with the same
-    // environment, with the complaint that `window` cannot be found. Go away, Typescript.
-    // @ts-ignore
     (await ClientFunction(() => window.location.origin)()) ===
     "http://localhost:1234"
   );
