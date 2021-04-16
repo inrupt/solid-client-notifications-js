@@ -77,8 +77,8 @@ html_title = 'Inrupt {0} Documentation'.format(name)
 
 html_theme_options = {
     'project_title': 'Inrupt {0} API Documentation'.format(name),
-    'banner': False,
-    'banner_msg': '',
+    'banner': True,
+    'banner_msg': 'This is an Alpha release of the API.',
     'robots_index': True,
     'github_editable': False,
     'github_org': 'inrupt',
