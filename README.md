@@ -2,7 +2,7 @@
 
 @inrupt/solid-client-notifications is a Javascript library for subscribing to
 notifications. It allows your application to subscribe to resources, receiving
-events as resources change. You can use solid-client in Node.js using either
+events as resources change. You can use these in Node.js using either
 CommonJS or ES modules, and in the browser with a bundler like Webpack, Rollup,
 or Parcel.
 
