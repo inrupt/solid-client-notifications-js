@@ -4,11 +4,11 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Module: notification &#8212; Inrupt solid-client-notifications API Documentation</title>
     
-  <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
+  <link href="../_static/css/theme.css" rel="stylesheet" />
+  <link href="../_static/css/index.f6b7ca918bee2f46fd9abac01cfb07d5.css" rel="stylesheet" />
 
     
   <link rel="stylesheet"
@@ -20,17 +20,13 @@
 
     
       
-  <link rel="stylesheet"
-    href="../_static/vendor/open-sans_all/1.44.1/index.css">
-  <link rel="stylesheet"
-    href="../_static/vendor/lato_latin-ext/1.44.1/index.css">
 
     
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/css/inrupt.css" type="text/css" />
     
-  <link rel="preload" as="script" href="../_static/js/index.d3f166471bb80abb5163.js">
+  <link rel="preload" as="script" href="../_static/js/index.1e043a052b0af929e4d8.js">
 
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
@@ -136,7 +132,9 @@
     <div class="container-xl">
       <div class="row">
           
-          <div class="col-12 col-md-3 bd-sidebar">
+            
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar">
 
 <form class="bd-search d-flex align-items-center" action="../search.html" method="get">
   <i class="icon fas fa-search"></i>
@@ -171,7 +169,7 @@
            
       
          
-             <li class="nav-item active toctree-l1"> <a class="nav-link" href="">Module: notification</a>
+             <li class="nav-item active toctree-l1"> <a class="nav-link" href="#">Module: notification</a>
              
              
                
@@ -224,7 +222,8 @@
   </ul>
 </div>
 </nav>
-          </div>
+            </div>
+            
           
 
           
@@ -235,77 +234,91 @@
 </div>
 
 <nav id="bd-toc-nav">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#table-of-contents">
+   Table of contents
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#classes">
+     Classes
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#type-aliases">
+     Type aliases
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#id1">
+   Type aliases
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#basenotificationoptions">
+     BaseNotificationOptions
+    </a>
     <ul class="nav section-nav flex-column">
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#table-of-contents" class="nav-link">Table of contents</a><ul class="nav section-nav flex-column">
-                
-        <li class="nav-item toc-entry toc-h3">
-            <a href="#classes" class="nav-link">Classes</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h3">
-            <a href="#type-aliases" class="nav-link">Type aliases</a>
-        </li>
-    
-            </ul>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#id1" class="nav-link">Type aliases</a><ul class="nav section-nav flex-column">
-                
-        <li class="nav-item toc-entry toc-h3">
-            <a href="#basenotificationoptions" class="nav-link">BaseNotificationOptions</a><ul class="nav section-nav flex-column">
-                
-        <li class="nav-item toc-entry toc-h4">
-            <a href="#type-declaration" class="nav-link">Type declaration:</a>
-        </li>
-    
-            </ul>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h3">
-            <a href="#featureoptions" class="nav-link">FeatureOptions</a><ul class="nav section-nav flex-column">
-                
-        <li class="nav-item toc-entry toc-h4">
-            <a href="#id2" class="nav-link">Type declaration:</a>
-        </li>
-    
-            </ul>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h3">
-            <a href="#negotiationinfo" class="nav-link">NegotiationInfo</a><ul class="nav section-nav flex-column">
-                
-        <li class="nav-item toc-entry toc-h4">
-            <a href="#id3" class="nav-link">Type declaration:</a>
-        </li>
-    
-            </ul>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h3">
-            <a href="#notificationconnectioninfo" class="nav-link">NotificationConnectionInfo</a><ul class="nav section-nav flex-column">
-                
-        <li class="nav-item toc-entry toc-h4">
-            <a href="#id4" class="nav-link">Type declaration:</a>
-        </li>
-    
-            </ul>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h3">
-            <a href="#protocols" class="nav-link">protocols</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h3">
-            <a href="#statuses" class="nav-link">statuses</a>
-        </li>
-    
-            </ul>
-        </li>
-    
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#type-declaration">
+       Type declaration:
+      </a>
+     </li>
     </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#featureoptions">
+     FeatureOptions
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#id2">
+       Type declaration:
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#negotiationinfo">
+     NegotiationInfo
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#id3">
+       Type declaration:
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#notificationconnectioninfo">
+     NotificationConnectionInfo
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#id4">
+       Type declaration:
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#protocols">
+     protocols
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#statuses">
+     statuses
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
 </nav>
 
 
@@ -313,6 +326,9 @@
           </div>
           
 
+          
+          
+            
           
           <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
               
@@ -323,17 +339,17 @@
               <div>
                 
   <p><a class="reference internal" href="../index.html"><span class="doc std std-doc">&#64;inrupt/solid-client-notifications</span></a> / notification</p>
-<section id="module-notification">
+<div class="section" id="module-notification">
 <h1>Module: notification<a class="headerlink" href="#module-notification" title="Permalink to this headline">¶</a></h1>
-<section id="table-of-contents">
+<div class="section" id="table-of-contents">
 <h2>Table of contents<a class="headerlink" href="#table-of-contents" title="Permalink to this headline">¶</a></h2>
-<section id="classes">
+<div class="section" id="classes">
 <h3>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><a class="reference internal" href="../classes/notification.basenotification.html"><span class="doc std std-doc">BaseNotification</span></a></p></li>
 </ul>
-</section>
-<section id="type-aliases">
+</div>
+<div class="section" id="type-aliases">
 <h3>Type aliases<a class="headerlink" href="#type-aliases" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><a class="reference external" href="notification.html#basenotificationoptions">BaseNotificationOptions</a></p></li>
@@ -343,14 +359,14 @@
 <li><p><a class="reference external" href="notification.html#protocols">protocols</a></p></li>
 <li><p><a class="reference external" href="notification.html#statuses">statuses</a></p></li>
 </ul>
-</section>
-</section>
-<section id="id1">
+</div>
+</div>
+<div class="section" id="id1">
 <h2>Type aliases<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
-<section id="basenotificationoptions">
+<div class="section" id="basenotificationoptions">
 <h3>BaseNotificationOptions<a class="headerlink" href="#basenotificationoptions" title="Permalink to this headline">¶</a></h3>
 <p>Ƭ <strong>BaseNotificationOptions</strong>: <em>object</em></p>
-<section id="type-declaration">
+<div class="section" id="type-declaration">
 <h4>Type declaration:<a class="headerlink" href="#type-declaration" title="Permalink to this headline">¶</a></h4>
 <table class="colwidths-auto table">
 <thead>
@@ -373,14 +389,14 @@
 </tr>
 </tbody>
 </table>
-<p>Defined in: src/notification.ts:37</p>
-</section>
-</section>
+<p>Defined in: <a class="reference external" href="https://github.com/inrupt/solid-client-notifications-js/blob/c360c4e/src/notification.ts#L37">src/notification.ts:37</a></p>
+</div>
+</div>
 <hr class="docutils" />
-<section id="featureoptions">
+<div class="section" id="featureoptions">
 <h3>FeatureOptions<a class="headerlink" href="#featureoptions" title="Permalink to this headline">¶</a></h3>
 <p>Ƭ <strong>FeatureOptions</strong>: <em>object</em></p>
-<section id="id2">
+<div class="section" id="id2">
 <h4>Type declaration:<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
 <table class="colwidths-auto table">
 <thead>
@@ -403,14 +419,14 @@
 </tr>
 </tbody>
 </table>
-<p>Defined in: src/notification.ts:44</p>
-</section>
-</section>
+<p>Defined in: <a class="reference external" href="https://github.com/inrupt/solid-client-notifications-js/blob/c360c4e/src/notification.ts#L44">src/notification.ts:44</a></p>
+</div>
+</div>
 <hr class="docutils" />
-<section id="negotiationinfo">
+<div class="section" id="negotiationinfo">
 <h3>NegotiationInfo<a class="headerlink" href="#negotiationinfo" title="Permalink to this headline">¶</a></h3>
 <p>Ƭ <strong>NegotiationInfo</strong>: <em>object</em></p>
-<section id="id3">
+<div class="section" id="id3">
 <h4>Type declaration:<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h4>
 <table class="colwidths-auto table">
 <thead>
@@ -430,14 +446,14 @@
 </tr>
 </tbody>
 </table>
-<p>Defined in: src/notification.ts:25</p>
-</section>
-</section>
+<p>Defined in: <a class="reference external" href="https://github.com/inrupt/solid-client-notifications-js/blob/c360c4e/src/notification.ts#L25">src/notification.ts:25</a></p>
+</div>
+</div>
 <hr class="docutils" />
-<section id="notificationconnectioninfo">
+<div class="section" id="notificationconnectioninfo">
 <h3>NotificationConnectionInfo<a class="headerlink" href="#notificationconnectioninfo" title="Permalink to this headline">¶</a></h3>
 <p>Ƭ <strong>NotificationConnectionInfo</strong>: <em>object</em></p>
-<section id="id4">
+<div class="section" id="id4">
 <h4>Type declaration:<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h4>
 <table class="colwidths-auto table">
 <thead>
@@ -457,23 +473,23 @@
 </tr>
 </tbody>
 </table>
-<p>Defined in: src/notification.ts:31</p>
-</section>
-</section>
+<p>Defined in: <a class="reference external" href="https://github.com/inrupt/solid-client-notifications-js/blob/c360c4e/src/notification.ts#L31">src/notification.ts:31</a></p>
+</div>
+</div>
 <hr class="docutils" />
-<section id="protocols">
+<div class="section" id="protocols">
 <h3>protocols<a class="headerlink" href="#protocols" title="Permalink to this headline">¶</a></h3>
 <p>Ƭ <strong>protocols</strong>: <em>ws</em> | <em>string</em></p>
-<p>Defined in: src/notification.ts:22</p>
-</section>
+<p>Defined in: <a class="reference external" href="https://github.com/inrupt/solid-client-notifications-js/blob/c360c4e/src/notification.ts#L22">src/notification.ts:22</a></p>
+</div>
 <hr class="docutils" />
-<section id="statuses">
+<div class="section" id="statuses">
 <h3>statuses<a class="headerlink" href="#statuses" title="Permalink to this headline">¶</a></h3>
 <p>Ƭ <strong>statuses</strong>: <em>connecting</em> | <em>connected</em> | <em>closing</em> | <em>closed</em></p>
-<p>Defined in: src/notification.ts:23</p>
-</section>
-</section>
-</section>
+<p>Defined in: <a class="reference external" href="https://github.com/inrupt/solid-client-notifications-js/blob/c360c4e/src/notification.ts#L23">src/notification.ts:23</a></p>
+</div>
+</div>
+</div>
 
 
               </div>
@@ -494,7 +510,7 @@
     </div>
 
     
-  <script src="../_static/js/index.d3f166471bb80abb5163.js"></script>
+  <script src="../_static/js/index.1e043a052b0af929e4d8.js"></script>
 
 
     <footer class="footer">

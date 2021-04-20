@@ -4,11 +4,11 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Class: BaseNotification &#8212; Inrupt solid-client-notifications API Documentation</title>
     
-  <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
+  <link href="../_static/css/theme.css" rel="stylesheet" />
+  <link href="../_static/css/index.f6b7ca918bee2f46fd9abac01cfb07d5.css" rel="stylesheet" />
 
     
   <link rel="stylesheet"
@@ -20,17 +20,13 @@
 
     
       
-  <link rel="stylesheet"
-    href="../_static/vendor/open-sans_all/1.44.1/index.css">
-  <link rel="stylesheet"
-    href="../_static/vendor/lato_latin-ext/1.44.1/index.css">
 
     
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/css/inrupt.css" type="text/css" />
     
-  <link rel="preload" as="script" href="../_static/js/index.d3f166471bb80abb5163.js">
+  <link rel="preload" as="script" href="../_static/js/index.1e043a052b0af929e4d8.js">
 
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
@@ -136,7 +132,9 @@
     <div class="container-xl">
       <div class="row">
           
-          <div class="col-12 col-md-3 bd-sidebar">
+            
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar">
 
 <form class="bd-search d-flex align-items-center" action="../search.html" method="get">
   <i class="icon fas fa-search"></i>
@@ -206,7 +204,7 @@
            
       
          
-             <li class="nav-item active toctree-l1"> <a class="nav-link" href="">Class: BaseNotification</a>
+             <li class="nav-item active toctree-l1"> <a class="nav-link" href="#">Class: BaseNotification</a>
              
              
                
@@ -224,7 +222,8 @@
   </ul>
 </div>
 </nav>
-          </div>
+            </div>
+            
           
 
           
@@ -235,119 +234,143 @@
 </div>
 
 <nav id="bd-toc-nav">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#hierarchy">
+   Hierarchy
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#table-of-contents">
+   Table of contents
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#constructors">
+     Constructors
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#properties">
+     Properties
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#methods">
+     Methods
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#id1">
+   Constructors
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#constructor">
+     constructor
+    </a>
     <ul class="nav section-nav flex-column">
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#hierarchy" class="nav-link">Hierarchy</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#table-of-contents" class="nav-link">Table of contents</a><ul class="nav section-nav flex-column">
-                
-        <li class="nav-item toc-entry toc-h3">
-            <a href="#constructors" class="nav-link">Constructors</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h3">
-            <a href="#properties" class="nav-link">Properties</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h3">
-            <a href="#methods" class="nav-link">Methods</a>
-        </li>
-    
-            </ul>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#id1" class="nav-link">Constructors</a><ul class="nav section-nav flex-column">
-                
-        <li class="nav-item toc-entry toc-h3">
-            <a href="#constructor" class="nav-link">constructor</a><ul class="nav section-nav flex-column">
-                
-        <li class="nav-item toc-entry toc-h4">
-            <a href="#parameters" class="nav-link">Parameters:</a>
-        </li>
-    
-            </ul>
-        </li>
-    
-            </ul>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#id2" class="nav-link">Properties</a><ul class="nav section-nav flex-column">
-                
-        <li class="nav-item toc-entry toc-h3">
-            <a href="#features" class="nav-link">features</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h3">
-            <a href="#fetch" class="nav-link">fetch</a><ul class="nav section-nav flex-column">
-                
-        <li class="nav-item toc-entry toc-h4">
-            <a href="#type-declaration" class="nav-link">Type declaration:</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h4">
-            <a href="#id3" class="nav-link">Parameters:</a>
-        </li>
-    
-            </ul>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h3">
-            <a href="#gateway" class="nav-link">gateway</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h3">
-            <a href="#host" class="nav-link">host</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h3">
-            <a href="#protocols" class="nav-link">protocols</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h3">
-            <a href="#status" class="nav-link">status</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h3">
-            <a href="#topic" class="nav-link">topic</a>
-        </li>
-    
-            </ul>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#id4" class="nav-link">Methods</a><ul class="nav section-nav flex-column">
-                
-        <li class="nav-item toc-entry toc-h3">
-            <a href="#fetchnotificationconnectioninfo" class="nav-link">fetchNotificationConnectionInfo</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h3">
-            <a href="#fetchprotocolnegotiationinfo" class="nav-link">fetchProtocolNegotiationInfo</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h3">
-            <a href="#setsessionfetch" class="nav-link">setSessionFetch</a><ul class="nav section-nav flex-column">
-                
-        <li class="nav-item toc-entry toc-h4">
-            <a href="#id5" class="nav-link">Parameters:</a>
-        </li>
-    
-            </ul>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h3">
-            <a href="#getdefaultsessionfetch" class="nav-link">getDefaultSessionFetch</a>
-        </li>
-    
-            </ul>
-        </li>
-    
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#parameters">
+       Parameters:
+      </a>
+     </li>
     </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#id2">
+   Properties
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#features">
+     features
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#fetch">
+     fetch
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#type-declaration">
+       Type declaration:
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#id3">
+       Parameters:
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#gateway">
+     gateway
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#host">
+     host
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#protocols">
+     protocols
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#status">
+     status
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#topic">
+     topic
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#id4">
+   Methods
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#fetchnotificationconnectioninfo">
+     fetchNotificationConnectionInfo
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#fetchprotocolnegotiationinfo">
+     fetchProtocolNegotiationInfo
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#setsessionfetch">
+     setSessionFetch
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#id5">
+       Parameters:
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#getdefaultsessionfetch">
+     getDefaultSessionFetch
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
 </nav>
 
 
@@ -355,6 +378,9 @@
           </div>
           
 
+          
+          
+            
           
           <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
               
@@ -365,26 +391,26 @@
               <div>
                 
   <p><a class="reference internal" href="../index.html"><span class="doc std std-doc">&#64;inrupt/solid-client-notifications</span></a> / <a class="reference internal" href="../modules/notification.html"><span class="doc std std-doc">notification</span></a> / BaseNotification</p>
-<section id="class-basenotification">
+<div class="section" id="class-basenotification">
 <h1>Class: BaseNotification<a class="headerlink" href="#class-basenotification" title="Permalink to this headline">¶</a></h1>
 <p><a class="reference internal" href="../modules/notification.html"><span class="doc std std-doc">notification</span></a>.BaseNotification</p>
-<section id="hierarchy">
+<div class="section" id="hierarchy">
 <h2>Hierarchy<a class="headerlink" href="#hierarchy" title="Permalink to this headline">¶</a></h2>
 <ul>
 <li><p><strong>BaseNotification</strong></p>
 <p>↳ <a class="reference internal" href="livenotification.livenotification-1.html"><span class="doc std std-doc"><em>LiveNotification</em></span></a></p>
 </li>
 </ul>
-</section>
-<section id="table-of-contents">
+</div>
+<div class="section" id="table-of-contents">
 <h2>Table of contents<a class="headerlink" href="#table-of-contents" title="Permalink to this headline">¶</a></h2>
-<section id="constructors">
+<div class="section" id="constructors">
 <h3>Constructors<a class="headerlink" href="#constructors" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><a class="reference external" href="notification.basenotification.html#constructor">constructor</a></p></li>
 </ul>
-</section>
-<section id="properties">
+</div>
+<div class="section" id="properties">
 <h3>Properties<a class="headerlink" href="#properties" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><a class="reference external" href="notification.basenotification.html#features">features</a></p></li>
@@ -395,8 +421,8 @@
 <li><p><a class="reference external" href="notification.basenotification.html#status">status</a></p></li>
 <li><p><a class="reference external" href="notification.basenotification.html#topic">topic</a></p></li>
 </ul>
-</section>
-<section id="methods">
+</div>
+<div class="section" id="methods">
 <h3>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><a class="reference external" href="notification.basenotification.html#fetchnotificationconnectioninfo">fetchNotificationConnectionInfo</a></p></li>
@@ -404,14 +430,14 @@
 <li><p><a class="reference external" href="notification.basenotification.html#setsessionfetch">setSessionFetch</a></p></li>
 <li><p><a class="reference external" href="notification.basenotification.html#getdefaultsessionfetch">getDefaultSessionFetch</a></p></li>
 </ul>
-</section>
-</section>
-<section id="id1">
+</div>
+</div>
+<div class="section" id="id1">
 <h2>Constructors<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
-<section id="constructor">
+<div class="section" id="constructor">
 <h3>constructor<a class="headerlink" href="#constructor" title="Permalink to this headline">¶</a></h3>
 <p>+ <strong>new BaseNotification</strong>(<code class="docutils literal notranslate"><span class="pre">topic</span></code>: <em>string</em>, <code class="docutils literal notranslate"><span class="pre">protocolList</span></code>: <em>string</em>[], <code class="docutils literal notranslate"><span class="pre">options?</span></code>: <a class="reference external" href="../modules/notification.html#basenotificationoptions"><em>BaseNotificationOptions</em></a>): <a class="reference internal" href="#"><span class="doc std std-doc"><em>BaseNotification</em></span></a></p>
-<section id="parameters">
+<div class="section" id="parameters">
 <h4>Parameters:<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h4>
 <table class="colwidths-auto table">
 <thead>
@@ -436,26 +462,26 @@
 </tbody>
 </table>
 <p><strong>Returns:</strong> <a class="reference internal" href="#"><span class="doc std std-doc"><em>BaseNotification</em></span></a></p>
-<p>Defined in: src/notification.ts:91</p>
-</section>
-</section>
-</section>
-<section id="id2">
+<p>Defined in: <a class="reference external" href="https://github.com/inrupt/solid-client-notifications-js/blob/c360c4e/src/notification.ts#L91">src/notification.ts:91</a></p>
+</div>
+</div>
+</div>
+<div class="section" id="id2">
 <h2>Properties<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
-<section id="features">
+<div class="section" id="features">
 <h3>features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h3>
 <p>• <strong>features</strong>: <a class="reference external" href="../modules/notification.html#featureoptions"><em>FeatureOptions</em></a></p>
-<p>Defined in: src/notification.ts:62</p>
-</section>
+<p>Defined in: <a class="reference external" href="https://github.com/inrupt/solid-client-notifications-js/blob/c360c4e/src/notification.ts#L62">src/notification.ts:62</a></p>
+</div>
 <hr class="docutils" />
-<section id="fetch">
+<div class="section" id="fetch">
 <h3>fetch<a class="headerlink" href="#fetch" title="Permalink to this headline">¶</a></h3>
 <p>• <strong>fetch</strong>: (<code class="docutils literal notranslate"><span class="pre">input</span></code>: RequestInfo, <code class="docutils literal notranslate"><span class="pre">init?</span></code>: RequestInit) =&gt; <em>Promise</em>&lt;Response&gt;</p>
-<section id="type-declaration">
+<div class="section" id="type-declaration">
 <h4>Type declaration:<a class="headerlink" href="#type-declaration" title="Permalink to this headline">¶</a></h4>
 <p>▸ (<code class="docutils literal notranslate"><span class="pre">input</span></code>: RequestInfo, <code class="docutils literal notranslate"><span class="pre">init?</span></code>: RequestInit): <em>Promise</em>&lt;Response&gt;</p>
-</section>
-<section id="id3">
+</div>
+<div class="section" id="id3">
 <h4>Parameters:<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h4>
 <table class="colwidths-auto table">
 <thead>
@@ -474,60 +500,60 @@
 </table>
 <p><strong>Returns:</strong> <em>Promise</em>&lt;Response&gt;</p>
 <p>Defined in: node_modules/typescript/lib/lib.dom.d.ts:20004</p>
-<p>Defined in: src/notification.ts:58</p>
-</section>
-</section>
+<p>Defined in: <a class="reference external" href="https://github.com/inrupt/solid-client-notifications-js/blob/c360c4e/src/notification.ts#L58">src/notification.ts:58</a></p>
+</div>
+</div>
 <hr class="docutils" />
-<section id="gateway">
+<div class="section" id="gateway">
 <h3>gateway<a class="headerlink" href="#gateway" title="Permalink to this headline">¶</a></h3>
 <p>• <code class="docutils literal notranslate"><span class="pre">Optional</span></code> <strong>gateway</strong>: <em>string</em></p>
-<p>Defined in: src/notification.ts:56</p>
-</section>
+<p>Defined in: <a class="reference external" href="https://github.com/inrupt/solid-client-notifications-js/blob/c360c4e/src/notification.ts#L56">src/notification.ts:56</a></p>
+</div>
 <hr class="docutils" />
-<section id="host">
+<div class="section" id="host">
 <h3>host<a class="headerlink" href="#host" title="Permalink to this headline">¶</a></h3>
 <p>• <strong>host</strong>: <em>string</em></p>
-<p>Defined in: src/notification.ts:54</p>
-</section>
+<p>Defined in: <a class="reference external" href="https://github.com/inrupt/solid-client-notifications-js/blob/c360c4e/src/notification.ts#L54">src/notification.ts:54</a></p>
+</div>
 <hr class="docutils" />
-<section id="protocols">
+<div class="section" id="protocols">
 <h3>protocols<a class="headerlink" href="#protocols" title="Permalink to this headline">¶</a></h3>
 <p>• <strong>protocols</strong>: <em>string</em>[]</p>
-<p>Defined in: src/notification.ts:60</p>
-</section>
+<p>Defined in: <a class="reference external" href="https://github.com/inrupt/solid-client-notifications-js/blob/c360c4e/src/notification.ts#L60">src/notification.ts:60</a></p>
+</div>
 <hr class="docutils" />
-<section id="status">
+<div class="section" id="status">
 <h3>status<a class="headerlink" href="#status" title="Permalink to this headline">¶</a></h3>
 <p>• <strong>status</strong>: <a class="reference external" href="../modules/notification.html#statuses"><em>statuses</em></a>= “closed”</p>
-<p>Defined in: src/notification.ts:64</p>
-</section>
+<p>Defined in: <a class="reference external" href="https://github.com/inrupt/solid-client-notifications-js/blob/c360c4e/src/notification.ts#L64">src/notification.ts:64</a></p>
+</div>
 <hr class="docutils" />
-<section id="topic">
+<div class="section" id="topic">
 <h3>topic<a class="headerlink" href="#topic" title="Permalink to this headline">¶</a></h3>
 <p>• <strong>topic</strong>: <em>string</em></p>
-<p>Defined in: src/notification.ts:52</p>
-</section>
-</section>
-<section id="id4">
+<p>Defined in: <a class="reference external" href="https://github.com/inrupt/solid-client-notifications-js/blob/c360c4e/src/notification.ts#L52">src/notification.ts:52</a></p>
+</div>
+</div>
+<div class="section" id="id4">
 <h2>Methods<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
-<section id="fetchnotificationconnectioninfo">
+<div class="section" id="fetchnotificationconnectioninfo">
 <h3>fetchNotificationConnectionInfo<a class="headerlink" href="#fetchnotificationconnectioninfo" title="Permalink to this headline">¶</a></h3>
 <p>▸ <strong>fetchNotificationConnectionInfo</strong>(): <em>Promise</em>&lt;<a class="reference external" href="../modules/notification.html#notificationconnectioninfo"><em>NotificationConnectionInfo</em></a>&gt;</p>
 <p><strong>Returns:</strong> <em>Promise</em>&lt;<a class="reference external" href="../modules/notification.html#notificationconnectioninfo"><em>NotificationConnectionInfo</em></a>&gt;</p>
-<p>Defined in: src/notification.ts:179</p>
-</section>
+<p>Defined in: <a class="reference external" href="https://github.com/inrupt/solid-client-notifications-js/blob/c360c4e/src/notification.ts#L179">src/notification.ts:179</a></p>
+</div>
 <hr class="docutils" />
-<section id="fetchprotocolnegotiationinfo">
+<div class="section" id="fetchprotocolnegotiationinfo">
 <h3>fetchProtocolNegotiationInfo<a class="headerlink" href="#fetchprotocolnegotiationinfo" title="Permalink to this headline">¶</a></h3>
 <p>▸ <strong>fetchProtocolNegotiationInfo</strong>(): <em>Promise</em>&lt;<a class="reference external" href="../modules/notification.html#negotiationinfo"><em>NegotiationInfo</em></a>&gt;</p>
 <p><strong>Returns:</strong> <em>Promise</em>&lt;<a class="reference external" href="../modules/notification.html#negotiationinfo"><em>NegotiationInfo</em></a>&gt;</p>
-<p>Defined in: src/notification.ts:146</p>
-</section>
+<p>Defined in: <a class="reference external" href="https://github.com/inrupt/solid-client-notifications-js/blob/c360c4e/src/notification.ts#L146">src/notification.ts:146</a></p>
+</div>
 <hr class="docutils" />
-<section id="setsessionfetch">
+<div class="section" id="setsessionfetch">
 <h3>setSessionFetch<a class="headerlink" href="#setsessionfetch" title="Permalink to this headline">¶</a></h3>
 <p>▸ <strong>setSessionFetch</strong>(<code class="docutils literal notranslate"><span class="pre">sessionFetch?</span></code>: (<code class="docutils literal notranslate"><span class="pre">input</span></code>: RequestInfo, <code class="docutils literal notranslate"><span class="pre">init?</span></code>: RequestInit) =&gt; <em>Promise</em>&lt;Response&gt;): <em>void</em></p>
-<section id="id5">
+<div class="section" id="id5">
 <h4>Parameters:<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h4>
 <table class="colwidths-auto table">
 <thead>
@@ -542,18 +568,18 @@
 </tbody>
 </table>
 <p><strong>Returns:</strong> <em>void</em></p>
-<p>Defined in: src/notification.ts:116</p>
-</section>
-</section>
+<p>Defined in: <a class="reference external" href="https://github.com/inrupt/solid-client-notifications-js/blob/c360c4e/src/notification.ts#L116">src/notification.ts:116</a></p>
+</div>
+</div>
 <hr class="docutils" />
-<section id="getdefaultsessionfetch">
+<div class="section" id="getdefaultsessionfetch">
 <h3>getDefaultSessionFetch<a class="headerlink" href="#getdefaultsessionfetch" title="Permalink to this headline">¶</a></h3>
 <p>▸ <code class="docutils literal notranslate"><span class="pre">Static</span></code><strong>getDefaultSessionFetch</strong>(): <em>Promise</em>&lt;undefined | (<code class="docutils literal notranslate"><span class="pre">input</span></code>: RequestInfo, <code class="docutils literal notranslate"><span class="pre">init?</span></code>: RequestInit) =&gt; <em>Promise</em>&lt;Response&gt;&gt;</p>
 <p><strong>Returns:</strong> <em>Promise</em>&lt;undefined | (<code class="docutils literal notranslate"><span class="pre">input</span></code>: RequestInfo, <code class="docutils literal notranslate"><span class="pre">init?</span></code>: RequestInit) =&gt; <em>Promise</em>&lt;Response&gt;&gt;</p>
-<p>Defined in: src/notification.ts:80</p>
-</section>
-</section>
-</section>
+<p>Defined in: <a class="reference external" href="https://github.com/inrupt/solid-client-notifications-js/blob/c360c4e/src/notification.ts#L80">src/notification.ts:80</a></p>
+</div>
+</div>
+</div>
 
 
               </div>
@@ -574,7 +600,7 @@
     </div>
 
     
-  <script src="../_static/js/index.d3f166471bb80abb5163.js"></script>
+  <script src="../_static/js/index.1e043a052b0af929e4d8.js"></script>
 
 
     <footer class="footer">

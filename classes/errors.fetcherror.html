@@ -4,11 +4,11 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Class: FetchError &#8212; Inrupt solid-client-notifications API Documentation</title>
     
-  <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
+  <link href="../_static/css/theme.css" rel="stylesheet" />
+  <link href="../_static/css/index.f6b7ca918bee2f46fd9abac01cfb07d5.css" rel="stylesheet" />
 
     
   <link rel="stylesheet"
@@ -20,17 +20,13 @@
 
     
       
-  <link rel="stylesheet"
-    href="../_static/vendor/open-sans_all/1.44.1/index.css">
-  <link rel="stylesheet"
-    href="../_static/vendor/lato_latin-ext/1.44.1/index.css">
 
     
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/css/inrupt.css" type="text/css" />
     
-  <link rel="preload" as="script" href="../_static/js/index.d3f166471bb80abb5163.js">
+  <link rel="preload" as="script" href="../_static/js/index.1e043a052b0af929e4d8.js">
 
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
@@ -136,7 +132,9 @@
     <div class="container-xl">
       <div class="row">
           
-          <div class="col-12 col-md-3 bd-sidebar">
+            
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar">
 
 <form class="bd-search d-flex align-items-center" action="../search.html" method="get">
   <i class="icon fas fa-search"></i>
@@ -185,7 +183,7 @@
            
       
          
-             <li class="nav-item active toctree-l1"> <a class="nav-link" href="">Class: FetchError</a>
+             <li class="nav-item active toctree-l1"> <a class="nav-link" href="#">Class: FetchError</a>
              
              
                
@@ -224,7 +222,8 @@
   </ul>
 </div>
 </nav>
-          </div>
+            </div>
+            
           
 
           
@@ -235,103 +234,123 @@
 </div>
 
 <nav id="bd-toc-nav">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#hierarchy">
+   Hierarchy
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#table-of-contents">
+   Table of contents
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#constructors">
+     Constructors
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#properties">
+     Properties
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#methods">
+     Methods
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#id1">
+   Constructors
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#constructor">
+     constructor
+    </a>
     <ul class="nav section-nav flex-column">
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#hierarchy" class="nav-link">Hierarchy</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#table-of-contents" class="nav-link">Table of contents</a><ul class="nav section-nav flex-column">
-                
-        <li class="nav-item toc-entry toc-h3">
-            <a href="#constructors" class="nav-link">Constructors</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h3">
-            <a href="#properties" class="nav-link">Properties</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h3">
-            <a href="#methods" class="nav-link">Methods</a>
-        </li>
-    
-            </ul>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#id1" class="nav-link">Constructors</a><ul class="nav section-nav flex-column">
-                
-        <li class="nav-item toc-entry toc-h3">
-            <a href="#constructor" class="nav-link">constructor</a><ul class="nav section-nav flex-column">
-                
-        <li class="nav-item toc-entry toc-h4">
-            <a href="#parameters" class="nav-link">Parameters:</a>
-        </li>
-    
-            </ul>
-        </li>
-    
-            </ul>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#id2" class="nav-link">Properties</a><ul class="nav section-nav flex-column">
-                
-        <li class="nav-item toc-entry toc-h3">
-            <a href="#message" class="nav-link">message</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h3">
-            <a href="#name" class="nav-link">name</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h3">
-            <a href="#response" class="nav-link">response</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h3">
-            <a href="#stack" class="nav-link">stack</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h3">
-            <a href="#preparestacktrace" class="nav-link">prepareStackTrace</a><ul class="nav section-nav flex-column">
-                
-        <li class="nav-item toc-entry toc-h4">
-            <a href="#type-declaration" class="nav-link">Type declaration:</a>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h4">
-            <a href="#id3" class="nav-link">Parameters:</a>
-        </li>
-    
-            </ul>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h3">
-            <a href="#stacktracelimit" class="nav-link">stackTraceLimit</a>
-        </li>
-    
-            </ul>
-        </li>
-    
-        <li class="nav-item toc-entry toc-h2">
-            <a href="#id4" class="nav-link">Methods</a><ul class="nav section-nav flex-column">
-                
-        <li class="nav-item toc-entry toc-h3">
-            <a href="#capturestacktrace" class="nav-link">captureStackTrace</a><ul class="nav section-nav flex-column">
-                
-        <li class="nav-item toc-entry toc-h4">
-            <a href="#id5" class="nav-link">Parameters:</a>
-        </li>
-    
-            </ul>
-        </li>
-    
-            </ul>
-        </li>
-    
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#parameters">
+       Parameters:
+      </a>
+     </li>
     </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#id2">
+   Properties
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#message">
+     message
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#name">
+     name
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#response">
+     response
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#stack">
+     stack
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#preparestacktrace">
+     prepareStackTrace
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#type-declaration">
+       Type declaration:
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#id3">
+       Parameters:
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#stacktracelimit">
+     stackTraceLimit
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#id4">
+   Methods
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#capturestacktrace">
+     captureStackTrace
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#id5">
+       Parameters:
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+</ul>
+
 </nav>
 
 
@@ -339,6 +358,9 @@
           </div>
           
 
+          
+          
+            
           
           <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
               
@@ -349,26 +371,26 @@
               <div>
                 
   <p><a class="reference internal" href="../index.html"><span class="doc std std-doc">&#64;inrupt/solid-client-notifications</span></a> / <a class="reference internal" href="../modules/errors.html"><span class="doc std std-doc">errors</span></a> / FetchError</p>
-<section id="class-fetcherror">
+<div class="section" id="class-fetcherror">
 <h1>Class: FetchError<a class="headerlink" href="#class-fetcherror" title="Permalink to this headline">¶</a></h1>
 <p><a class="reference internal" href="../modules/errors.html"><span class="doc std std-doc">errors</span></a>.FetchError</p>
-<section id="hierarchy">
+<div class="section" id="hierarchy">
 <h2>Hierarchy<a class="headerlink" href="#hierarchy" title="Permalink to this headline">¶</a></h2>
 <ul>
 <li><p><em>Error</em></p>
 <p>↳ <strong>FetchError</strong></p>
 </li>
 </ul>
-</section>
-<section id="table-of-contents">
+</div>
+<div class="section" id="table-of-contents">
 <h2>Table of contents<a class="headerlink" href="#table-of-contents" title="Permalink to this headline">¶</a></h2>
-<section id="constructors">
+<div class="section" id="constructors">
 <h3>Constructors<a class="headerlink" href="#constructors" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><a class="reference external" href="errors.fetcherror.html#constructor">constructor</a></p></li>
 </ul>
-</section>
-<section id="properties">
+</div>
+<div class="section" id="properties">
 <h3>Properties<a class="headerlink" href="#properties" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><a class="reference external" href="errors.fetcherror.html#message">message</a></p></li>
@@ -378,20 +400,20 @@
 <li><p><a class="reference external" href="errors.fetcherror.html#preparestacktrace">prepareStackTrace</a></p></li>
 <li><p><a class="reference external" href="errors.fetcherror.html#stacktracelimit">stackTraceLimit</a></p></li>
 </ul>
-</section>
-<section id="methods">
+</div>
+<div class="section" id="methods">
 <h3>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><a class="reference external" href="errors.fetcherror.html#capturestacktrace">captureStackTrace</a></p></li>
 </ul>
-</section>
-</section>
-<section id="id1">
+</div>
+</div>
+<div class="section" id="id1">
 <h2>Constructors<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
-<section id="constructor">
+<div class="section" id="constructor">
 <h3>constructor<a class="headerlink" href="#constructor" title="Permalink to this headline">¶</a></h3>
 <p>+ <strong>new FetchError</strong>(<code class="docutils literal notranslate"><span class="pre">url</span></code>: <em>string</em>, <code class="docutils literal notranslate"><span class="pre">statusCode</span></code>: <em>number</em>, <code class="docutils literal notranslate"><span class="pre">statusText</span></code>: <em>string</em>, <code class="docutils literal notranslate"><span class="pre">fetchDescription</span></code>: <em>string</em>, <code class="docutils literal notranslate"><span class="pre">response</span></code>: Response): <a class="reference internal" href="#"><span class="doc std std-doc"><em>FetchError</em></span></a></p>
-<section id="parameters">
+<div class="section" id="parameters">
 <h4>Parameters:<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h4>
 <table class="colwidths-auto table">
 <thead>
@@ -419,49 +441,49 @@
 </table>
 <p><strong>Returns:</strong> <a class="reference internal" href="#"><span class="doc std std-doc"><em>FetchError</em></span></a></p>
 <p>Overrides: Error.constructor</p>
-<p>Defined in: src/errors.ts:20</p>
-</section>
-</section>
-</section>
-<section id="id2">
+<p>Defined in: <a class="reference external" href="https://github.com/inrupt/solid-client-notifications-js/blob/c360c4e/src/errors.ts#L20">src/errors.ts:20</a></p>
+</div>
+</div>
+</div>
+<div class="section" id="id2">
 <h2>Properties<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
-<section id="message">
+<div class="section" id="message">
 <h3>message<a class="headerlink" href="#message" title="Permalink to this headline">¶</a></h3>
 <p>• <strong>message</strong>: <em>string</em></p>
 <p>Inherited from: Error.message</p>
 <p>Defined in: node_modules/typescript/lib/lib.es5.d.ts:974</p>
-</section>
+</div>
 <hr class="docutils" />
-<section id="name">
+<div class="section" id="name">
 <h3>name<a class="headerlink" href="#name" title="Permalink to this headline">¶</a></h3>
 <p>• <strong>name</strong>: <em>string</em></p>
 <p>Inherited from: Error.name</p>
 <p>Defined in: node_modules/typescript/lib/lib.es5.d.ts:973</p>
-</section>
+</div>
 <hr class="docutils" />
-<section id="response">
+<div class="section" id="response">
 <h3>response<a class="headerlink" href="#response" title="Permalink to this headline">¶</a></h3>
 <p>• <strong>response</strong>: Response</p>
-<p>Defined in: src/errors.ts:20</p>
-</section>
+<p>Defined in: <a class="reference external" href="https://github.com/inrupt/solid-client-notifications-js/blob/c360c4e/src/errors.ts#L20">src/errors.ts:20</a></p>
+</div>
 <hr class="docutils" />
-<section id="stack">
+<div class="section" id="stack">
 <h3>stack<a class="headerlink" href="#stack" title="Permalink to this headline">¶</a></h3>
 <p>• <code class="docutils literal notranslate"><span class="pre">Optional</span></code> <strong>stack</strong>: <em>string</em></p>
 <p>Inherited from: Error.stack</p>
 <p>Defined in: node_modules/typescript/lib/lib.es5.d.ts:975</p>
-</section>
+</div>
 <hr class="docutils" />
-<section id="preparestacktrace">
+<div class="section" id="preparestacktrace">
 <h3>prepareStackTrace<a class="headerlink" href="#preparestacktrace" title="Permalink to this headline">¶</a></h3>
 <p>▪ <code class="docutils literal notranslate"><span class="pre">Static</span></code> <code class="docutils literal notranslate"><span class="pre">Optional</span></code> <strong>prepareStackTrace</strong>: (<code class="docutils literal notranslate"><span class="pre">err</span></code>: Error, <code class="docutils literal notranslate"><span class="pre">stackTraces</span></code>: CallSite[]) =&gt; <em>any</em></p>
 <p>Optional override for formatting stack traces</p>
 <p><strong><code class="docutils literal notranslate"><span class="pre">see</span></code></strong> https://github.com/v8/v8/wiki/Stack%20Trace%20API#customizing-stack-traces</p>
-<section id="type-declaration">
+<div class="section" id="type-declaration">
 <h4>Type declaration:<a class="headerlink" href="#type-declaration" title="Permalink to this headline">¶</a></h4>
 <p>▸ (<code class="docutils literal notranslate"><span class="pre">err</span></code>: Error, <code class="docutils literal notranslate"><span class="pre">stackTraces</span></code>: CallSite[]): <em>any</em></p>
-</section>
-<section id="id3">
+</div>
+<div class="section" id="id3">
 <h4>Parameters:<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h4>
 <table class="colwidths-auto table">
 <thead>
@@ -482,23 +504,23 @@
 <p>Defined in: node_modules/&#64;types/node/globals.d.ts:140</p>
 <p>Inherited from: Error.prepareStackTrace</p>
 <p>Defined in: node_modules/&#64;types/node/globals.d.ts:140</p>
-</section>
-</section>
+</div>
+</div>
 <hr class="docutils" />
-<section id="stacktracelimit">
+<div class="section" id="stacktracelimit">
 <h3>stackTraceLimit<a class="headerlink" href="#stacktracelimit" title="Permalink to this headline">¶</a></h3>
 <p>▪ <code class="docutils literal notranslate"><span class="pre">Static</span></code> <strong>stackTraceLimit</strong>: <em>number</em></p>
 <p>Inherited from: Error.stackTraceLimit</p>
 <p>Defined in: node_modules/&#64;types/node/globals.d.ts:142</p>
-</section>
-</section>
-<section id="id4">
+</div>
+</div>
+<div class="section" id="id4">
 <h2>Methods<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
-<section id="capturestacktrace">
+<div class="section" id="capturestacktrace">
 <h3>captureStackTrace<a class="headerlink" href="#capturestacktrace" title="Permalink to this headline">¶</a></h3>
 <p>▸ <code class="docutils literal notranslate"><span class="pre">Static</span></code><strong>captureStackTrace</strong>(<code class="docutils literal notranslate"><span class="pre">targetObject</span></code>: Object, <code class="docutils literal notranslate"><span class="pre">constructorOpt?</span></code>: Function): <em>void</em></p>
 <p>Create .stack property on a target object</p>
-<section id="id5">
+<div class="section" id="id5">
 <h4>Parameters:<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h4>
 <table class="colwidths-auto table">
 <thead>
@@ -518,10 +540,10 @@
 <p><strong>Returns:</strong> <em>void</em></p>
 <p>Inherited from: Error.captureStackTrace</p>
 <p>Defined in: node_modules/&#64;types/node/globals.d.ts:133</p>
-</section>
-</section>
-</section>
-</section>
+</div>
+</div>
+</div>
+</div>
 
 
               </div>
@@ -542,7 +564,7 @@
     </div>
 
     
-  <script src="../_static/js/index.d3f166471bb80abb5163.js"></script>
+  <script src="../_static/js/index.1e043a052b0af929e4d8.js"></script>
 
 
     <footer class="footer">
