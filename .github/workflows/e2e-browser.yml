@@ -1,9 +1,7 @@
 name: End-to-end Tests (Browser)
 
 on:
-  deployment_status:
-    branches-ignore:
-      - 'dependabot/npm_and_yarn/**'
+  push:
   workflow_dispatch:
 
 env:
@@ -12,6 +10,7 @@ jobs:
   build:
     runs-on: ubuntu-20.04
     if: ${{github.event.deployment_status.state == 'success'}}
+    if: github.actor != 'dependabot[bot]'
     steps:
     - uses: actions/checkout@v2.3.4
     - name: Use Node.js 14.x
@@ -44,34 +43,3 @@ jobs:
         E2E_TEST_ESS_POD: ${{ secrets.E2E_TEST_ESS_PROD_POD }}
         E2E_TEST_ESS_COGNITO_USER: ${{ secrets.E2E_TEST_ESS_PROD_COGNITO_USER }}
         E2E_TEST_ESS_COGNITO_PASSWORD: ${{ secrets.E2E_TEST_ESS_PROD_COGNITO_PASSWORD }}
-    - name: Add status check with successful test result
-      id: set-status-check-success
-      uses: octokit/request-action@v2.x
-      with:
-        route: POST /repos/:repository/statuses/:ref
-        repository: ${{ github.repository }}
-        ref: ${{ github.sha }}
-        state: success
-        context: 'End-to-end tests (browser)'
-        description: 'TestCafe clicking through the demo application deployed to Vercel'
-        target_url: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}?check_suite_focus=true
-        # The deployment runs in parallel with CI, so status checks will never have succeeded yet:
-        required_contexts: "[]"
-      env:
-        GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-    - name: Add status check with failed test result
-      id: set-status-check-failure
-      if: failure()
-      uses: octokit/request-action@v2.x
-      with:
-        route: POST /repos/:repository/statuses/:ref
-        repoitory: ${{ github.repository }}
-        ref: ${{ github.sha }}
-        state: failure
-        context: 'End-to-end tests (browser)'
-        description: 'TestCafe clicking through the demo application deployed to Vercel'
-        target_url: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}?check_suite_focus=true
-        # The deployment runs in parallel with CI, so status checks will never have succeeded yet:
-        required_contexts: "[]"
-      env:
-        GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
