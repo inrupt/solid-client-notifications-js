@@ -1,0 +1,508 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+    <title>Module: notification &#8212; Inrupt solid-client-notifications API Documentation</title>
+    
+  <link rel="stylesheet" href="../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="../_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="../_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/css/inrupt.css" type="text/css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.d3f166471bb80abb5163.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Module: websocketNotification" href="websocketnotification.html" />
+    <link rel="prev" title="Module: liveNotification" href="livenotification.html" />
+  
+    <meta name="robots" content="index" />
+  
+
+  <link rel="shortcut icon" href="https://docs.inrupt.com/inrupt_stickers_v2-03.png" type="image/png" />
+  <script type="text/javascript" src="https://inrupt.atlassian.net/s/d41d8cd98f00b204e9800998ecf8427e-T/-egccmf/b/24/a44af77267a987a660377e5c46e0fb64/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?locale=en-US&collectorId=41592d74"></script>
+
+  <script type="text/javascript">
+      window.ATL_JQ_PAGE_PROPS = $.extend(window.ATL_JQ_PAGE_PROPS, {
+         fieldValues: {
+            description : 'On page: https://docs.inrupt.com/developer-tools/api/javascript/solid-client/modules/notification/ \n' 
+         }
+      });
+   </script>
+
+  <!-- Matomo -->
+  <script type="text/javascript">
+    var _paq = window._paq = window._paq || [];
+    /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+    _paq.push(['trackPageView']);
+    _paq.push(['enableLinkTracking']);
+    (function() {
+      if (navigator.doNotTrack && navigator.doNotTrack === "1") {
+        return;
+      }
+      var u="https://inrupt.matomo.cloud/";
+      _paq.push(['setTrackerUrl', u+'matomo.php']);
+      _paq.push(['setSiteId', '3']);
+      var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+      g.type='text/javascript'; g.async=true; g.src='//cdn.matomo.cloud/inrupt.matomo.cloud/matomo.js'; s.parentNode.insertBefore(g,s);
+    })();
+  </script>
+  <!-- End Matomo Code -->
+
+  
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main">
+<div class="container-xl">
+
+    <a class="navbar-brand" href="https://inrupt.com/">
+      <img src="https://docs.inrupt.com/inrupt-logo-small.svg" class="logo" alt="logo">
+    </a>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar-menu" class="col-lg-9 collapse navbar-collapse">
+      <ul id="navbar-main-elements" class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="https://docs.inrupt.com/">Docs Home</a>
+          </li>
+         
+          <li class="nav-item">
+             <a class="nav-link" href="https://docs.inrupt.com/ess/latest/">Enterprise Solid Server</a>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="#">Developer Tools</a>
+               <ul class="nav-children">
+                     <li class="nav-item nav-childitem">
+                        <a href="https://docs.inrupt.com/developer-tools/javascript/client-libraries/">JavaScript Client Libraries</a>
+                     </li>
+                     <li class="nav-item nav-childitem">
+                        <a href="https://docs.inrupt.com/developer-tools/javascript/react-sdk">Solid React SDK</a>
+                     </li>
+               </ul>
+          </li>
+          <li class="nav-item">
+               <a class="nav-link" href="https://docs.inrupt.com/user-interface/podbrowser/">PodBrowser</a>
+          </li>
+          <li class="nav-item">
+             <a  class="nav-link" href="https://docs.inrupt.com/pod-spaces/">Pod Spaces</a>
+          </li>
+      </ul>
+
+
+      
+
+      <div class="social">
+         <a class="social-icon" href="https://twitter.com/inrupt" target="_blank" title="Inrupt on Twitter" aria-label="Inrupt on Twitter"><i class="fab fa-twitter-square" aria-hidden="true"></i></a>
+         <a class="social-icon" href="https://www.linkedin.com/company/inrupt/" target="_blank" title="Inrupt on LinkedIn" aria-label="Inrupt on LinkedIn"><i class="fab fa-linkedin" aria-hidden="true"></i></a>
+         <a class="social-icon" href="https://forum.solidproject.org/" target="_blank" title="Solid Forum" aria-label="Solid forum"> <i class="fas fa-users" aria-hidden="true"></i></a>
+      </div>
+      
+      
+    </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+          <div class="col-12 col-md-3 bd-sidebar">
+
+<form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form>
+
+
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+
+  <div class="bd-toc-item active">
+
+
+  
+  
+
+  
+  <ul class="nav bd-sidenav">
+     
+      
+         
+             <li class="nav-item  toctree-l1"> <a class="nav-link" href="errors.html">Module: errors</a>
+             
+             
+             </li> 
+           
+      
+         
+             <li class="nav-item  toctree-l1"> <a class="nav-link" href="livenotification.html">Module: liveNotification</a>
+             
+             
+             </li> 
+           
+      
+         
+             <li class="nav-item active toctree-l1"> <a class="nav-link" href="">Module: notification</a>
+             
+             
+               
+             
+             </li> 
+           
+      
+         
+             <li class="nav-item  toctree-l1"> <a class="nav-link" href="websocketnotification.html">Module: websocketNotification</a>
+             
+             
+             </li> 
+           
+      
+         
+             <li class="nav-item  toctree-l1"> <a class="nav-link" href="../classes/errors.fetcherror.html">Class: FetchError</a>
+             
+             
+             </li> 
+           
+      
+         
+             <li class="nav-item  toctree-l1"> <a class="nav-link" href="../classes/errors.notimplementederror.html">Class: NotImplementedError</a>
+             
+             
+             </li> 
+           
+      
+         
+             <li class="nav-item  toctree-l1"> <a class="nav-link" href="../classes/livenotification.livenotification-1.html">Class: LiveNotification</a>
+             
+             
+             </li> 
+           
+      
+         
+             <li class="nav-item  toctree-l1"> <a class="nav-link" href="../classes/notification.basenotification.html">Class: BaseNotification</a>
+             
+             
+             </li> 
+           
+      
+         
+             <li class="nav-item  toctree-l1"> <a class="nav-link" href="../classes/websocketnotification.websocketnotification-1.html">Class: WebsocketNotification</a>
+             
+             
+             </li> 
+           
+      
+  </ul>
+</div>
+</nav>
+          </div>
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+              
+<div class="tocsection onthispage pt-5 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
+
+<nav id="bd-toc-nav">
+    <ul class="nav section-nav flex-column">
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#table-of-contents" class="nav-link">Table of contents</a><ul class="nav section-nav flex-column">
+                
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#classes" class="nav-link">Classes</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#type-aliases" class="nav-link">Type aliases</a>
+        </li>
+    
+            </ul>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#id1" class="nav-link">Type aliases</a><ul class="nav section-nav flex-column">
+                
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#basenotificationoptions" class="nav-link">BaseNotificationOptions</a><ul class="nav section-nav flex-column">
+                
+        <li class="nav-item toc-entry toc-h4">
+            <a href="#type-declaration" class="nav-link">Type declaration:</a>
+        </li>
+    
+            </ul>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#featureoptions" class="nav-link">FeatureOptions</a><ul class="nav section-nav flex-column">
+                
+        <li class="nav-item toc-entry toc-h4">
+            <a href="#id2" class="nav-link">Type declaration:</a>
+        </li>
+    
+            </ul>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#negotiationinfo" class="nav-link">NegotiationInfo</a><ul class="nav section-nav flex-column">
+                
+        <li class="nav-item toc-entry toc-h4">
+            <a href="#id3" class="nav-link">Type declaration:</a>
+        </li>
+    
+            </ul>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#notificationconnectioninfo" class="nav-link">NotificationConnectionInfo</a><ul class="nav section-nav flex-column">
+                
+        <li class="nav-item toc-entry toc-h4">
+            <a href="#id4" class="nav-link">Type declaration:</a>
+        </li>
+    
+            </ul>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#protocols" class="nav-link">protocols</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#statuses" class="nav-link">statuses</a>
+        </li>
+    
+            </ul>
+        </li>
+    
+    </ul>
+</nav>
+
+
+              
+          </div>
+          
+
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+      <div class="alert alert-info">
+         <span class="alert-message">This is an Alpha release of the API.</span>
+      </div>
+  
+              <div>
+                
+  <p><a class="reference internal" href="../index.html"><span class="doc std std-doc">&#64;inrupt/solid-client-notifications</span></a> / notification</p>
+<section id="module-notification">
+<h1>Module: notification<a class="headerlink" href="#module-notification" title="Permalink to this headline">¶</a></h1>
+<section id="table-of-contents">
+<h2>Table of contents<a class="headerlink" href="#table-of-contents" title="Permalink to this headline">¶</a></h2>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><a class="reference internal" href="../classes/notification.basenotification.html"><span class="doc std std-doc">BaseNotification</span></a></p></li>
+</ul>
+</section>
+<section id="type-aliases">
+<h3>Type aliases<a class="headerlink" href="#type-aliases" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><a class="reference external" href="notification.html#basenotificationoptions">BaseNotificationOptions</a></p></li>
+<li><p><a class="reference external" href="notification.html#featureoptions">FeatureOptions</a></p></li>
+<li><p><a class="reference external" href="notification.html#negotiationinfo">NegotiationInfo</a></p></li>
+<li><p><a class="reference external" href="notification.html#notificationconnectioninfo">NotificationConnectionInfo</a></p></li>
+<li><p><a class="reference external" href="notification.html#protocols">protocols</a></p></li>
+<li><p><a class="reference external" href="notification.html#statuses">statuses</a></p></li>
+</ul>
+</section>
+</section>
+<section id="id1">
+<h2>Type aliases<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<section id="basenotificationoptions">
+<h3>BaseNotificationOptions<a class="headerlink" href="#basenotificationoptions" title="Permalink to this headline">¶</a></h3>
+<p>Ƭ <strong>BaseNotificationOptions</strong>: <em>object</em></p>
+<section id="type-declaration">
+<h4>Type declaration:<a class="headerlink" href="#type-declaration" title="Permalink to this headline">¶</a></h4>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="text-align:left head"><p>Name</p></th>
+<th class="text-align:left head"><p>Type</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-align:left"><p><code class="docutils literal notranslate"><span class="pre">features</span></code>?</p></td>
+<td class="text-align:left"><p><a class="reference external" href="notification.html#featureoptions"><em>FeatureOptions</em></a></p></td>
+</tr>
+<tr class="row-odd"><td class="text-align:left"><p><code class="docutils literal notranslate"><span class="pre">fetch</span></code>?</p></td>
+<td class="text-align:left"><p><em>typeof</em> crossFetch</p></td>
+</tr>
+<tr class="row-even"><td class="text-align:left"><p><code class="docutils literal notranslate"><span class="pre">gateway</span></code>?</p></td>
+<td class="text-align:left"><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td class="text-align:left"><p><code class="docutils literal notranslate"><span class="pre">host</span></code>?</p></td>
+<td class="text-align:left"><p><em>string</em></p></td>
+</tr>
+</tbody>
+</table>
+<p>Defined in: src/notification.ts:37</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="featureoptions">
+<h3>FeatureOptions<a class="headerlink" href="#featureoptions" title="Permalink to this headline">¶</a></h3>
+<p>Ƭ <strong>FeatureOptions</strong>: <em>object</em></p>
+<section id="id2">
+<h4>Type declaration:<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="text-align:left head"><p>Name</p></th>
+<th class="text-align:left head"><p>Type</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-align:left"><p><code class="docutils literal notranslate"><span class="pre">filter</span></code>?</p></td>
+<td class="text-align:left"><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td class="text-align:left"><p><code class="docutils literal notranslate"><span class="pre">rate</span></code>?</p></td>
+<td class="text-align:left"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td class="text-align:left"><p><code class="docutils literal notranslate"><span class="pre">state</span></code>?</p></td>
+<td class="text-align:left"><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td class="text-align:left"><p><code class="docutils literal notranslate"><span class="pre">ttl</span></code>?</p></td>
+<td class="text-align:left"><p><em>number</em></p></td>
+</tr>
+</tbody>
+</table>
+<p>Defined in: src/notification.ts:44</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="negotiationinfo">
+<h3>NegotiationInfo<a class="headerlink" href="#negotiationinfo" title="Permalink to this headline">¶</a></h3>
+<p>Ƭ <strong>NegotiationInfo</strong>: <em>object</em></p>
+<section id="id3">
+<h4>Type declaration:<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h4>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="text-align:left head"><p>Name</p></th>
+<th class="text-align:left head"><p>Type</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-align:left"><p><code class="docutils literal notranslate"><span class="pre">endpoint</span></code></p></td>
+<td class="text-align:left"><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td class="text-align:left"><p><code class="docutils literal notranslate"><span class="pre">features</span></code></p></td>
+<td class="text-align:left"><p><a class="reference external" href="notification.html#featureoptions"><em>FeatureOptions</em></a></p></td>
+</tr>
+<tr class="row-even"><td class="text-align:left"><p><code class="docutils literal notranslate"><span class="pre">procotol</span></code></p></td>
+<td class="text-align:left"><p><a class="reference external" href="notification.html#protocols"><em>protocols</em></a></p></td>
+</tr>
+</tbody>
+</table>
+<p>Defined in: src/notification.ts:25</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="notificationconnectioninfo">
+<h3>NotificationConnectionInfo<a class="headerlink" href="#notificationconnectioninfo" title="Permalink to this headline">¶</a></h3>
+<p>Ƭ <strong>NotificationConnectionInfo</strong>: <em>object</em></p>
+<section id="id4">
+<h4>Type declaration:<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h4>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="text-align:left head"><p>Name</p></th>
+<th class="text-align:left head"><p>Type</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-align:left"><p><code class="docutils literal notranslate"><span class="pre">endpoint</span></code></p></td>
+<td class="text-align:left"><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td class="text-align:left"><p><code class="docutils literal notranslate"><span class="pre">protocol</span></code></p></td>
+<td class="text-align:left"><p><a class="reference external" href="notification.html#protocols"><em>protocols</em></a></p></td>
+</tr>
+<tr class="row-even"><td class="text-align:left"><p><code class="docutils literal notranslate"><span class="pre">subprotocol</span></code></p></td>
+<td class="text-align:left"><p><em>string</em></p></td>
+</tr>
+</tbody>
+</table>
+<p>Defined in: src/notification.ts:31</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="protocols">
+<h3>protocols<a class="headerlink" href="#protocols" title="Permalink to this headline">¶</a></h3>
+<p>Ƭ <strong>protocols</strong>: <em>ws</em> | <em>string</em></p>
+<p>Defined in: src/notification.ts:22</p>
+</section>
+<hr class="docutils" />
+<section id="statuses">
+<h3>statuses<a class="headerlink" href="#statuses" title="Permalink to this headline">¶</a></h3>
+<p>Ƭ <strong>statuses</strong>: <em>connecting</em> | <em>connected</em> | <em>closing</em> | <em>closed</em></p>
+<p>Defined in: src/notification.ts:23</p>
+</section>
+</section>
+</section>
+
+
+              </div>
+              
+
+              
+              <div class='prev-next-bottom'>
+                
+    <a class='left-prev' id="prev-link" href="livenotification.html" title="previous page">Module: liveNotification</a>
+    <a class='right-next' id="next-link" href="websocketnotification.html" title="next page">Module: websocketNotification</a>
+
+              </div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+
+    
+  <script src="../_static/js/index.d3f166471bb80abb5163.js"></script>
+
+
+    <footer class="footer">
+  <div class="container">
+    <p>
+          &copy; Copyright 2021 Inrupt Inc.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

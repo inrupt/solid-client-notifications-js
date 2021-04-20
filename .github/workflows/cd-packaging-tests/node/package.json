@@ -1,0 +1,7 @@
+{
+  "name": "cd-packaging-test-node",
+  "private": true,
+  "dependencies": {
+    "@inrupt/solid-client-notifications": "*"
+  }
+}

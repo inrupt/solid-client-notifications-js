@@ -1,0 +1,16 @@
+node_modules
+coverage
+dist
+umd
+.eslintcache
+whitesource/
+LICENSE_DEPENDENCIES
+LICENSE_DEPENDENCIES_ALL
+docs/api/build/
+docs/api/source/api/
+docs/dist/
+docs/.DS_Store
+.env*.local
+.cache
+.github/workflows/cd-packaging-tests/bundler-webpack/package-lock.json
+.github/workflows/cd-packaging-tests/bundler-parcel/package-lock.json
