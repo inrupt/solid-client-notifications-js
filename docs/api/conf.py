@@ -26,7 +26,7 @@ copyright = u'{0} Inrupt Inc.'.format(datetime.date.today().year)
 # -- product name -----
 # -- Separately update code samples and toc links and docs-navbar since not using substitutions--
 
-name = 'solid-client-notifications API'
+name = 'solid-client-notifications'
 repo_name = '{0}-js'.format(name)
 
 pygments_style = 'sphinx'
@@ -71,12 +71,13 @@ html_theme_path = ['./themes']
 
 html_copy_source = False
 
-html_title = 'Inrupt {0} Documentation'.format(name)
+html_title = 'Inrupt {0} API Documentation'.format(name)
 
 # These theme options are declared in ./themes/inrupt/theme.conf
+# as well as some for pydata_sphinx_theme
 
 html_theme_options = {
-    'project_title': 'Inrupt {0} API Documentation'.format(name),
+    'project_title': 'Inrupt {0} API'.format(name),
     'banner': True,
     'banner_msg': 'This is an Alpha release of the API.',
     'robots_index': True,
@@ -87,6 +88,34 @@ html_theme_options = {
     'ess_docs': 'https://docs.inrupt.com/ess/',
     'clientlibjs_docs': 'https://docs.inrupt.com/developer-tools/javascript/client-libraries/',
     'reactsdk_docs': 'https://docs.inrupt.com/developer-tools/javascript/react-sdk',
+    
+    # below are pydata_sphinx_theme
+    "footer_items": [ "copyright.html"],
+    "navbar_align": "left",
+    "icon_links": [
+        {
+            "name": "Inrupt on Twitter",
+            "url": "https://twitter.com/inrupt",
+            "icon": "fab fa-twitter-square",
+        },
+        {
+            "name": "Inrupt on LinkedIn",
+            "url": "https://www.linkedin.com/company/inrupt/",
+            "icon": "fab fa-linkedin",
+        },
+        {
+            "name": "Solid forum",
+            "url": "https://forum.solidproject.org/",
+            "icon": "fas fa-users",
+        },
+    ],
+    "favicons": [
+        {
+         "rel": "icon",
+         "sizes": "16x16",
+         "href": "https://docs.inrupt.com/inrupt_stickers_v2-03.png",
+        },
+    ],
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
@@ -95,7 +124,7 @@ html_theme_options = {
 html_static_path = ['_static']
 
 html_sidebars = {
-    '**': ['docs-sidebar.html'],
+    '**': [  'search-field.html',  'docs-sidebar.html'],
 }
 
 locale_dirs = ['locale/']   # path is example but recommended.
