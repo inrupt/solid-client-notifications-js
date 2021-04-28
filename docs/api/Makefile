@@ -22,7 +22,11 @@ help:
 	@$(SPHINXBUILD) -M help "$(SOURCECOPYDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
 
-.PHONY: help clean Makefile migrate html 
+.PHONY: help clean Makefile migrate html  submodules
+
+submodules:
+	git submodule init
+	git submodule update --remote
 
 clean:
 	if [ -d $(BUILDDIR) ]; then rm -rf $(BUILDDIR) ; fi;
@@ -39,7 +43,7 @@ migrate: clean
 	cp -R $(SOURCEDIR)/api/modules/ $(SOURCECOPYDIR)/modules/
 	cp -R $(SOURCEDIR)/api/classes/ $(SOURCECOPYDIR)/classes/
 	
-html: Makefile migrate
+html: Makefile migrate submodules
 
 # To clean up cross-reference links in markdown (foo.md#somesection) 
 # If making html (e.g. foo.html), use sed to change .md# to .html#
@@ -54,7 +58,7 @@ endif
 
 # Catch-all target: route all unknown targets to Sphinx using the new
 # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
-%: Makefile migrate
+%: Makefile migrate submodules
 	@$(SPHINXBUILD) -M $@ "$(SOURCECOPYDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O) -c .
 
 
