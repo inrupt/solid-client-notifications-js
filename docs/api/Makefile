@@ -22,16 +22,16 @@ help:
 	@$(SPHINXBUILD) -M help "$(SOURCECOPYDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
 
-.PHONY: help clean Makefile migrate html  submodules
-
-submodules:
-	git submodule init
-	git submodule update --remote
+.PHONY: help clean Makefile migrate html
 
 clean:
 	if [ -d $(BUILDDIR) ]; then rm -rf $(BUILDDIR) ; fi;
+	if [ -d build/docs-assets ]; then rm -rf build/docs-assets ; fi;
+
 migrate: clean
 	mkdir -p $(SOURCECOPYDIR)
+
+	git clone https://github.com/inrupt/docs-assets.git build/docs-assets
 
    # Copying to SOURCECOPYDIR instead of copying source dir to BUILDDIR
    # in case someone forgets to backslash after build/
@@ -43,7 +43,7 @@ migrate: clean
 	cp -R $(SOURCEDIR)/api/modules/ $(SOURCECOPYDIR)/modules/
 	cp -R $(SOURCEDIR)/api/classes/ $(SOURCECOPYDIR)/classes/
 	
-html: Makefile migrate submodules
+html: Makefile migrate
 
 # To clean up cross-reference links in markdown (foo.md#somesection) 
 # If making html (e.g. foo.html), use sed to change .md# to .html#
@@ -58,10 +58,6 @@ endif
 
 # Catch-all target: route all unknown targets to Sphinx using the new
 # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
-%: Makefile migrate submodules
+%: Makefile migrate
 	@$(SPHINXBUILD) -M $@ "$(SOURCECOPYDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O) -c .
-
-
-
-	
 

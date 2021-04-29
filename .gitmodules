@@ -1,4 +1,0 @@
-[submodule "docs/api/docs-assets"]
-	path = docs/api/docs-assets
-	url = https://github.com/inrupt/docs-assets.git
-	branch = main
