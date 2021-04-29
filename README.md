@@ -18,6 +18,11 @@ like [Babel](https://babeljs.io), and to add polyfills for e.g. `Map`, `Set`,
 `Promise`, `Headers`, `Array.prototype.includes`, `Object.entries` and
 `String.prototype.endsWith`.
 
+# Node support
+
+Our JavaScript Client Libraries track Node.js LTS releases, and support 12.x,
+14.x, and 16.x.
+
 # Installation
 
 For the latest stable version of solid-client-notifications:
