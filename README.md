@@ -18,6 +18,12 @@ like [Babel](https://babeljs.io), and to add polyfills for e.g. `Map`, `Set`,
 `Promise`, `Headers`, `Array.prototype.includes`, `Object.entries` and
 `String.prototype.endsWith`.
 
+# Server support
+Unfortunately this client only works with Inrupt's ESS server, not with
+other Solid servers like NSS, PSS, CSS, TrinPod, and DexPod. We are looking
+at different options to resolve this in a next version; see
+https://github.com/inrupt/solid-client-notifications-js/issues/59 for more details.
+
 # Installation
 
 For the latest stable version of solid-client-notifications:
