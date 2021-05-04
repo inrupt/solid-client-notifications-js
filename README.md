@@ -19,9 +19,7 @@ like [Babel](https://babeljs.io), and to add polyfills for e.g. `Map`, `Set`,
 `String.prototype.endsWith`.
 
 # Server support
-Unfortunately this client only works with Inrupt's ESS server, not with
-other Solid servers like NSS, PSS, CSS, TrinPod, and DexPod. We are looking
-at different options to resolve this in a next version; see
+This client only works with Inrupt's ESS, providing secure notifications over Websockets. Unfortunately, this is not compatible with websockets notifications implemented by other Solid servers like NSS, PSS, CSS, TrinPod, and DexPod. These servers websocket notifications they are based on [Solid Websockets API](https://github.com/solid/solid-spec/blob/master/api-websockets.md), a specification not recommended for secure messaging. We are looking at different options to help developers get their apps working securely across all Solid servers.
 https://github.com/inrupt/solid-client-notifications-js/issues/59 for more details.
 
 # Installation
