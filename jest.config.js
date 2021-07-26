@@ -41,4 +41,5 @@ module.exports = {
     "/src/e2e-node/",
     "/src/e2e-browser/",
   ],
+  testEnvironment: "<rootDir>/tests/environment/customEnvironment.js",
 };
