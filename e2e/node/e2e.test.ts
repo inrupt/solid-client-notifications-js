@@ -37,7 +37,6 @@ type NotificationGateway = string;
 type OidcIssuer = string;
 type ClientId = string;
 type ClientSecret = string;
-type RefreshToken = string;
 type Pod = string;
 
 type AuthDetails = [
@@ -46,7 +45,6 @@ type AuthDetails = [
   OidcIssuer,
   ClientId,
   ClientSecret,
-  RefreshToken
 ];
 
 // Instructions for obtaining these credentials can be found here:
@@ -59,7 +57,6 @@ const serversUnderTest: AuthDetails[] = [
     process.env.E2E_TEST_ESS_IDP_URL!,
     process.env.E2E_TEST_ESS_CLIENT_ID!,
     process.env.E2E_TEST_ESS_CLIENT_SECRET!,
-    process.env.E2E_TEST_ESS_REFRESH_TOKEN!,
   ],
   // pod-compat.inrupt.com, temporarily disabled while WSS is in dev:
   /*
@@ -69,7 +66,6 @@ const serversUnderTest: AuthDetails[] = [
     process.env.E2E_TEST_ESS_COMPAT_IDP_URL!,
     process.env.E2E_TEST_ESS_COMPAT_CLIENT_ID!,
     process.env.E2E_TEST_ESS_COMPAT_CLIENT_SECRET!,
-    process.env.E2E_TEST_ESS_COMPAT_REFRESH_TOKEN!,
   ],
   */
 ];
@@ -81,8 +77,7 @@ describe.each(serversUnderTest)(
     rootContainer,
     oidcIssuer,
     clientId,
-    clientSecret,
-    refreshToken
+    clientSecret
   ) => {
     let ws: WebsocketNotification | undefined;
 
@@ -99,7 +94,6 @@ describe.each(serversUnderTest)(
         clientId: clientId,
         clientName: "Solid Client End-2-End Test Client App - Node.js",
         clientSecret: clientSecret,
-        refreshToken: refreshToken,
       });
       return session;
     }
