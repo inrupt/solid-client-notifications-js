@@ -55,6 +55,7 @@
     "@testing-library/testcafe": "^4.4.0",
     "@types/dotenv-flow": "^3.1.1",
     "@types/jest": "^26.0.24",
+    "@types/node": "^14.17.9",
     "@typescript-eslint/eslint-plugin": "^4.29.0",
     "@typescript-eslint/parser": "^4.29.0",
     "dotenv-flow": "^3.2.0",
