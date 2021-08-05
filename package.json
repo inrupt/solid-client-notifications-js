@@ -49,7 +49,6 @@
   "devDependencies": {
     "@inrupt/eslint-config-base": "^0.2.0-alpha.1",
     "@inrupt/eslint-config-lib": "^0.2.0-alpha.1",
-    "@inrupt/solid-client": "^1.10.1",
     "@inrupt/solid-client-authn-browser": "^1.10.1",
     "@inrupt/solid-client-authn-node": "^1.10.1",
     "@skypack/package-check": "^0.2.2",
