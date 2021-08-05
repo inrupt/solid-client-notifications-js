@@ -9,9 +9,9 @@
     "build": "webpack"
   },
   "dependencies": {
-    "@inrupt/solid-client": "^1.10.1",
-    "@inrupt/solid-client-authn-browser": "^1.10.1",
-    "@inrupt/solid-client-notifications": "*"
+    "@inrupt/solid-client": "^1.4.0",
+    "@inrupt/solid-client-authn-browser": "^1.7.2",
+    "@inrupt/solid-client-notifications": "^0.1.0"
   },
   "devDependencies": {
     "buffer": "^6.0.3",

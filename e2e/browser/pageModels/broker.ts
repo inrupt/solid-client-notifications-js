@@ -47,16 +47,16 @@ export class BrokerPage {
     this.rememberNotRadioButton = screen.getByLabelText(
       "prompt me again next time"
     );
-    this.authoriseButton = screen.getByText("Authorize");
-    this.denyButton = screen.getByText("Deny");
+    this.authoriseButton = screen.getByText("Allow");
+    this.denyButton = screen.getByText("Cancel");
   }
 
   async authoriseOnce() {
     await onAuthorisePage();
-    await t.click(this.rememberNotRadioButton).click(this.authoriseButton);
+    await t.click(this.authoriseButton);
   }
 }
 
 export async function onAuthorisePage() {
-  await t.expect(Selector("form[name=confirmationForm]").exists).ok();
+  await t.expect(Selector("#approve").exists).ok();
 }
