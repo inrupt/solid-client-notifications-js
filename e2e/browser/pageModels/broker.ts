@@ -1,5 +1,5 @@
 /**
- * Copyright 2020 Inrupt Inc.
+ * Copyright 2021 Inrupt Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal in
@@ -23,30 +23,10 @@ import { t, ClientFunction, Selector } from "testcafe";
 import { screen } from "@testing-library/testcafe";
 
 export class BrokerPage {
-  accessOpenIdCheckbox: Selector;
-  accessOfflineCheckbox: Selector;
-  accessWebIdCheckbox: Selector;
-  rememberForeverRadioButton: Selector;
-  rememberOneHourRadioButton: Selector;
-  rememberNotRadioButton: Selector;
   authoriseButton: Selector;
   denyButton: Selector;
 
   constructor() {
-    this.accessOpenIdCheckbox = screen.getByLabelText(
-      "log in using your identity"
-    );
-    this.accessOfflineCheckbox = screen.getByLabelText("offline access");
-    this.accessWebIdCheckbox = screen.getByLabelText("solid webid");
-    this.rememberForeverRadioButton = screen.getByLabelText(
-      "remember this decision until I revoke it"
-    );
-    this.rememberOneHourRadioButton = screen.getByLabelText(
-      "remember this decision for one hour"
-    );
-    this.rememberNotRadioButton = screen.getByLabelText(
-      "prompt me again next time"
-    );
     this.authoriseButton = screen.getByText("Allow");
     this.denyButton = screen.getByText("Cancel");
   }
@@ -58,5 +38,5 @@ export class BrokerPage {
 }
 
 export async function onAuthorisePage() {
-  await t.expect(Selector("#approve").exists).ok();
+  await t.expect(Selector("form#approve").exists).ok();
 }
