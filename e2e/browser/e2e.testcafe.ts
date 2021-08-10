@@ -45,7 +45,7 @@ config({
   silent: process.env.CI === "true",
 });
 
-fixture("End-to-end tests").page("http://localhost:1234/end-to-end-test.html");
+fixture("End-to-end tests").page("https://localhost:1234/end-to-end-test.html");
 
 // eslint-disable-next-line jest/expect-expect, jest/no-done-callback
 test("solid-client-notifications example functions", async (t: TestController) => {

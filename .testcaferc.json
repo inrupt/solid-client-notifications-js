@@ -1,10 +1,11 @@
 {
   "appCommand": "cd .codesandbox/sandbox && npm run start-e2e-host",
   "appInitDelay": 3000,
-  "browsers": ["chrome:headless"],
+  "browsers": ["chrome"],
   "src": "e2e/browser/**/*.testcafe.ts",
   "clientScripts": [
     { "module": "@testing-library/dom/dist/@testing-library/dom.umd.js" }
   ],
-  "skipJsErrors": false
+  "skipJsErrors": false,
+  "hostname": "localhost"
 }

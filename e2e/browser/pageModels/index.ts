@@ -64,6 +64,6 @@ export async function isIndexPage() {
   const window: any = undefined;
   return (
     (await ClientFunction(() => window.location.origin)()) ===
-    "http://localhost:1234"
+    "https://localhost:1234"
   );
 }
