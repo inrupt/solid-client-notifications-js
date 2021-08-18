@@ -80,13 +80,6 @@ describe.each(serversUnderTest)(
         ws.disconnect();
       }
     });
-    console.log(
-      notificationGateway,
-      rootContainer,
-      oidcIssuer,
-      clientId,
-      clientSecret
-    );
 
     async function getSession() {
       const session = new Session();
