@@ -107,7 +107,6 @@ describe.each(serversUnderTest)(
       const session = await getSession();
 
       ws = new WebsocketNotification(rootContainer, {
-        host: rootContainer,
         gateway: notificationGateway,
         fetch: session.fetch,
       });

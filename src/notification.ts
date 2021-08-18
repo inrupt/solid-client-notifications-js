@@ -71,9 +71,7 @@ export class BaseNotification {
 
   /** @internal */
   static getSolidWellKnownUrl(host: string): string {
-    // TEMP FIX FOR TESTING, DO NOT PUSH
-    const url = new URL(host);
-    return new URL(`${url.pathname}.well-known/solid`, host).href;
+    return new URL(`/.well-known/solid`, host).href;
   }
 
   // Dynamically import solid-client-authn-browser so that Notifiction doesn't have a hard
