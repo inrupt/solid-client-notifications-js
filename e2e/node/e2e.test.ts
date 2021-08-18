@@ -44,7 +44,7 @@ type AuthDetails = [
   Pod,
   OidcIssuer,
   ClientId,
-  ClientSecret,
+  ClientSecret
 ];
 
 // Instructions for obtaining these credentials can be found here:
@@ -72,13 +72,7 @@ const serversUnderTest: AuthDetails[] = [
 
 describe.each(serversUnderTest)(
   "Authenticated end-to-end tests against Pod [%s] and OIDC Issuer [%s]:",
-  (
-    notificationGateway,
-    rootContainer,
-    oidcIssuer,
-    clientId,
-    clientSecret
-  ) => {
+  (notificationGateway, rootContainer, oidcIssuer, clientId, clientSecret) => {
     let ws: WebsocketNotification | undefined;
 
     afterEach(() => {
@@ -86,13 +80,20 @@ describe.each(serversUnderTest)(
         ws.disconnect();
       }
     });
+    console.log(
+      notificationGateway,
+      rootContainer,
+      oidcIssuer,
+      clientId,
+      clientSecret
+    );
 
     async function getSession() {
       const session = new Session();
       await session.login({
         oidcIssuer: oidcIssuer,
         clientId: clientId,
-        clientName: "Solid Client End-2-End Test Client App - Node.js",
+        clientName: "solid-client-notifications-js",
         clientSecret: clientSecret,
       });
       return session;
@@ -106,6 +107,7 @@ describe.each(serversUnderTest)(
       const session = await getSession();
 
       ws = new WebsocketNotification(rootContainer, {
+        host: rootContainer,
         gateway: notificationGateway,
         fetch: session.fetch,
       });

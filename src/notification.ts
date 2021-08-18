@@ -71,7 +71,9 @@ export class BaseNotification {
 
   /** @internal */
   static getSolidWellKnownUrl(host: string): string {
-    return new URL("/.well-known/solid", host).href;
+    // TEMP FIX FOR TESTING, DO NOT PUSH
+    const url = new URL(host);
+    return new URL(`${url.pathname}.well-known/solid`, host).href;
   }
 
   // Dynamically import solid-client-authn-browser so that Notifiction doesn't have a hard
@@ -122,7 +124,6 @@ export class BaseNotification {
     if (this.gateway) {
       return this.gateway;
     }
-
     const response = await this.fetch(
       BaseNotification.getSolidWellKnownUrl(this.host)
     );
@@ -136,7 +137,6 @@ export class BaseNotification {
         response
       );
     }
-
     const { notificationGateway } = await response.json();
 
     this.gateway = notificationGateway;
