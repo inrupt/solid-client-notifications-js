@@ -7,7 +7,7 @@ export function getHelpers(podRoot: string, session: Session) {
   async function connectWebsocket(gateway: string = DEFAULT_GATEWAY) {
     const notification = new WebsocketNotification(podRoot, {
       fetch: session.fetch,
-      gateway: DEFAULT_GATEWAY,
+      gateway,
     });
 
     notification.connect();
