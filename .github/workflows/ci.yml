@@ -31,6 +31,23 @@ jobs:
     - run: npm run check-licenses
     - run: npm audit --audit-level=moderate
     - run: npm test
+    - run: npm run e2e-test-node
+      # To prevent conflicts of multiple jobs trying to modify the same Resource at the same time,
+      # and because behaviour on different OS's is already tested by unit tests,
+      # end-to-end tests only need to run on one OS.
+      # Additionally, Dependabot does not have access to our secrets,
+      # so end-to-end tests should not run for Dependabot PRs.
+      # https://github.blog/changelog/2021-02-19-github-actions-workflows-triggered-by-dependabot-prs-will-run-with-read-only-permissions/
+      if: runner.os == 'Linux' && matrix.node-version == env.DEFAULT_NODE_VERSION && github.actor != 'dependabot[bot]'
+      env:
+        E2E_TEST_ESS_POD: ${{ secrets.E2E_TEST_ESS_PROD_POD }}
+        E2E_TEST_ESS_IDP_URL: ${{ secrets.E2E_TEST_ESS_PROD_IDP_URL }}
+        E2E_TEST_ESS_CLIENT_ID: ${{ secrets.E2E_TEST_ESS_PROD_CLIENT_ID }}
+        E2E_TEST_ESS_CLIENT_SECRET: ${{ secrets.E2E_TEST_ESS_PROD_CLIENT_SECRET }}
+        E2E_TEST_DEV_NEXT_POD: ${{ secrets.E2E_TEST_DEV_NEXT_POD }}
+        E2E_TEST_DEV_NEXT_IDP_URL: ${{ secrets.E2E_TEST_DEV_NEXT_IDP_URL }}
+        E2E_TEST_DEV_NEXT_CLIENT_ID: ${{ secrets.E2E_TEST_DEV_NEXT_CLIENT_ID }}
+        E2E_TEST_DEV_NEXT_CLIENT_SECRET: ${{ secrets.E2E_TEST_DEV_NEXT_CLIENT_SECRET }}
     - run: npx package-check
     - name: Archive code coverage results
       uses: actions/upload-artifact@v2.2.3

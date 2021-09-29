@@ -44,7 +44,7 @@ type AuthDetails = [
   Pod,
   OidcIssuer,
   ClientId,
-  ClientSecret,
+  ClientSecret
 ];
 
 // Instructions for obtaining these credentials can be found here:
@@ -53,10 +53,20 @@ const serversUnderTest: AuthDetails[] = [
   // pod.inrupt.com:
   [
     process.env.E2E_TEST_ESS_NOTIFICATION_GATEWAY!,
-    process.env.E2E_TEST_ESS_POD!,
-    process.env.E2E_TEST_ESS_IDP_URL!,
+    process.env.E2E_TEST_ESS_POD!.replace(/^https:\/\//, ""),
+    process.env.E2E_TEST_ESS_IDP_URL!.replace(/^https:\/\//, ""),
     process.env.E2E_TEST_ESS_CLIENT_ID!,
     process.env.E2E_TEST_ESS_CLIENT_SECRET!,
+  ],
+  [
+    process.env.E2E_TEST_DEV_NEXT_NOTIFICATION_GATEWAY!,
+    // Cumbersome workaround, but:
+    // Trim `https://` from the start of these URLs,
+    // so that GitHub Actions doesn't replace them with *** in the logs.
+    process.env.E2E_TEST_DEV_NEXT_POD!.replace(/^https:\/\//, ""),
+    process.env.E2E_TEST_DEV_NEXT_IDP_URL!.replace(/^https:\/\//, ""),
+    process.env.E2E_TEST_DEV_NEXT_CLIENT_ID!,
+    process.env.E2E_TEST_DEV_NEXT_CLIENT_SECRET!,
   ],
   // pod-compat.inrupt.com, temporarily disabled while WSS is in dev:
   /*
@@ -71,14 +81,17 @@ const serversUnderTest: AuthDetails[] = [
 ];
 
 describe.each(serversUnderTest)(
-  "Authenticated end-to-end tests against Pod [%s] and OIDC Issuer [%s]:",
+  "Authenticated end-to-end tests for gateway [%s] against Pod [%s] and OIDC Issuer [%s]:",
   (
     notificationGateway,
-    rootContainer,
-    oidcIssuer,
+    rootContainerDisplay,
+    oidcIssuerDisplay,
     clientId,
     clientSecret
   ) => {
+    const rootContainer = "https://" + rootContainerDisplay;
+    const oidcIssuer = "https://" + oidcIssuerDisplay;
+
     let ws: WebsocketNotification | undefined;
 
     afterEach(() => {
