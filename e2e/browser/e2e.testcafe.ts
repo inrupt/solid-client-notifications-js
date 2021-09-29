@@ -47,12 +47,57 @@ config({
 
 fixture("End-to-end tests").page("https://localhost:1234/end-to-end-test.html");
 
-// eslint-disable-next-line jest/expect-expect, jest/no-done-callback
-test("solid-client-notifications example functions", async (t: TestController) => {
-  await essUserLogin(t);
+const serversUnderTest: {
+  gateway: string;
+  identityProvider: string;
+  username: string;
+  password: string;
+}[] = [
+  // pod.inrupt.com:
+  {
+    // Cumbersome workaround, but:
+    // Trim `https://` from the start of these URLs,
+    // so that GitHub Actions doesn't replace them with *** in the logs.
+    identityProvider: process.env.E2E_TEST_ESS_IDP_URL!.replace(
+      /^https:\/\//,
+      ""
+    ),
+    username: process.env.E2E_TEST_ESS_COGNITO_USER!,
+    password: process.env.E2E_TEST_ESS_COGNITO_PASSWORD!,
+    gateway: process.env.E2E_TEST_ESS_NOTIFICATION_GATEWAY!.replace(
+      /^https:\/\//,
+      ""
+    ),
+  },
+  // dev-next.inrupt.com:
+  {
+    //   // Cumbersome workaround, but:
+    //   // Trim `https://` from the start of these URLs,
+    //   // so that GitHub Actions doesn't replace them with *** in the logs.
+    identityProvider: process.env.E2E_TEST_DEV_NEXT_IDP_URL!.replace(
+      /^https:\/\//,
+      ""
+    ),
+    username: process.env.E2E_TEST_DEV_NEXT_COGNITO_USER!,
+    password: process.env.E2E_TEST_DEV_NEXT_COGNITO_PASSWORD!,
+    gateway: process.env.E2E_TEST_DEV_NEXT_NOTIFICATION_GATEWAY!.replace(
+      /^https:\/\//,
+      ""
+    ),
+  },
+];
 
-  const connectWebsocket = ClientFunction(() => E2eHelpers.connectWebsocket());
-  const notification = await connectWebsocket();
+serversUnderTest.forEach((server) => {
+  const { gateway } = server;
+  // eslint-disable-next-line jest/expect-expect, jest/no-done-callback
+  test("solid-client-notifications example functions", async (t: TestController) => {
+    await essUserLogin(t);
 
-  await t.expect(notification.status).eql("connected", { timeout: 10000 });
+    const connectWebsocket = ClientFunction(() =>
+      E2eHelpers.connectWebsocket("https://" + gateway)
+    );
+    const notification = await connectWebsocket();
+
+    await t.expect(notification.status).eql("connected", { timeout: 10000 });
+  });
 });
