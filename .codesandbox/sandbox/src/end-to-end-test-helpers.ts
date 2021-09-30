@@ -1,10 +1,10 @@
 import { Session } from "@inrupt/solid-client-authn-browser";
 import { WebsocketNotification } from "@inrupt/solid-client-notifications";
 
-const gateway = "https://notification.pod.inrupt.com/";
+const DEFAULT_GATEWAY = "https://notification.pod.inrupt.com/";
 
 export function getHelpers(podRoot: string, session: Session) {
-  async function connectWebsocket() {
+  async function connectWebsocket(gateway: string = DEFAULT_GATEWAY) {
     const notification = new WebsocketNotification(podRoot, {
       fetch: session.fetch,
       gateway,
