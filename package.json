@@ -76,7 +76,7 @@
     "node-fetch": "^2.6.1",
     "openid-client": "^4.7.4",
     "pinst": "^2.1.4",
-    "prettier": "2.2.1",
+    "prettier": "2.4.1",
     "rollup": "^2.56.0",
     "rollup-plugin-typescript2": "^0.30.0",
     "testcafe": "^1.15.1",
