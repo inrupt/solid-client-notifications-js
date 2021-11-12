@@ -6,7 +6,7 @@ The following changes have been implemented but not released yet:
 
 ## [Unreleased]
 
-- None
+- Request .well-known file as json-ld
 
 ## [0.1.0] - 2021-04-20
 

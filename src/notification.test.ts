@@ -112,6 +112,26 @@ describe("BaseNotification", () => {
       expect(notificationGateway).toEqual(gateway);
     });
 
+    test("requests the well-known file as json-ld", async () => {
+      const gateway = "https://fake.url/notifications/";
+      fetch.mockResponseOnce(JSON.stringify({ notificationGateway: gateway }));
+
+      const topic = "https://fake.url/some-resource";
+      const protocol = ["ws"] as Array<protocols>;
+
+      const notification = new BaseNotification(topic, protocol, { fetch });
+      await notification.fetchNegotiationGatewayUrl();
+
+      expect(fetch).toHaveBeenCalledWith(
+        BaseNotification.getSolidWellKnownUrl(notification.host),
+        {
+          headers: {
+            Accept: "application/ld+json",
+          },
+        }
+      );
+    });
+
     test("throws a FetchError if the well-known fetch fails", async () => {
       fetch.mockResponseOnce("", {
         status: 400,
