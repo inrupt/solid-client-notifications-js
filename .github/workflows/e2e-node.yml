@@ -34,7 +34,7 @@ jobs:
         E2E_TEST_ESS_CLIENT_SECRET: ${{ secrets.E2E_TEST_ESS_PROD_CLIENT_SECRET }}
     - name: Add status check with successful test result
       id: set-status-check-success
-      uses: octokit/request-action@v2.x
+      uses: octokit/request-action@v2.1.0
       with:
         route: POST /repos/:repository/statuses/:ref
         repository: ${{ github.repository }}
@@ -50,7 +50,7 @@ jobs:
     - name: Add status check with failed test result
       id: set-status-check-failure
       if: failure()
-      uses: octokit/request-action@v2.x
+      uses: octokit/request-action@v2.1.0
       with:
         route: POST /repos/:repository/statuses/:ref
         repoitory: ${{ github.repository }}
