@@ -19,7 +19,7 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import { jest } from "@jest/globals";
+import { jest, describe, it, expect, afterEach } from "@jest/globals";
 import { Session } from "@inrupt/solid-client-authn-node";
 import { config } from "dotenv-flow";
 import * as openidClient from "openid-client";
