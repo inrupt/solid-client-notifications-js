@@ -48,10 +48,10 @@ config({
 fixture("End-to-end tests").page("https://localhost:1234/end-to-end-test.html");
 
 const serversUnderTest: {
-  gateway: string;
   identityProvider: string;
   username: string;
   password: string;
+  gateway: string;
 }[] = [
   // pod.inrupt.com:
   {
