@@ -48,10 +48,10 @@ config({
 fixture("End-to-end tests").page("https://localhost:1234/end-to-end-test.html");
 
 const serversUnderTest: {
+  gateway: string;
   identityProvider: string;
   username: string;
   password: string;
-  gateway: string;
 }[] = [
   // pod.inrupt.com:
   {
@@ -92,11 +92,10 @@ serversUnderTest.forEach((server) => {
   // eslint-disable-next-line jest/expect-expect, jest/no-done-callback
   test("solid-client-notifications example functions", async (t: TestController) => {
     await essUserLogin(t);
-
-    const connectWebsocket = ClientFunction(() =>
-      E2eHelpers.connectWebsocket("https://" + gateway)
-    );
-    const notification = await connectWebsocket();
+    const connectWebsocket = ClientFunction((gateway) => {
+      return E2eHelpers.connectWebsocket("https://" + gateway);
+    });
+    const notification = await connectWebsocket(gateway);
 
     await t.expect(notification.status).eql("connected", { timeout: 10000 });
   });
