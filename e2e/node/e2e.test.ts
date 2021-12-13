@@ -58,6 +58,10 @@ const serversUnderTest: AuthDetails[] = [
     process.env.E2E_TEST_ESS_CLIENT_ID!,
     process.env.E2E_TEST_ESS_CLIENT_SECRET!,
   ],
+  /*
+  FIXME: temporarily disable dev-next tests. dev-next uses the new Notification
+  protocol: https://solid.github.io/notifications/protocol, while this codebase
+  uses a previous version.
   [
     process.env.E2E_TEST_DEV_NEXT_NOTIFICATION_GATEWAY!,
     // Cumbersome workaround, but:
@@ -68,6 +72,7 @@ const serversUnderTest: AuthDetails[] = [
     process.env.E2E_TEST_DEV_NEXT_CLIENT_ID!,
     process.env.E2E_TEST_DEV_NEXT_CLIENT_SECRET!,
   ],
+  */
   // pod-compat.inrupt.com, temporarily disabled while WSS is in dev:
   /*
   [
