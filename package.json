@@ -1,7 +1,7 @@
 {
   "name": "@inrupt/solid-client-notifications",
   "description": "Receive notifications linked to Solid resources.",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "license": "MIT",
   "scripts": {
     "build": "rollup --config rollup.config.js",
