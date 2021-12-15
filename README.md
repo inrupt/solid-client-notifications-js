@@ -54,6 +54,7 @@ forum is a good place to meet the rest of the community.
 
 ## Documentation
 
+- [Subscribe to WebSocket Notifications](https://docs.inrupt.com/developer-tools/javascript/client-libraries/tutorial/subscribe-to-notifications/)
 - [Inrupt Solid Javascript Client Libraries](https://docs.inrupt.com/developer-tools/javascript/client-libraries/)
 - [Homepage](https://docs.inrupt.com/)
 
