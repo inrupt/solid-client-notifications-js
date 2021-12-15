@@ -27,14 +27,19 @@ jobs:
     - run: npm run build
     - run: npm run e2e-test-node
       env:
-        E2E_TEST_ESS_NOTIFICATION_GATEWAY: ${{secrets.E2E_TEST_ESS_PROD_NOTIFICATION_GATEWAY}}
+        E2E_TEST_ESS_NOTIFICATION_GATEWAY: ${{ secrets.E2E_TEST_ESS_PROD_NOTIFICATION_GATEWAY }}
         E2E_TEST_ESS_POD: ${{ secrets.E2E_TEST_ESS_PROD_POD }}
         E2E_TEST_ESS_IDP_URL: ${{ secrets.E2E_TEST_ESS_PROD_IDP_URL }}
         E2E_TEST_ESS_CLIENT_ID: ${{ secrets.E2E_TEST_ESS_PROD_CLIENT_ID }}
         E2E_TEST_ESS_CLIENT_SECRET: ${{ secrets.E2E_TEST_ESS_PROD_CLIENT_SECRET }}
+        E2E_TEST_DEV_NEXT_NOTIFICATION_GATEWAY: ${{ secrets.E2E_TEST_DEV_NEXT_NOTIFICATION_GATEWAY }}
+        E2E_TEST_DEV_NEXT_POD: ${{ secrets.E2E_TEST_DEV_NEXT_POD }}
+        E2E_TEST_DEV_NEXT_IDP_URL: ${{ secrets.E2E_TEST_DEV_NEXT_IDP_URL }}
+        E2E_TEST_DEV_NEXT_CLIENT_ID: ${{ secrets.E2E_TEST_DEV_NEXT_CLIENT_ID }}
+        E2E_TEST_DEV_NEXT_CLIENT_SECRET: ${{ secrets.E2E_TEST_DEV_NEXT_CLIENT_SECRET }}
     - name: Add status check with successful test result
       id: set-status-check-success
-      uses: octokit/request-action@v2.x
+      uses: octokit/request-action@v2.1.0
       with:
         route: POST /repos/:repository/statuses/:ref
         repository: ${{ github.repository }}
@@ -50,7 +55,7 @@ jobs:
     - name: Add status check with failed test result
       id: set-status-check-failure
       if: failure()
-      uses: octokit/request-action@v2.x
+      uses: octokit/request-action@v2.1.0
       with:
         route: POST /repos/:repository/statuses/:ref
         repoitory: ${{ github.repository }}
