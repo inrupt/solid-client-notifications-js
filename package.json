@@ -72,7 +72,7 @@
     "jest-fetch-mock": "^3.0.3",
     "jest-websocket-mock": "^2.2.1",
     "license-checker": "^25.0.1",
-    "lint-staged": "^10.2.9",
+    "lint-staged": "^12.2.1",
     "node-fetch": "^2.6.6",
     "openid-client": "^4.9.1",
     "pinst": "^2.1.4",
