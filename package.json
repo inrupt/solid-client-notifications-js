@@ -78,7 +78,7 @@
     "pinst": "^2.1.4",
     "prettier": "2.2.1",
     "rollup": "^2.60.0",
-    "rollup-plugin-typescript2": "^0.30.0",
+    "rollup-plugin-typescript2": "^0.31.1",
     "testcafe": "^1.18.2",
     "ts-jest": "^27.0.7",
     "typedoc": "^0.22.10",
