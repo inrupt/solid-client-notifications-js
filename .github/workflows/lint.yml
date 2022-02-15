@@ -1,0 +1,7 @@
+name: Lint
+
+on: [push]
+
+jobs:
+  lint:
+    uses: inrupt/javascript-style-configs/.github/workflows/reusable-lint.yml@create-reusable-workflows

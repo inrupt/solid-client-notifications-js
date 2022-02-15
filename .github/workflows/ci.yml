@@ -27,11 +27,6 @@ jobs:
         key: ${{ runner.os }}-node${{ runner.node-version }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
     - run: npm ci
     - run: npm run build
-    - run: npm run lint
-    - run: npm run check-licenses
-    # Set back to --audit-level=moderate when https://github.com/advisories/GHSA-qrpm-p2h7-hrv2
-    # is resolved in testcafe
-    - run: npm audit --audit-level=high
     - run: npm test
     - run: npm run e2e-test-node
       # To prevent conflicts of multiple jobs trying to modify the same Resource at the same time,
@@ -169,7 +164,6 @@ jobs:
         E2E_TEST_DEV_NEXT_COGNITO_USER: ${{ secrets.E2E_TEST_DEV_NEXT_COGNITO_USER }}
         E2E_TEST_DEV_NEXT_COGNITO_PASSWORD: ${{ secrets.E2E_TEST_DEV_NEXT_COGNITO_PASSWORD }}
         GITHUB_OS: ${{ runner.os }}
-    - run: npx package-check
     - name: Archive code coverage results
       uses: actions/upload-artifact@v2.2.3
       continue-on-error: true
