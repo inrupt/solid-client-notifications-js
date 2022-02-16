@@ -73,7 +73,7 @@
     "prettier": "2.2.1",
     "rollup": "^2.60.0",
     "rollup-plugin-typescript2": "^0.30.0",
-    "testcafe": "^1.18.2",
+    "testcafe": "^1.18.3",
     "ts-jest": "^27.0.7",
     "typedoc": "^0.22.10",
     "typedoc-plugin-markdown": "^3.11.3",
