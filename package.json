@@ -68,7 +68,7 @@
     "jest": "^27.3.1",
     "jest-fetch-mock": "^3.0.3",
     "jest-websocket-mock": "^2.2.1",
-    "node-fetch": "^2.6.6",
+    "node-fetch": "^3.2.0",
     "openid-client": "^4.9.1",
     "prettier": "2.2.1",
     "rollup": "^2.60.0",
