@@ -68,7 +68,7 @@ These can be set via environment variables, or by creating a file
 
 ## Running the tests
 
-You can then run the tests using `npm run e2e-test-browser` at the root of this
+You can then run the tests using `npm run test:e2e:browser` at the root of this
 mono-repo.
 
 Note: if you want to run the end-to-end tests against your local code, then
@@ -79,7 +79,7 @@ before running the above command, run:
 
 If you want to actually see the interactive parts, remove `:headless` in
 `.testcaferc.json`, or override on the command-line by running with
-`npm run e2e-test-browser -- chrome,firefox`. That said, most of the tests
+`npm run test:e2e:browser -- chrome,firefox`. That said, most of the tests
 involve running code without a UI component.
 
 To run the tests:
@@ -87,9 +87,9 @@ To run the tests:
 1. At the root, run `npm install`, followed by `npm run build`.
 2. In the directory `.codesandbox/sandbox`, run `npm install`, followed by
    `npm install ../../`
-3. You can now run `npm run e2e-test-browser` from the root.
+3. You can now run `npm run test:e2e:browser` from the root.
 
 If you want to actually see the interactive parts, remove `:headless` in
 `.testcaferc.json`, or override on the command-line by running with
-`npm run e2e-test-browser -- chrome,firefox`. That said, most of the tests
+`npm run test:e2e:browser -- chrome,firefox`. That said, most of the tests
 involve running code without a UI component.

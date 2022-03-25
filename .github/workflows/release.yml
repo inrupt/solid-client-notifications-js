@@ -189,7 +189,7 @@ jobs:
         # replace `../index` (i.e. in the import statement) with `@inrupt/solid-client-notifications`:
         find ./ -type f -exec sed --in-place --expression='s/\.\.\/index/@inrupt\/solid-client-notifications/g' {} \;
     - name: Run the Node-based end-to-end tests
-      run: npm run e2e-test-node
+      run: npm run test:e2e:node
       env:
         E2E_TEST_ESS_NOTIFICATION_GATEWAY: ${{secrets.E2E_TEST_ESS_PROD_NOTIFICATION_GATEWAY}}
         E2E_TEST_ESS_POD: ${{ secrets.E2E_TEST_ESS_PROD_POD }}

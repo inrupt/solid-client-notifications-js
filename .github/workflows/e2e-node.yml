@@ -25,7 +25,7 @@ jobs:
         key: ${{ runner.os }}-node${{ runner.node-version }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
     - run: npm ci
     - run: npm run build
-    - run: npm run e2e-test-node
+    - run: npm run test:e2e:node
       env:
         E2E_TEST_ESS_NOTIFICATION_GATEWAY: ${{ secrets.E2E_TEST_ESS_PROD_NOTIFICATION_GATEWAY }}
         E2E_TEST_ESS_POD: ${{ secrets.E2E_TEST_ESS_PROD_POD }}
