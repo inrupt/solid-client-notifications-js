@@ -8,7 +8,7 @@
     "docs:build": "typedoc",
     "docs:preview": "npm run build-api-docs; cd docs/api; rm source/api/index.md; make html; cd ../; rm -r dist || true; mkdir -p dist/api; cp -r api/build/html/. dist/;",
     "lint:fix": "npm run lint:eslint -- --fix && npm run lint:prettier -- --write",
-    "lint:ci": "npm run lint:eslint && npm run lint:prettier -- --check",
+    "lint:check": "npm run lint:eslint && npm run lint:prettier -- --check",
     "lint:eslint": "eslint --config .eslintrc.js \"src/\" \"e2e/\"",
     "lint:prettier": "prettier \"{src,e2e}/**/*.{ts,tsx,js,jsx,css}\" \"*.{md,mdx,yml}\"",
     "test": "jest src",
