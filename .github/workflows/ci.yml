@@ -27,11 +27,6 @@ jobs:
         key: ${{ runner.os }}-node${{ runner.node-version }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
     - run: npm ci
     - run: npm run build
-    - run: npm run lint
-    - run: npm run licenses:check
-    # Set back to --audit-level=moderate when https://github.com/advisories/GHSA-qrpm-p2h7-hrv2
-    # is resolved in testcafe
-    - run: npm audit --audit-level=high
     - run: npm test
     - run: npm run test:e2e:node
       # To prevent conflicts of multiple jobs trying to modify the same Resource at the same time,
