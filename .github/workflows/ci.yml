@@ -5,7 +5,7 @@ on: [push]
 env:
   CI: true
 jobs:
-  build:
+  unit-tests:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -41,3 +41,5 @@ jobs:
       with:
         name: dist
         path: dist
+  lint:
+    uses: inrupt/javascript-style-configs/.github/workflows/reusable-lint.yml@create-reusable-workflows
