@@ -8,7 +8,7 @@ To run the tests locally:
 2. Copy `.env.example` to `.env.test.local`.
 3. Run `npx @inrupt/generate-oidc-token` to obtain the credentials of the Pod
    you want the test to run against, and add them to `.env.test.local`.
-4. You can now run `npm run e2e-test-node` from the root.
+4. You can now run `npm run test:e2e:node` from the root.
 
 ## Running these End-to-End-specific tests from an IDE
 

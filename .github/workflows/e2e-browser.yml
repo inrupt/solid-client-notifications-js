@@ -36,7 +36,7 @@ jobs:
         cd ../../
     - name: Run browser-based end-to-end tests (Linux)
       # TODO: Add Edge/merge with Windows setup once Edge is available on Linux:
-      run: npm run e2e-test-browser -- firefox:headless,chrome:headless
+      run: npm run test:e2e:browser -- firefox:headless,chrome:headless
       env:
         E2E_TEST_ESS_NOTIFICATION_GATEWAY: ${{secrets.E2E_TEST_ESS_PROD_NOTIFICATION_GATEWAY}}
         E2E_TEST_ESS_IDP_URL: ${{ secrets.E2E_TEST_ESS_PROD_IDP_URL }}

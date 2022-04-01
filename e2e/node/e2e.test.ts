@@ -1,24 +1,22 @@
-/**
- * Copyright 2020 Inrupt Inc.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal in
- * the Software without restriction, including without limitation the rights to use,
- * copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the
- * Software, and to permit persons to whom the Software is furnished to do so,
- * subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
- * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
- * PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
- * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
- * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
- * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
+// Copyright 2021 Inrupt Inc.
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal in
+// the Software without restriction, including without limitation the rights to use,
+// copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the
+// Software, and to permit persons to whom the Software is furnished to do so,
+// subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+// INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+// PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+// HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+// OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+// eslint-disable-next-line no-shadow
 import { jest, describe, it, expect, afterEach } from "@jest/globals";
 import { Session } from "@inrupt/solid-client-authn-node";
 import { config } from "dotenv-flow";
@@ -52,6 +50,8 @@ type AuthDetails = [
 const serversUnderTest: AuthDetails[] = [
   // pod.inrupt.com:
   [
+    // Note that this code is removed in a separate PR, so fixing it is pointless.
+    /* eslint-disable @typescript-eslint/no-non-null-assertion */
     process.env.E2E_TEST_ESS_NOTIFICATION_GATEWAY!,
     process.env.E2E_TEST_ESS_POD!.replace(/^https:\/\//, ""),
     process.env.E2E_TEST_ESS_IDP_URL!.replace(/^https:\/\//, ""),
@@ -94,8 +94,8 @@ describe.each(serversUnderTest)(
     clientId,
     clientSecret
   ) => {
-    const rootContainer = "https://" + rootContainerDisplay;
-    const oidcIssuer = "https://" + oidcIssuerDisplay;
+    const rootContainer = `https://${rootContainerDisplay}`;
+    const oidcIssuer = `https://${oidcIssuerDisplay}`;
 
     let ws: WebsocketNotification | undefined;
 
@@ -108,10 +108,10 @@ describe.each(serversUnderTest)(
     async function getSession() {
       const session = new Session();
       await session.login({
-        oidcIssuer: oidcIssuer,
-        clientId: clientId,
+        oidcIssuer,
+        clientId,
         clientName: "Solid Client End-2-End Test Client App - Node.js",
-        clientSecret: clientSecret,
+        clientSecret,
       });
       return session;
     }
@@ -130,7 +130,7 @@ describe.each(serversUnderTest)(
 
       expect(ws.status).toBe("closed");
 
-      ws.connect();
+      await ws.connect();
 
       await new Promise((resolve, reject) => {
         ws?.on("connected", () => {

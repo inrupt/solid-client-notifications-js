@@ -1,4 +1,5 @@
-e2e
+# FIXME: Remove after switching to playwright
+e2e/browser
 jest.config.js
 jest.setup.js
 jest.e2e.config.js
