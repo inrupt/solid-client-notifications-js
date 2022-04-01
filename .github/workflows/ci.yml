@@ -42,4 +42,5 @@ jobs:
         name: dist
         path: dist
   lint:
-    uses: inrupt/javascript-style-configs/.github/workflows/reusable-lint.yml@create-reusable-workflows
+    # FIXME: use a fixed version after it has been released
+    uses: inrupt/javascript-style-configs/.github/workflows/reusable-lint.yml@main
