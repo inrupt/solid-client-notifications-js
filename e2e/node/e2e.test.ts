@@ -16,13 +16,28 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-// eslint-disable-next-line no-shadow
-import { jest, describe, it, expect, afterEach } from "@jest/globals";
+import {
+  // eslint-disable-next-line no-shadow
+  jest,
+  // eslint-disable-next-line no-shadow
+  describe,
+  // eslint-disable-next-line no-shadow
+  it,
+  // eslint-disable-next-line no-shadow
+  expect,
+  // eslint-disable-next-line no-shadow
+  afterEach,
+  // eslint-disable-next-line no-shadow
+  beforeEach,
+} from "@jest/globals";
 import { Session } from "@inrupt/solid-client-authn-node";
 import { config } from "dotenv-flow";
 import * as openidClient from "openid-client";
+import { getPodUrlAll } from "@inrupt/solid-client";
 
 import { WebsocketNotification } from "../../src/index";
+
+import { getTestingEnvironmentNode } from "../e2e-setup";
 
 config({
   path: __dirname,
@@ -31,107 +46,86 @@ config({
   silent: process.env.CI === "true",
 });
 
-type NotificationGateway = string;
-type OidcIssuer = string;
-type ClientId = string;
-type ClientSecret = string;
-type Pod = string;
+const {
+  idp: oidcIssuer,
+  environment,
+  clientId,
+  clientSecret,
+  notificationGateway,
+  protocol,
+} = getTestingEnvironmentNode();
 
-type AuthDetails = [
-  NotificationGateway,
-  Pod,
-  OidcIssuer,
-  ClientId,
-  ClientSecret
-];
+const TEST_SLUG = "solid-client-test-e2e-notifications";
 
-// Instructions for obtaining these credentials can be found here:
-// https://github.com/inrupt/solid-client-authn-js/blob/1a97ef79057941d8ac4dc328fff18333eaaeb5d1/packages/node/example/bootstrappedApp/README.md
-const serversUnderTest: AuthDetails[] = [
-  // pod.inrupt.com:
-  [
-    // Note that this code is removed in a separate PR, so fixing it is pointless.
-    /* eslint-disable @typescript-eslint/no-non-null-assertion */
-    process.env.E2E_TEST_ESS_NOTIFICATION_GATEWAY!,
-    process.env.E2E_TEST_ESS_POD!.replace(/^https:\/\//, ""),
-    process.env.E2E_TEST_ESS_IDP_URL!.replace(/^https:\/\//, ""),
-    process.env.E2E_TEST_ESS_CLIENT_ID!,
-    process.env.E2E_TEST_ESS_CLIENT_SECRET!,
-  ],
-  /*
-  FIXME: temporarily disable dev-next tests. dev-next uses the new Notification
-  protocol: https://solid.github.io/notifications/protocol, while this codebase
-  uses a previous version.
-  [
-    process.env.E2E_TEST_DEV_NEXT_NOTIFICATION_GATEWAY!,
-    // Cumbersome workaround, but:
-    // Trim `https://` from the start of these URLs,
-    // so that GitHub Actions doesn't replace them with *** in the logs.
-    process.env.E2E_TEST_DEV_NEXT_POD!.replace(/^https:\/\//, ""),
-    process.env.E2E_TEST_DEV_NEXT_IDP_URL!.replace(/^https:\/\//, ""),
-    process.env.E2E_TEST_DEV_NEXT_CLIENT_ID!,
-    process.env.E2E_TEST_DEV_NEXT_CLIENT_SECRET!,
-  ],
-  */
-  // pod-compat.inrupt.com, temporarily disabled while WSS is in dev:
-  /*
-  [
-    process.env.E2E_TEST_ESS_NOTIFICATION_GATEWAY!,
-    process.env.E2E_TEST_ESS_COMPAT_POD!,
-    process.env.E2E_TEST_ESS_COMPAT_IDP_URL!,
-    process.env.E2E_TEST_ESS_COMPAT_CLIENT_ID!,
-    process.env.E2E_TEST_ESS_COMPAT_CLIENT_SECRET!,
-  ],
-  */
-];
+// Allows us to skip a test pending some conditions.
+const testIf = (condition: boolean) => (condition ? it : it.skip);
 
-describe.each(serversUnderTest)(
-  "Authenticated end-to-end tests for gateway [%s] against Pod [%s] and OIDC Issuer [%s]:",
-  (
-    notificationGateway,
-    rootContainerDisplay,
-    oidcIssuerDisplay,
-    clientId,
-    clientSecret
-  ) => {
-    const rootContainer = `https://${rootContainerDisplay}`;
-    const oidcIssuer = `https://${oidcIssuerDisplay}`;
+describe(`Authenticated end-to-end notifications tests for environment [${environment}}]`, () => {
+  // Lots of requests being made; we'll give it some extra time.
+  jest.setTimeout(15000);
+  openidClient.custom.setHttpOptionsDefaults({ timeout: 5000 });
 
-    let ws: WebsocketNotification | undefined;
+  let ws: WebsocketNotification | undefined;
+  const session = new Session();
+  let rootContainer: string;
+  let userAgentFetch: typeof fetch;
 
-    afterEach(() => {
-      if (ws) {
-        ws.disconnect();
-      }
+  beforeEach(async () => {
+    // Log both sessions in.
+    await session.login({
+      oidcIssuer,
+      clientId,
+      clientSecret,
     });
 
-    async function getSession() {
-      const session = new Session();
-      await session.login({
-        oidcIssuer,
-        clientId,
-        clientName: "Solid Client End-2-End Test Client App - Node.js",
-        clientSecret,
-      });
-      return session;
+    if (!session.info.isLoggedIn) {
+      throw new Error("Logging the test agent in failed.");
     }
 
-    it("can connect to a websocket on the root container", async () => {
-      // Lots of requests being made; we'll give it some extra time.
-      jest.setTimeout(15000);
-      openidClient.custom.setHttpOptionsDefaults({ timeout: 5000 });
+    userAgentFetch = (url: RequestInfo, options?: RequestInit) => {
+      return session.fetch(url, {
+        ...options,
+        headers: {
+          ...options?.headers,
+          "User-Agent": TEST_SLUG,
+        },
+      });
+    };
 
-      const session = await getSession();
+    // Figure out the test user's Pod root
+    const podRootAll = await getPodUrlAll(session.info.webId as string);
+    if (podRootAll.length === 0) {
+      throw new Error(
+        `No Pod root were found in the profile associated to [${session.info.webId}]`
+      );
+    }
+    // Arbitrarily pick one available Pod root.
+    [rootContainer] = podRootAll;
+  });
 
+  afterEach(async () => {
+    if (ws) {
+      ws.disconnect();
+    }
+    await session.logout();
+  });
+
+  // The client library currently only supports the legacy ESS notifications protocol.
+  // FIXME: When support for the latest protocol has been added, this should be removed
+  // and the library should use the appropriate protocol depending on the environment.
+  testIf(protocol === "ESS Notifications Protocol")(
+    "can connect to a websocket on the root container",
+    async () => {
+      // The following is required because the linter doesn't recognize testIf
+      /* eslint-disable jest/no-standalone-expect */
       ws = new WebsocketNotification(rootContainer, {
         gateway: notificationGateway,
-        fetch: session.fetch,
+        fetch: userAgentFetch,
       });
 
       expect(ws.status).toBe("closed");
 
       await ws.connect();
-
       await new Promise((resolve, reject) => {
         ws?.on("connected", () => {
           resolve(undefined);
@@ -155,6 +149,6 @@ describe.each(serversUnderTest)(
       });
 
       expect(ws.status).toBe("closed");
-    });
-  }
-);
+    }
+  );
+});
