@@ -75,7 +75,7 @@
     "jest-websocket-mock": "^2.2.1",
     "node-fetch": "^2.6.6",
     "openid-client": "^4.9.1",
-    "prettier": "2.2.1",
+    "prettier": "2.6.1",
     "rollup": "^2.60.0",
     "rollup-plugin-typescript2": "^0.30.0",
     "testcafe": "^1.18.3",
