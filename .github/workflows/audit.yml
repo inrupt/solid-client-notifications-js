@@ -7,6 +7,6 @@ on:
 
 jobs:
     audit:
-      uses: inrupt/javascript-style-configs/.github/workflows/reusable-audit.yml@a83bb7cb0881253a519ac917552aa63a0679b39b
+      uses: inrupt/javascript-style-configs/.github/workflows/reusable-audit.yml@eb439749b5c3e017c26577ff34a7d16734f13d0a
       secrets:
         WEBHOOK_E2E_FAILURE: ${{ secrets.WEBHOOK_E2E_FAILURE }}
