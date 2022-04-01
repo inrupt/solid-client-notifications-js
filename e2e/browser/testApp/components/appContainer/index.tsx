@@ -62,6 +62,7 @@ export default function AppContainer() {
       </p>
       <form>
         <input
+          data-testid="identityProviderInput"
           type="text"
           value={issuer}
           onChange={(e) => {
@@ -69,6 +70,7 @@ export default function AppContainer() {
           }}
         />
         <button
+          data-testid="loginButton"
           onClick={async (e) => {
             e.preventDefault();
             await handleLogin();
@@ -77,6 +79,7 @@ export default function AppContainer() {
           Log In
         </button>
         <button
+          data-testid="logoutButton"
           onClick={async (e) => {
             e.preventDefault();
             await handleLogout();

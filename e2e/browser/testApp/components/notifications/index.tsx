@@ -25,6 +25,7 @@ const MessageList = (props: { messages: Array<any> }) => {
 
 export default function Notifications() {
   const [socket, setSocket] = useState<WebsocketNotification>();
+  const [notificationGateway, setNotificationGateway] = useState<string>("https://notification.inrupt.com");
   const [connectionStatus, setConnectionStatus] = useState<string>(
     "disconnected"
   );
@@ -46,7 +47,7 @@ export default function Notifications() {
   }, []);
 
   useEffect(() => {
-    if (parentContainerUrl !== undefined && socket === undefined) {
+    if (parentContainerUrl !== undefined && socket === undefined && notificationGateway !== undefined) {
       setSocket(
         new WebsocketNotification(parentContainerUrl, {
           fetch: session.fetch,
@@ -68,10 +69,20 @@ export default function Notifications() {
         ]);
       });
     }
-  }, [socket, parentContainerUrl]);
+  }, [socket, parentContainerUrl, notificationGateway]);
 
   return (
     <div>
+      <form>
+        <input
+          data-testid="notificationGatewayInput"
+          type="text"
+          value={notificationGateway}
+          onChange={(e) => {
+            setNotificationGateway(e.target.value);
+          }}
+        />
+      </form>
       <p>
         Websocket status:{" "}
         <em>

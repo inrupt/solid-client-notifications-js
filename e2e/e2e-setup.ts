@@ -56,6 +56,8 @@ export interface TestingEnvironmentNode {
 export interface TestingEnvironmentBrowser {
   login: string;
   password: string;
+  idp: string;
+  notificationGateway: string;
 }
 
 export interface EnvVariables {
@@ -149,5 +151,7 @@ export function getTestingEnvironmentBrowser(): TestingEnvironmentBrowser {
   return {
     login: process.env.E2E_TEST_UI_LOGIN,
     password: process.env.E2E_TEST_UI_PASSWORD,
+    idp: process.env.E2E_TEST_IDP,
+    notificationGateway: process.env.E2E_TEST_NOTIFICATION_GATEWAY,
   };
 }
