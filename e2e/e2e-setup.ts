@@ -141,6 +141,8 @@ export function getTestingEnvironmentNode(): TestingEnvironmentNode {
 }
 
 export function getTestingEnvironmentBrowser(): TestingEnvironmentBrowser {
+  isTestingEnvironment(process.env);
+
   if (process.env.E2E_TEST_UI_LOGIN === undefined) {
     throw new Error("The environment variable E2E_TEST_UI_LOGIN is undefined.");
   }
