@@ -7,7 +7,7 @@ import {
 } from "@inrupt/solid-client-authn-browser";
 import Notifications from "../notifications/";
 
-const REDIRECT_URL = "http://localhost:3000/";
+const REDIRECT_URL = window.location.href;
 const APP_NAME = "Notifications browser-based tests app";
 const issuer = "https://login.inrupt.com/";
 
