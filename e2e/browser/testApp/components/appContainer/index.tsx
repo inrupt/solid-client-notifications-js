@@ -7,7 +7,7 @@ import {
   Session,
   ISessionInfo,
 } from "@inrupt/solid-client-authn-browser";
-import Notifications from "../notifications/";
+import Notifications from "../notifications";
 
 const REDIRECT_URL = window.location.href;
 const APP_NAME = "Notifications browser-based tests app";
