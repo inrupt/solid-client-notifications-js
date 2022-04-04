@@ -33,7 +33,6 @@ export default function Notifications() {
   const [messageBus, setMessageBus] = useState<any[]>([]);
 
   useEffect(() => {
-
     if (session.info.webId !== undefined) {
       getPodUrlAll(session.info.webId as string, {
         fetch: session.fetch,
@@ -47,7 +46,7 @@ export default function Notifications() {
   }, []);
 
   useEffect(() => {
-    if (parentContainerUrl !== undefined) {
+    if (parentContainerUrl !== undefined && socket === undefined) {
       setSocket(
         new WebsocketNotification(parentContainerUrl, {
           fetch: session.fetch,
@@ -55,9 +54,6 @@ export default function Notifications() {
         })
       );
     }
-  }, [parentContainerUrl]);
-
-  useEffect(() => {
     if (socket !== undefined) {
       socket.on("connected", () => setConnectionStatus("connected"));
       socket.on("closed", () => {
@@ -66,13 +62,12 @@ export default function Notifications() {
       });
       socket.on("error", () => setConnectionStatus("error"));
       socket.on("message", (message) => {
-        console.debug("New message", { message });
-        messageBus.push(JSON.parse(message));
+        messageBus.push();
         // Reverse the message bus so that the latest message appears first
-        setMessageBus([...messageBus.reverse()]);
+        setMessageBus([JSON.parse(message), ...messageBus]);
       });
     }
-  }, [socket]);
+  }, [socket, parentContainerUrl]);
 
   return (
     <div>
