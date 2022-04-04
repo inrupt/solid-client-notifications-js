@@ -102,15 +102,12 @@ const ContainerDock = ({parentContainerUrl}: {parentContainerUrl?: string}) => {
     <CreateResourceButton parentContainerUrl={parentContainerUrl} setChildContainerUrl={setChildContainerUrl}/>
     <DeleteResourceButton childContainerUrl={childContainerUrl} setChildContainerUrl={setChildContainerUrl}/>
   </>
-
 }
 
 export default function Notifications() {
   const [socket, setSocket] = useState<WebsocketNotification>();
   const [notificationGateway, setNotificationGateway] = useState<string>("https://notification.inrupt.com");
-  const [connectionStatus, setConnectionStatus] = useState<string>(
-    "disconnected"
-  );
+  const [connectionStatus, setConnectionStatus] = useState<string>();
   const [parentContainerUrl, setParentContainerUrl] = useState<string>();
   
   const [messageBus, setMessageBus] = useState<any[]>([]);
@@ -168,7 +165,7 @@ export default function Notifications() {
       <p>
         Websocket status:{" "}
         <em>
-          {connectionStatus !== "disconnected" ? <span data-testid="webSocketStatus">{connectionStatus}</span> : <></>}
+          {connectionStatus ? <span data-testid="webSocketStatus">{connectionStatus}</span> : <></>}
         </em>
       </p>
       
