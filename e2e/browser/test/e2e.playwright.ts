@@ -22,7 +22,11 @@
 /* eslint-disable jest/no-done-callback */
 
 // eslint-disable-next-line no-shadow
-import { test, expect, WebSocket as PlayWrigtWebSocket } from "@playwright/test";
+import {
+  test,
+  expect,
+  WebSocket as PlayWrigtWebSocket,
+} from "@playwright/test";
 import { essUserLogin } from "./roles";
 
 import { getTestingEnvironmentBrowser } from "../../e2e-setup";
@@ -38,43 +42,47 @@ test.skip("connecting a websocket and disconnecting it", async ({ page }) => {
   // Make sure we have a reference to the websocket that gets created.
   page.on("websocket", (ws) => {
     websocket = ws;
-  })
+  });
 
   // The button is only displayed when the websocket can be created.
-  await page.waitForSelector("button[data-testid=connectSocket]")
+  await page.waitForSelector("button[data-testid=connectSocket]");
 
   // Connect the websocket. Note that the Promis.all prevents a race condition where
   // the request would be sent before we wait on it.
   await Promise.all([
     // Negotiate the protocol endpoint at the gateway
-    page.waitForResponse((response) => response.url() === (new URL(notificationGateway)).href),
+    page.waitForResponse(
+      (response) => response.url() === new URL(notificationGateway).href
+    ),
     // Connect to the endpoint
-    page.waitForResponse((response) => response.url() !== (new URL(notificationGateway)).href),
+    page.waitForResponse(
+      (response) => response.url() !== new URL(notificationGateway).href
+    ),
     // The websocket should be created
     page.waitForEvent("websocket"),
     page.click("button[data-testid=connectSocket]"),
   ]);
 
   // Allow React to re-render the status after state update
-  await page.waitForSelector("span[data-testid=webSocketStatus]")
+  await page.waitForSelector("span[data-testid=webSocketStatus]");
 
   await expect(
     page.innerText("span[data-testid=webSocketStatus]")
   ).resolves.toBe("connected");
 
   // Disconnect
-  await Promise.all([
-    page.click("button[data-testid=disconnectSocket]"),
-  ]);
+  await Promise.all([page.click("button[data-testid=disconnectSocket]")]);
 
   await websocket.waitForEvent("close");
-  
+
   await expect(
     page.innerText("span[data-testid=webSocketStatus]")
   ).resolves.toMatch("closed");
 });
 
-test("connecting a websocket, getting messages, and disconnecting it", async ({ page }) => {
+test("connecting a websocket, getting messages, and disconnecting it", async ({
+  page,
+}) => {
   let websocket: PlayWrigtWebSocket;
   // Navigate to the test page and log in.
   await page.goto("/");
@@ -83,18 +91,22 @@ test("connecting a websocket, getting messages, and disconnecting it", async ({ 
   // Make sure we have a reference to the websocket that gets created.
   page.on("websocket", (ws) => {
     websocket = ws;
-  })
+  });
 
   // The button is only displayed when the websocket can be created.
-  await page.waitForSelector("button[data-testid=connectSocket]")
+  await page.waitForSelector("button[data-testid=connectSocket]");
 
   // Connect the websocket. Note that the Promis.all prevents a race condition where
   // the request would be sent before we wait on it.
   await Promise.all([
     // Negotiate the protocol endpoint at the gateway
-    page.waitForResponse((response) => response.url() === (new URL(notificationGateway)).href),
+    page.waitForResponse(
+      (response) => response.url() === new URL(notificationGateway).href
+    ),
     // Connect to the endpoint
-    page.waitForResponse((response) => response.url() !== (new URL(notificationGateway)).href),
+    page.waitForResponse(
+      (response) => response.url() !== new URL(notificationGateway).href
+    ),
     // The websocket should be created
     page.waitForEvent("websocket"),
     page.click("button[data-testid=connectSocket]"),
@@ -119,6 +131,6 @@ test("connecting a websocket, getting messages, and disconnecting it", async ({ 
   // Clean up
   await Promise.all([
     page.click("button[data-testid=deleteContainer]"),
-    page.click("button[data-testid=disconnectSocket]")
+    page.click("button[data-testid=disconnectSocket]"),
   ]);
 });

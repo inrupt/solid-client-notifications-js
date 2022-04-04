@@ -30,7 +30,7 @@ export class IndexPage {
   }
 
   async startLogin() {
-    const { idp } = getTestingEnvironmentBrowser()
+    const { idp } = getTestingEnvironmentBrowser();
     await this.page.fill("[data-testid=identityProviderInput]", idp);
     await this.page.click("[data-testid=loginButton]");
   }

@@ -23,56 +23,73 @@ const MessageList = (props: { messages: Array<any> }) => {
   );
 };
 
-const WebSocketButtons = ({socket}: {socket?: WebsocketNotification}) => {
+const WebSocketButtons = ({ socket }: { socket?: WebsocketNotification }) => {
   if (socket === undefined) {
-    return <></>
+    return <></>;
   }
-  return <>
+  return (
+    <>
+      <button
+        onClick={async (e) => {
+          e.preventDefault();
+          await socket.connect();
+        }}
+        data-testid="connectSocket"
+      >
+        Connect websocket
+      </button>
+      <button
+        onClick={(e) => {
+          e.preventDefault();
+          socket.disconnect();
+        }}
+        data-testid="disconnectSocket"
+      >
+        Disconnect websocket
+      </button>
+    </>
+  );
+};
+
+const CreateResourceButton = ({
+  parentContainerUrl,
+  setChildContainerUrl,
+}: {
+  parentContainerUrl?: string;
+  setChildContainerUrl: (url: string) => void;
+}) => {
+  return parentContainerUrl === undefined ? (
+    <></>
+  ) : (
     <button
       onClick={async (e) => {
         e.preventDefault();
-        await socket.connect();
+        setChildContainerUrl(
+          getSourceIri(
+            await createContainerInContainer(parentContainerUrl, {
+              fetch: getDefaultSession().fetch,
+            })
+          )
+        );
       }}
-      data-testid="connectSocket"
+      data-testid="createContainer"
     >
-      Connect websocket
-    </button>
-    <button
-      onClick={(e) => {
-        e.preventDefault();
-        socket.disconnect();
-      }}
-      data-testid="disconnectSocket"
-    >
-      Disconnect websocket
-    </button>
-  </>
-}
-
-const CreateResourceButton = ({parentContainerUrl, setChildContainerUrl}: {parentContainerUrl?: string, setChildContainerUrl: (url: string) => void}) => {
-  return parentContainerUrl === undefined 
-    ? <></> 
-    : <button
-        onClick={async (e) => {
-          e.preventDefault();
-          setChildContainerUrl(
-            getSourceIri(
-              await createContainerInContainer(parentContainerUrl, {
-                fetch: getDefaultSession().fetch,
-              })
-            )
-          );
-        }}
-        data-testid="createContainer"
-      >
       Create container
     </button>
-}
+  );
+};
 
-const DeleteResourceButton = ({childContainerUrl, setChildContainerUrl}: {childContainerUrl?: string, setChildContainerUrl: (url?: string) => void}) =>  {
-  return childContainerUrl === undefined
-  ? <></>
-  : <button
+const DeleteResourceButton = ({
+  childContainerUrl,
+  setChildContainerUrl,
+}: {
+  childContainerUrl?: string;
+  setChildContainerUrl: (url?: string) => void;
+}) => {
+  return childContainerUrl === undefined ? (
+    <></>
+  ) : (
+    <button
       onClick={async (e) => {
         e.preventDefault();
         if (childContainerUrl !== undefined) {
@@ -86,30 +103,47 @@ const DeleteResourceButton = ({childContainerUrl, setChildContainerUrl}: {childC
     >
       Delete container
     </button>
-}
+  );
+};
 
-const ContainerDock = ({parentContainerUrl}: {parentContainerUrl?: string}) => {
-  const [childContainerUrl, setChildContainerUrl] = useState<string | undefined>();
-  return <>
-    <p>
-      Child container:{" "}
-      <em>
-        <span data-testid="childContainerUrl">
-          {childContainerUrl ?? "None"}
-        </span>
-      </em>
-    </p>
-    <CreateResourceButton parentContainerUrl={parentContainerUrl} setChildContainerUrl={setChildContainerUrl}/>
-    <DeleteResourceButton childContainerUrl={childContainerUrl} setChildContainerUrl={setChildContainerUrl}/>
-  </>
-}
+const ContainerDock = ({
+  parentContainerUrl,
+}: {
+  parentContainerUrl?: string;
+}) => {
+  const [childContainerUrl, setChildContainerUrl] = useState<
+    string | undefined
+  >();
+  return (
+    <>
+      <p>
+        Child container:{" "}
+        <em>
+          <span data-testid="childContainerUrl">
+            {childContainerUrl ?? "None"}
+          </span>
+        </em>
+      </p>
+      <CreateResourceButton
+        parentContainerUrl={parentContainerUrl}
+        setChildContainerUrl={setChildContainerUrl}
+      />
+      <DeleteResourceButton
+        childContainerUrl={childContainerUrl}
+        setChildContainerUrl={setChildContainerUrl}
+      />
+    </>
+  );
+};
 
 export default function Notifications() {
   const [socket, setSocket] = useState<WebsocketNotification>();
-  const [notificationGateway, setNotificationGateway] = useState<string>("https://notification.inrupt.com");
+  const [notificationGateway, setNotificationGateway] = useState<string>(
+    "https://notification.inrupt.com"
+  );
   const [connectionStatus, setConnectionStatus] = useState<string>();
   const [parentContainerUrl, setParentContainerUrl] = useState<string>();
-  
+
   const [messageBus, setMessageBus] = useState<any[]>([]);
 
   useEffect(() => {
@@ -165,11 +199,15 @@ export default function Notifications() {
       <p>
         Websocket status:{" "}
         <em>
-          {connectionStatus ? <span data-testid="webSocketStatus">{connectionStatus}</span> : <></>}
+          {connectionStatus ? (
+            <span data-testid="webSocketStatus">{connectionStatus}</span>
+          ) : (
+            <></>
+          )}
         </em>
       </p>
-      
-      <WebSocketButtons socket={socket}/>
+
+      <WebSocketButtons socket={socket} />
       <br></br>
       <ContainerDock parentContainerUrl={parentContainerUrl} />
       <br />
