@@ -8,6 +8,8 @@ import {
 } from "@inrupt/solid-client";
 import { getDefaultSession } from "@inrupt/solid-client-authn-browser";
 
+const session = getDefaultSession();
+
 const MessageList = (props: { messages: Array<any> }) => {
   const { messages } = props;
   return (
@@ -31,9 +33,10 @@ export default function Notifications() {
   const [messageBus, setMessageBus] = useState<any[]>([]);
 
   useEffect(() => {
-    if (getDefaultSession().info.webId !== undefined) {
-      getPodUrlAll(getDefaultSession().info.webId as string, {
-        fetch: getDefaultSession().fetch,
+
+    if (session.info.webId !== undefined) {
+      getPodUrlAll(session.info.webId as string, {
+        fetch: session.fetch,
       }).then((pods) => {
         if (pods.length === 0) {
           throw new Error("No pod root in webid profile");
@@ -47,7 +50,7 @@ export default function Notifications() {
     if (parentContainerUrl !== undefined) {
       setSocket(
         new WebsocketNotification(parentContainerUrl, {
-          fetch: getDefaultSession().fetch,
+          fetch: session.fetch,
           gateway: "https://notification.inrupt.com",
         })
       );
@@ -118,7 +121,7 @@ export default function Notifications() {
             setChildContainerUrl(
               getSourceIri(
                 await createContainerInContainer(parentContainerUrl, {
-                  fetch: getDefaultSession().fetch,
+                  fetch: session.fetch,
                 })
               )
             );
@@ -133,7 +136,7 @@ export default function Notifications() {
           e.preventDefault();
           if (childContainerUrl !== undefined) {
             deleteContainer(childContainerUrl, {
-              fetch: getDefaultSession().fetch,
+              fetch: session.fetch,
             });
             setChildContainerUrl("None");
           }

@@ -11,8 +11,10 @@ const REDIRECT_URL = "http://localhost:3000/";
 const APP_NAME = "Notifications browser-based tests app";
 const issuer = "https://login.inrupt.com/";
 
+const session = getDefaultSession();
+
 const NotificationContainer = () => {
-  if (getDefaultSession().info.isLoggedIn) {
+  if (session.info.isLoggedIn) {
     return <Notifications />;
   } else {
     return <div></div>;
@@ -53,8 +55,8 @@ export default function AppContainer() {
     <div>
       <h1>{APP_NAME}</h1>
       <p>
-        {getDefaultSession().info.webId
-          ? `Logged in as ${getDefaultSession().info.webId}`
+        {loggedIn
+          ? `Logged in as ${session.info.webId}`
           : "Not logged in yet"}
       </p>
       <form>
