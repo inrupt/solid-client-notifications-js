@@ -9,7 +9,7 @@ import Notifications from "../notifications/";
 
 const REDIRECT_URL = window.location.href;
 const APP_NAME = "Notifications browser-based tests app";
-const issuer = "https://login.inrupt.com/";
+const DEFAULT_ISSUER = "https://login.inrupt.com/";
 
 const session = getDefaultSession();
 
@@ -23,7 +23,7 @@ const NotificationContainer = () => {
 
 export default function AppContainer() {
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
-  const [issuer, setIssuer] = useState<string>("https://login.inrupt.com");
+  const [issuer, setIssuer] = useState<string>(DEFAULT_ISSUER);
 
   useEffect(() => {
     (async () => {
