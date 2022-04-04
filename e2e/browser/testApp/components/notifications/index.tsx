@@ -23,6 +23,32 @@ const MessageList = (props: { messages: Array<any> }) => {
   );
 };
 
+const WebSocketButtons = ({socket}: {socket?: WebsocketNotification}) => {
+  if (socket === undefined) {
+    return <div></div>
+  }
+  return <div>
+    <button
+      onClick={async (e) => {
+        e.preventDefault();
+        await socket.connect();
+      }}
+      data-testid="connectSocket"
+    >
+      Connect websocket
+    </button>
+    <button
+      onClick={(e) => {
+        e.preventDefault();
+        socket.disconnect();
+      }}
+      data-testid="disconnectSocket"
+    >
+      Disconnect websocket
+    </button>
+  </div>
+}
+
 export default function Notifications() {
   const [socket, setSocket] = useState<WebsocketNotification>();
   const [notificationGateway, setNotificationGateway] = useState<string>("https://notification.inrupt.com");
@@ -97,29 +123,7 @@ export default function Notifications() {
           </span>
         </em>
       </p>
-
-      <button
-        onClick={async (e) => {
-          e.preventDefault();
-          if (socket !== undefined) {
-            await socket.connect();
-          }
-        }}
-        data-testid="connectSocket"
-      >
-        Connect websocket
-      </button>
-      <button
-        onClick={(e) => {
-          e.preventDefault();
-          if (socket !== undefined) {
-            socket.disconnect();
-          }
-        }}
-        data-testid="disconnectSocket"
-      >
-        Disconnect websocket
-      </button>
+      <WebSocketButtons socket={socket}/>
       <br></br>
       <button
         onClick={async (e) => {
