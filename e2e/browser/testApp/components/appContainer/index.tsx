@@ -13,7 +13,11 @@ const REDIRECT_URL = window.location.href;
 const APP_NAME = "Notifications browser-based tests app";
 const DEFAULT_ISSUER = "https://login.inrupt.com/";
 
-const NotificationContainer = ({sessionInfo}: { sessionInfo?: ISessionInfo }) => {
+const NotificationContainer = ({
+  sessionInfo,
+}: {
+  sessionInfo?: ISessionInfo;
+}) => {
   if (sessionInfo?.isLoggedIn) {
     return <Notifications />;
   } else {
@@ -38,9 +42,9 @@ export default function AppContainer() {
         oidcIssuer: issuer,
         clientName: APP_NAME,
       });
-    } catch(err) {
+    } catch (err) {
       console.error(err);
-    };
+    }
   };
 
   const handleLogout = async () => {
@@ -81,7 +85,7 @@ export default function AppContainer() {
           Log Out
         </button>
       </form>
-      <NotificationContainer sessionInfo={sessionInfo}/>
+      <NotificationContainer sessionInfo={sessionInfo} />
     </div>
   );
 }
