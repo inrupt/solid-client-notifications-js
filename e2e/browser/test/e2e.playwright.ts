@@ -22,62 +22,103 @@
 /* eslint-disable jest/no-done-callback */
 
 // eslint-disable-next-line no-shadow
-import { test, expect } from "@playwright/test";
+import { test, expect, WebSocket as PlayWrigtWebSocket } from "@playwright/test";
 import { essUserLogin } from "./roles";
 
 import { getTestingEnvironmentBrowser } from "../../e2e-setup";
 
-const { login, password } = getTestingEnvironmentBrowser();
+const { login, password, notificationGateway } = getTestingEnvironmentBrowser();
 
-test("connecting a websocket, getting messages, and disconnecting it", async ({ page }) => {
+test.skip("connecting a websocket and disconnecting it", async ({ page }) => {
+  let websocket: PlayWrigtWebSocket;
   // Navigate to the test page and log in.
   await page.goto("/");
   await essUserLogin(page, login, password);
 
-  // Create the resource. Note that the Promis.all prevents a race condition where
+  // Make sure we have a reference to the websocket that gets created.
+  page.on("websocket", (ws) => {
+    websocket = ws;
+  })
+
+  // The button is only displayed when the websocket can be created.
+  await page.waitForSelector("button[data-testid=connectSocket]")
+
+  // Connect the websocket. Note that the Promis.all prevents a race condition where
   // the request would be sent before we wait on it.
   await Promise.all([
+    // Negotiate the protocol endpoint at the gateway
+    page.waitForResponse((response) => response.url() === (new URL(notificationGateway)).href),
+    // Connect to the endpoint
+    page.waitForResponse((response) => response.url() !== (new URL(notificationGateway)).href),
+    // The websocket should be created
+    page.waitForEvent("websocket"),
     page.click("button[data-testid=connectSocket]"),
-    page.waitForRequest((request) => request.method() === "GET"),
-    page.waitForResponse((response) => response.status() === 101),
   ]);
+
+  // Allow React to re-render the status after state update
+  await page.waitForSelector("span[data-testid=webSocketStatus]")
+
+  await expect(
+    page.innerText("span[data-testid=webSocketStatus]")
+  ).resolves.toBe("connected");
+
+  // Disconnect
+  await Promise.all([
+    page.click("button[data-testid=disconnectSocket]"),
+  ]);
+
+  await websocket.waitForEvent("close");
   
   await expect(
     page.innerText("span[data-testid=webSocketStatus]")
-  ).resolves.toMatch("connected");
-
-  await page.click("button[data-testid=disconnectSocket]");
-  await expect(
-    page.innerText("span[data-testid=webSocketStatus]")
   ).resolves.toMatch("closed");
+});
 
-  // // Grant access to the resource.
-  // await Promise.all([
-  //   page.click("button[data-testid=grant-access]"),
-  //   page.waitForRequest((request) => request.method() === "POST"),
-  //   page.waitForResponse((response) => response.status() === 201),
-  // ]);
-  // await expect(
-  //   page.innerText("pre[data-testid=access-grant]")
-  // ).resolves.not.toBe("");
+test("connecting a websocket, getting messages, and disconnecting it", async ({ page }) => {
+  let websocket: PlayWrigtWebSocket;
+  // Navigate to the test page and log in.
+  await page.goto("/");
+  await essUserLogin(page, login, password);
 
-  // // Revoke the access grant.
-  // await Promise.all([
-  //   page.click("button[data-testid=revoke-access]"),
-  //   page.waitForRequest((request) => request.method() === "POST"),
-  //   page.waitForResponse((response) => response.status() === 204),
-  // ]);
-  // await expect(page.innerText("pre[data-testid=access-grant]")).resolves.toBe(
-  //   ""
-  // );
+  // Make sure we have a reference to the websocket that gets created.
+  page.on("websocket", (ws) => {
+    websocket = ws;
+  })
 
-  // // Cleanup the resource
-  // await Promise.all([
-  //   page.click("button[data-testid=delete-resource]"),
-  //   page.waitForRequest((request) => request.method() === "DELETE"),
-  //   page.waitForResponse((response) => response.status() === 204),
-  // ]);
-  // await expect(
-  //   page.innerText("span[data-testid=resource-iri]")
-  // ).resolves.toMatch("");
+  // The button is only displayed when the websocket can be created.
+  await page.waitForSelector("button[data-testid=connectSocket]")
+
+  // Connect the websocket. Note that the Promis.all prevents a race condition where
+  // the request would be sent before we wait on it.
+  await Promise.all([
+    // Negotiate the protocol endpoint at the gateway
+    page.waitForResponse((response) => response.url() === (new URL(notificationGateway)).href),
+    // Connect to the endpoint
+    page.waitForResponse((response) => response.url() !== (new URL(notificationGateway)).href),
+    // The websocket should be created
+    page.waitForEvent("websocket"),
+    page.click("button[data-testid=connectSocket]"),
+  ]);
+
+  // Make sure the container can be created.
+  await page.waitForSelector("button[data-testid=createContainer]");
+  await Promise.all([
+    // Wait for the resource creation
+    page.waitForResponse((response) => response.status() === 201),
+    // The resource creation should trigger a websocket frame
+    websocket.waitForEvent("framereceived"),
+    page.click("button[data-testid=createContainer]"),
+  ]);
+
+  // Waiting on the framereceived event ensures that the websocket receives events
+  // when resources are created.
+
+  // Make sure the container can be removed.
+  await page.waitForSelector("button[data-testid=deleteContainer]");
+
+  // Clean up
+  await Promise.all([
+    page.click("button[data-testid=deleteContainer]"),
+    page.click("button[data-testid=disconnectSocket]")
+  ]);
 });
