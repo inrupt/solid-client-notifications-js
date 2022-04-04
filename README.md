@@ -60,7 +60,7 @@ forum is a good place to meet the rest of the community.
 
 # Changelog
 
-See [the release notes](https://github.com/inrupt/solid-client-js/blob/main/CHANGELOG.md).
+See [the release notes](https://github.com/inrupt/solid-client-notifications-js/blob/main/CHANGELOG.md).
 
 # License
 
