@@ -4,6 +4,8 @@ import {
   logout,
   handleIncomingRedirect,
   getDefaultSession,
+  Session,
+  ISessionInfo,
 } from "@inrupt/solid-client-authn-browser";
 import Notifications from "../notifications/";
 
@@ -11,52 +13,47 @@ const REDIRECT_URL = window.location.href;
 const APP_NAME = "Notifications browser-based tests app";
 const DEFAULT_ISSUER = "https://login.inrupt.com/";
 
-const session = getDefaultSession();
-
-const NotificationContainer = () => {
-  if (session.info.isLoggedIn) {
+const NotificationContainer = ({sessionInfo}: { sessionInfo?: ISessionInfo }) => {
+  if (sessionInfo?.isLoggedIn) {
     return <Notifications />;
   } else {
-    return <div></div>;
+    return <></>;
   }
 };
 
 export default function AppContainer() {
-  const [loggedIn, setLoggedIn] = useState<boolean>(false);
+  const [sessionInfo, setSessionInfo] = useState<ISessionInfo>();
   const [issuer, setIssuer] = useState<string>(DEFAULT_ISSUER);
 
   useEffect(() => {
-    (async () => {
-      const info = await handleIncomingRedirect({
-        restorePreviousSession: true,
-      });
-      if (info !== undefined) {
-        setLoggedIn(info.isLoggedIn);
-      }
-    })();
-  }, [loggedIn]);
+    handleIncomingRedirect().then(setSessionInfo);
+  }, []);
 
   const handleLogin = async () => {
-    // Login will redirect the user away so that they can log in the OIDC issuer,
-    // and back to the provided redirect URL (which should be controlled by your app).
-    await login({
-      redirectUrl: REDIRECT_URL,
-      oidcIssuer: issuer,
-      clientName: APP_NAME,
-    });
+    try {
+      // Login will redirect the user away so that they can log in the OIDC issuer,
+      // and back to the provided redirect URL (which should be controlled by your app).
+      await login({
+        redirectUrl: REDIRECT_URL,
+        oidcIssuer: issuer,
+        clientName: APP_NAME,
+      });
+    } catch(err) {
+      console.error(err);
+    };
   };
 
   const handleLogout = async () => {
     await logout();
-    setLoggedIn(false);
+    setSessionInfo(undefined);
   };
 
   return (
     <div>
       <h1>{APP_NAME}</h1>
       <p>
-        {loggedIn
-          ? `Logged in as ${session.info.webId}`
+        {sessionInfo?.isLoggedIn
+          ? `Logged in as ${sessionInfo.webId}`
           : "Not logged in yet"}
       </p>
       <form>
@@ -84,7 +81,7 @@ export default function AppContainer() {
           Log Out
         </button>
       </form>
-      <NotificationContainer />
+      <NotificationContainer sessionInfo={sessionInfo}/>
     </div>
   );
 }
