@@ -25,9 +25,9 @@ const MessageList = (props: { messages: Array<any> }) => {
 
 const WebSocketButtons = ({socket}: {socket?: WebsocketNotification}) => {
   if (socket === undefined) {
-    return <div></div>
+    return <></>
   }
-  return <div>
+  return <>
     <button
       onClick={async (e) => {
         e.preventDefault();
@@ -46,7 +46,63 @@ const WebSocketButtons = ({socket}: {socket?: WebsocketNotification}) => {
     >
       Disconnect websocket
     </button>
-  </div>
+  </>
+}
+
+const CreateResourceButton = ({parentContainerUrl, setChildContainerUrl}: {parentContainerUrl?: string, setChildContainerUrl: (url: string) => void}) => {
+  return parentContainerUrl === undefined 
+    ? <></> 
+    : <button
+        onClick={async (e) => {
+          e.preventDefault();
+          setChildContainerUrl(
+            getSourceIri(
+              await createContainerInContainer(parentContainerUrl, {
+                fetch: getDefaultSession().fetch,
+              })
+            )
+          );
+        }}
+        data-testid="createContainer"
+      >
+      Create container
+    </button>
+}
+
+const DeleteResourceButton = ({childContainerUrl, setChildContainerUrl}: {childContainerUrl?: string, setChildContainerUrl: (url?: string) => void}) =>  {
+  return childContainerUrl === undefined
+  ? <></>
+  : <button
+      onClick={async (e) => {
+        e.preventDefault();
+        if (childContainerUrl !== undefined) {
+          deleteContainer(childContainerUrl, {
+            fetch: getDefaultSession().fetch,
+          });
+          setChildContainerUrl(undefined);
+        }
+      }}
+      data-testid="deleteContainer"
+    >
+      Delete container
+    </button>
+}
+
+const ContainerDock = ({parentContainerUrl}: {parentContainerUrl?: string}) => {
+  const [childContainerUrl, setChildContainerUrl] = useState<string | undefined>();
+  return <>
+    <p>
+      Child container:{" "}
+      <em>
+        <span data-testid="childContainerUrl">
+          {childContainerUrl ?? "None"}
+        </span>
+      </em>
+    </p>
+    <CreateResourceButton parentContainerUrl={parentContainerUrl} setChildContainerUrl={setChildContainerUrl}/>
+    <DeleteResourceButton childContainerUrl={childContainerUrl} setChildContainerUrl={setChildContainerUrl}/>
+  </>
+
 }
 
 export default function Notifications() {
@@ -56,7 +112,7 @@ export default function Notifications() {
     "disconnected"
   );
   const [parentContainerUrl, setParentContainerUrl] = useState<string>();
-  const [childContainerUrl, setChildContainerUrl] = useState<string>();
+  
   const [messageBus, setMessageBus] = useState<any[]>([]);
 
   useEffect(() => {
@@ -112,50 +168,13 @@ export default function Notifications() {
       <p>
         Websocket status:{" "}
         <em>
-          <span data-testid="webSocketStatus">{connectionStatus}</span>
+          {connectionStatus !== "disconnected" ? <span data-testid="webSocketStatus">{connectionStatus}</span> : <></>}
         </em>
       </p>
-      <p>
-        Child container:{" "}
-        <em>
-          <span data-testid="childContainerUrl">
-            {childContainerUrl ?? "None"}
-          </span>
-        </em>
-      </p>
+      
       <WebSocketButtons socket={socket}/>
       <br></br>
-      <button
-        onClick={async (e) => {
-          e.preventDefault();
-          if (parentContainerUrl !== undefined) {
-            setChildContainerUrl(
-              getSourceIri(
-                await createContainerInContainer(parentContainerUrl, {
-                  fetch: session.fetch,
-                })
-              )
-            );
-          }
-        }}
-        data-testid="createContainer"
-      >
-        Create container
-      </button>
-      <button
-        onClick={async (e) => {
-          e.preventDefault();
-          if (childContainerUrl !== undefined) {
-            deleteContainer(childContainerUrl, {
-              fetch: session.fetch,
-            });
-            setChildContainerUrl("None");
-          }
-        }}
-        data-testid="deleteContainer"
-      >
-        Delete container
-      </button>
+      <ContainerDock parentContainerUrl={parentContainerUrl} />
       <br />
       <MessageList messages={messageBus} />
     </div>
