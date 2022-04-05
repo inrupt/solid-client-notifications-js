@@ -157,9 +157,6 @@ const ContainerDock = ({
 
 export default function Notifications() {
   const [socket, setSocket] = useState<WebsocketNotification>();
-  const [notificationGateway, setNotificationGateway] = useState<string>(
-    "https://notification.inrupt.com"
-  );
   const [connectionStatus, setConnectionStatus] = useState<string>();
   const [parentContainerUrl, setParentContainerUrl] = useState<string>();
 
@@ -191,11 +188,10 @@ export default function Notifications() {
   }, []);
 
   useEffect(() => {
-    if (parentContainerUrl !== undefined && socket === undefined && notificationGateway !== undefined) {
+    if (parentContainerUrl !== undefined && socket === undefined) {
       setSocket(
         new WebsocketNotification(parentContainerUrl, {
           fetch: session.fetch,
-          gateway: "https://notification.inrupt.com",
         })
       );
     }
@@ -214,20 +210,10 @@ export default function Notifications() {
         ]);
       });
     }
-  }, [socket, parentContainerUrl, notificationGateway]);
+  }, [socket, parentContainerUrl]);
 
   return (
     <div>
-      <form>
-        <input
-          data-testid="notificationGatewayInput"
-          type="text"
-          value={notificationGateway}
-          onChange={(e) => {
-            setNotificationGateway(e.target.value);
-          }}
-        />
-      </form>
       <p>
         Websocket status:{" "}
         <em>
