@@ -62,9 +62,10 @@ export default function Notifications() {
       });
       socket.on("error", () => setConnectionStatus("error"));
       socket.on("message", (message) => {
-        messageBus.push(JSON.parse(message));
-        // Reverse the message bus so that the latest message appears first
-        setMessageBus([...messageBus.reverse()]);
+        setMessageBus((previousMessageBus) => [
+          JSON.parse(message),
+          ...previousMessageBus,
+        ]);
       });
     }
   }, [socket, parentContainerUrl]);
