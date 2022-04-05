@@ -33,8 +33,12 @@ import {
 import { Session } from "@inrupt/solid-client-authn-node";
 import { config } from "dotenv-flow";
 import * as openidClient from "openid-client";
-import { getPodUrlAll } from "@inrupt/solid-client";
-
+import {
+  getPodUrlAll,
+  createContainerInContainer,
+  deleteContainer,
+  getSourceIri,
+} from "@inrupt/solid-client";
 import { WebsocketNotification } from "../../src/index";
 
 import { getTestingEnvironmentNode } from "../e2e-setup";
@@ -136,6 +140,33 @@ describe(`Authenticated end-to-end notifications tests for environment [${enviro
       });
 
       expect(ws.status).toBe("connected");
+
+      const events: Array<unknown> = [];
+      ws.on("message", (message) => {
+        events.push(JSON.parse(message));
+      });
+
+      // Wait for the container to be created and for the notification to be received
+      const [childContainer] = await Promise.all([
+        createContainerInContainer(rootContainer, {
+          fetch: userAgentFetch,
+        }),
+        new Promise((resolve) => {
+          ws?.on("message", () => {
+            resolve(undefined);
+          });
+        }),
+      ]);
+
+      // One event should have been sent on the container creation
+      expect(events).toHaveLength(1);
+
+      await deleteContainer(getSourceIri(childContainer), {
+        fetch: userAgentFetch,
+      });
+
+      // One additional event should have been sent on the container deletion
+      expect(events).toHaveLength(2);
 
       ws.disconnect();
 
