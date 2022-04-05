@@ -59,20 +59,22 @@ const WebSocketButtons = ({ onConnect, onDisconnect, connectionStatus }: WebSock
   );
 };
 
+interface CreateResourceButtonProps {
+  parentContainerUrl?: string;
+  handleCreateContainer: (containerUrl: string) => void;
+}
+
 const CreateResourceButton = ({
   parentContainerUrl,
-  setChildContainerUrl,
-}: {
-  parentContainerUrl?: string;
-  setChildContainerUrl: (url: string) => void;
-}) => {
+  handleCreateContainer,
+}: CreateResourceButtonProps ) => {
   return parentContainerUrl === undefined ? (
     <></>
   ) : (
     <button
       onClick={async (e) => {
         e.preventDefault();
-        setChildContainerUrl(
+        handleCreateContainer(
           getSourceIri(
             await createContainerInContainer(parentContainerUrl, {
               fetch: getDefaultSession().fetch,
@@ -87,13 +89,15 @@ const CreateResourceButton = ({
   );
 };
 
+interface DeleteResourceButtonProps {
+  childContainerUrl?: string;
+  handleDeleteContainer: () => void;
+}
+
 const DeleteResourceButton = ({
   childContainerUrl,
-  setChildContainerUrl,
-}: {
-  childContainerUrl?: string;
-  setChildContainerUrl: (url?: string) => void;
-}) => {
+  handleDeleteContainer,
+}: DeleteResourceButtonProps) => {
   return childContainerUrl === undefined ? (
     <></>
   ) : (
@@ -104,7 +108,7 @@ const DeleteResourceButton = ({
           deleteContainer(childContainerUrl, {
             fetch: getDefaultSession().fetch,
           });
-          setChildContainerUrl(undefined);
+          handleDeleteContainer();
         }
       }}
       data-testid="deleteContainer"
@@ -122,6 +126,10 @@ const ContainerDock = ({
   const [childContainerUrl, setChildContainerUrl] = useState<
     string | undefined
   >();
+
+  const handleCreateContainer = (containerUrl: string) => setChildContainerUrl(containerUrl);
+  const handleDeleteContainer = () => setChildContainerUrl(undefined); 
+
   return (
     <>
       <p>
@@ -132,14 +140,17 @@ const ContainerDock = ({
           </span>
         </em>
       </p>
-      <CreateResourceButton
-        parentContainerUrl={parentContainerUrl}
-        setChildContainerUrl={setChildContainerUrl}
-      />
-      <DeleteResourceButton
-        childContainerUrl={childContainerUrl}
-        setChildContainerUrl={setChildContainerUrl}
-      />
+      {
+        childContainerUrl 
+        ? <DeleteResourceButton
+            childContainerUrl={childContainerUrl}
+            handleDeleteContainer={handleDeleteContainer}
+          />
+        : <CreateResourceButton
+            parentContainerUrl={parentContainerUrl}
+            handleCreateContainer={handleCreateContainer}
+          />
+      }
     </>
   );
 };
