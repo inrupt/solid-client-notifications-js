@@ -29,7 +29,11 @@ interface WebSocketButtons {
   connectionStatus?: string;
 }
 
-const WebSocketButtons = ({ onConnect, onDisconnect, connectionStatus }: WebSocketButtons) => {
+const WebSocketButtons = ({
+  onConnect,
+  onDisconnect,
+  connectionStatus,
+}: WebSocketButtons) => {
   if (connectionStatus === undefined) {
     return <></>;
   }
@@ -67,7 +71,7 @@ interface CreateResourceButtonProps {
 const CreateResourceButton = ({
   parentContainerUrl,
   handleCreateContainer,
-}: CreateResourceButtonProps ) => {
+}: CreateResourceButtonProps) => {
   return parentContainerUrl === undefined ? (
     <></>
   ) : (
@@ -127,8 +131,9 @@ const ContainerDock = ({
     string | undefined
   >();
 
-  const handleCreateContainer = (containerUrl: string) => setChildContainerUrl(containerUrl);
-  const handleDeleteContainer = () => setChildContainerUrl(undefined); 
+  const handleCreateContainer = (containerUrl: string) =>
+    setChildContainerUrl(containerUrl);
+  const handleDeleteContainer = () => setChildContainerUrl(undefined);
 
   return (
     <>
@@ -140,17 +145,17 @@ const ContainerDock = ({
           </span>
         </em>
       </p>
-      {
-        childContainerUrl 
-        ? <DeleteResourceButton
-            childContainerUrl={childContainerUrl}
-            handleDeleteContainer={handleDeleteContainer}
-          />
-        : <CreateResourceButton
-            parentContainerUrl={parentContainerUrl}
-            handleCreateContainer={handleCreateContainer}
-          />
-      }
+      {childContainerUrl ? (
+        <DeleteResourceButton
+          childContainerUrl={childContainerUrl}
+          handleDeleteContainer={handleDeleteContainer}
+        />
+      ) : (
+        <CreateResourceButton
+          parentContainerUrl={parentContainerUrl}
+          handleCreateContainer={handleCreateContainer}
+        />
+      )}
     </>
   );
 };
@@ -162,15 +167,15 @@ export default function Notifications() {
 
   const [messageBus, setMessageBus] = useState<any[]>([]);
 
-  const onConnect = async () => { 
+  const onConnect = async () => {
     if (socket !== undefined) {
-      await socket.connect()
+      await socket.connect();
     }
   };
 
-  const onDisconnect = () => { 
+  const onDisconnect = () => {
     if (socket !== undefined) {
-      socket.disconnect()
+      socket.disconnect();
     }
   };
 
@@ -225,7 +230,11 @@ export default function Notifications() {
         </em>
       </p>
 
-      <WebSocketButtons connectionStatus={connectionStatus} onConnect={onConnect} onDisconnect={onDisconnect} />
+      <WebSocketButtons
+        connectionStatus={connectionStatus}
+        onConnect={onConnect}
+        onDisconnect={onDisconnect}
+      />
       <br></br>
       <ContainerDock parentContainerUrl={parentContainerUrl} />
       <br />
