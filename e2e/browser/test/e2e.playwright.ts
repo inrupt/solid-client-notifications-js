@@ -25,7 +25,7 @@
 import {
   test,
   expect,
-  WebSocket as PlayWrigtWebSocket,
+  WebSocket as PlayWrightWebSocket,
 } from "@playwright/test";
 import { essUserLogin } from "./roles";
 
@@ -34,7 +34,7 @@ import { getTestingEnvironmentBrowser } from "../../e2e-setup";
 const { login, password, notificationGateway } = getTestingEnvironmentBrowser();
 
 test.skip("connecting a websocket and disconnecting it", async ({ page }) => {
-  let websocket: PlayWrigtWebSocket;
+  let websocket: PlayWrightWebSocket;
   // Navigate to the test page and log in.
   await page.goto("/");
   await essUserLogin(page, login, password);
@@ -83,7 +83,7 @@ test.skip("connecting a websocket and disconnecting it", async ({ page }) => {
 test("connecting a websocket, getting messages, and disconnecting it", async ({
   page,
 }) => {
-  let websocket: PlayWrigtWebSocket;
+  let websocket: PlayWrightWebSocket;
   // Navigate to the test page and log in.
   await page.goto("/");
   await essUserLogin(page, login, password);
