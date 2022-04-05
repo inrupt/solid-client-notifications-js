@@ -35,7 +35,7 @@ const config: PlaywrightTestConfig = {
     video: "on-first-retry",
   },
   webServer: {
-    command: "cd ../src/ ; npm run dev",
+    command: "cd ../testApp/ ; npm run dev",
     port: 3000,
     timeout: 120 * 1000,
     reuseExistingServer: !process.env.CI,
@@ -45,7 +45,7 @@ const config: PlaywrightTestConfig = {
       name: "Firefox",
       use: {
         browserName: "firefox",
-        userAgent: `Browser-based solid-client-access-grant end-to-end tests running ${
+        userAgent: `Browser-based solid-client-notification end-to-end tests running ${
           process.env.CI === "true" ? "in CI" : "locally"
         }. Mozilla/5.0 (X11; Linux x86_64; rv:10.0) Gecko/20100101 Firefox/10.0`,
       },

@@ -84,6 +84,7 @@ test("connecting a websocket, getting messages, and disconnecting it", async ({
   page,
 }) => {
   let websocket: PlayWrightWebSocket;
+  const framesReceived = [];
   // Navigate to the test page and log in.
   await page.goto("/");
   await essUserLogin(page, login, password);
@@ -91,6 +92,9 @@ test("connecting a websocket, getting messages, and disconnecting it", async ({
   // Make sure we have a reference to the websocket that gets created.
   page.on("websocket", (ws) => {
     websocket = ws;
+    websocket.on("framereceived", (data) => {
+      framesReceived.push(JSON.parse(data.payload.toString()));
+    })
   });
 
   // The button is only displayed when the websocket can be created.
@@ -118,19 +122,23 @@ test("connecting a websocket, getting messages, and disconnecting it", async ({
     // Wait for the resource creation
     page.waitForResponse((response) => response.status() === 201),
     // The resource creation should trigger a websocket frame
-    websocket.waitForEvent("framereceived"),
     page.click("button[data-testid=createContainer]"),
   ]);
 
-  // Waiting on the framereceived event ensures that the websocket receives events
-  // when resources are created.
+  expect(framesReceived.length).toBe(1);
+  expect(framesReceived[0].type).toContain("Update");
 
   // Make sure the container can be removed.
   await page.waitForSelector("button[data-testid=deleteContainer]");
 
-  // Clean up
+  // Delete the created resource
   await Promise.all([
     page.click("button[data-testid=deleteContainer]"),
-    page.click("button[data-testid=disconnectSocket]"),
+    websocket.waitForEvent("framereceived"),
   ]);
+
+  expect(framesReceived.length).toBe(2);
+  expect(framesReceived[1].type).toContain("Update");
+
+  await page.click("button[data-testid=disconnectSocket]");
 });
