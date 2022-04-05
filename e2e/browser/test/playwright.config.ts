@@ -26,7 +26,7 @@ const config: PlaywrightTestConfig = {
   globalSetup: require.resolve("./globalSetup.ts"),
   use: {
     baseURL: "http://localhost:3000",
-    headless: false,
+    headless: true,
     screenshot: "only-on-failure",
     trace: "on",
     video: "on-first-retry",
