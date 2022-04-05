@@ -1,50 +1,51 @@
-name: End-to-end Tests (Browser)
+name: End-to-end browser-based tests
 
 on:
   push:
-  workflow_dispatch:
 
 env:
   CI: true
 jobs:
-  build:
-    runs-on: ubuntu-20.04
-    if: ${{github.event.deployment_status.state == 'success'}} && github.actor != 'dependabot[bot]'
+  e2e-browser:
+    # Dependabot cannot access secrets, so it doesn't have a token to authenticate to ESS.
+    # Since all the other jobs of this workflow depend on this one, skipping it should
+    # skip the entire workflow.
+    if: ${{ github.actor != 'dependabot[bot]' }}
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{ matrix.environment-name }}
+    strategy:
+      matrix:
+        # NSS does not support static client registration, which we rely on for testing.
+        # Dev-next partially implements the latest notifications protocol, while
+        # this library still implements the legacy one.
+        environment-name: ["ESS Production"]
     steps:
     - uses: actions/checkout@v2.3.4
     - name: Use Node.js 16.x
-      uses: actions/setup-node@v2.1.5
+      uses: actions/setup-node@v3
       with:
         node-version: 16.x
-    - name: Cache node modules
-      uses: actions/cache@v2.1.5
-      env:
-        cache-name: cache-node-modules
-      with:
-        path: node_modules
-        key: ${{ runner.os }}-node${{ runner.node-version }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+        cache: npm
     - run: npm ci
     - run: npm run build
-    # Ideally, we'd autodetect installed browsers and run them headlessly.
-    # See https://github.com/DevExpress/testcafe/issues/5641
-    - name: Prepare browser-based end-to-end tests
-      run: |
-        cd .codesandbox/sandbox
-        npm install
-        # Run the end-to-end tests against the code in this branch specifically:
-        npm install ../../
-        cd ../../
-    - name: Run browser-based end-to-end tests (Linux)
-      # TODO: Add Edge/merge with Windows setup once Edge is available on Linux:
-      run: npm run test:e2e:browser -- firefox:headless,chrome:headless
+    - run: npx playwright install --with-deps
+    - run: npm run test:e2e:browser:build
+    - run: npm run test:e2e:browser
       env:
-        E2E_TEST_ESS_NOTIFICATION_GATEWAY: ${{secrets.E2E_TEST_ESS_PROD_NOTIFICATION_GATEWAY}}
-        E2E_TEST_ESS_IDP_URL: ${{ secrets.E2E_TEST_ESS_PROD_IDP_URL }}
-        E2E_TEST_ESS_POD: ${{ secrets.E2E_TEST_ESS_PROD_POD }}
-        E2E_TEST_ESS_COGNITO_USER: ${{ secrets.E2E_TEST_ESS_PROD_COGNITO_USER }}
-        E2E_TEST_ESS_COGNITO_PASSWORD: ${{ secrets.E2E_TEST_ESS_PROD_COGNITO_PASSWORD }}
-        E2E_TEST_DEV_NEXT_NOTIFICATION_GATEWAY: ${{ secrets.E2E_TEST_DEV_NEXT_NOTIFICATION_GATEWAY }}
-        E2E_TEST_DEV_NEXT_POD: ${{ secrets.E2E_TEST_DEV_NEXT_POD }}
-        E2E_TEST_DEV_NEXT_IDP_URL: ${{ secrets.E2E_TEST_DEV_NEXT_IDP_URL }}
-        E2E_TEST_DEV_NEXT_COGNITO_USER: ${{ secrets.E2E_TEST_DEV_COGNITO_USER }}
-        E2E_TEST_DEV_NEXT_COGNITO_PASSWORD: ${{ secrets.E2E_TEST_DEV_NEXT_COGNITO_PASSWORD }}
+        E2E_TEST_ENVIRONMENT: ${{ matrix.environment-name }}
+        E2E_TEST_UI_LOGIN: ${{ secrets.E2E_TEST_UI_LOGIN }}
+        E2E_TEST_UI_PASSWORD: ${{ secrets.E2E_TEST_UI_PASSWORD }}
+    - name: Archive browser-based end-to-end test request logs
+      uses: actions/upload-artifact@v3
+      if: failure()
+      continue-on-error: true
+      with:
+        name: playwright-output
+        path: test-results/
+    - name: Archive production artifacts
+      uses: actions/upload-artifact@v3
+      continue-on-error: true
+      with:
+        name: dist
+        path: dist
