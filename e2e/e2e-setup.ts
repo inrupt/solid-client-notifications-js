@@ -65,8 +65,8 @@ export interface EnvVariables {
   E2E_TEST_NOTIFICATION_PROTOCOL: AvailableProtocol;
   E2E_TEST_IDP: string;
   E2E_TEST_NOTIFICATION_GATEWAY: string;
-  E2E_TEST_CLIENT_ID: string;
-  E2E_TEST_CLIENT_SECRET: string;
+  E2E_TEST_CLIENT_ID: string | undefined;
+  E2E_TEST_CLIENT_SECRET: string | undefined;
   E2E_TEST_UI_LOGIN: string | undefined;
   E2E_TEST_UI_PASSWORD: string | undefined;
 }
@@ -111,24 +111,22 @@ function isTestingEnvironment(
       "The environment variable E2E_TEST_NOTIFICATION_GATEWAY is undefined."
     );
   }
+}
 
-  if (typeof (environment as EnvVariables).E2E_TEST_CLIENT_ID !== "string") {
+export function getTestingEnvironmentNode(): TestingEnvironmentNode {
+  isTestingEnvironment(process.env);
+
+  if (typeof process.env.E2E_TEST_CLIENT_ID !== "string") {
     throw new Error(
       "The environment variable E2E_TEST_CLIENT_ID is undefined."
     );
   }
 
-  if (
-    typeof (environment as EnvVariables).E2E_TEST_CLIENT_SECRET !== "string"
-  ) {
+  if (typeof process.env.E2E_TEST_CLIENT_SECRET !== "string") {
     throw new Error(
       "The environment variable E2E_TEST_CLIENT_SECRET is undefined."
     );
   }
-}
-
-export function getTestingEnvironmentNode(): TestingEnvironmentNode {
-  isTestingEnvironment(process.env);
 
   return {
     idp: process.env.E2E_TEST_IDP,
