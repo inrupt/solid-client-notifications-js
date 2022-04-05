@@ -23,31 +23,39 @@ const MessageList = (props: { messages: Array<any> }) => {
   );
 };
 
-const WebSocketButtons = ({ socket }: { socket?: WebsocketNotification }) => {
-  if (socket === undefined) {
+interface WebSocketButtons {
+  onConnect: () => Promise<void>;
+  onDisconnect: () => void;
+  connectionStatus?: string;
+}
+
+const WebSocketButtons = ({ onConnect, onDisconnect, connectionStatus }: WebSocketButtons) => {
+  if (connectionStatus === undefined) {
     return <></>;
   }
-  return (
-    <>
-      <button
-        onClick={async (e) => {
-          e.preventDefault();
-          await socket.connect();
-        }}
-        data-testid="connectSocket"
-      >
-        Connect websocket
-      </button>
+  if (connectionStatus === "connected") {
+    return (
       <button
         onClick={(e) => {
           e.preventDefault();
-          socket.disconnect();
+          onDisconnect();
         }}
         data-testid="disconnectSocket"
       >
         Disconnect websocket
       </button>
-    </>
+    );
+  }
+  return (
+    <button
+      onClick={async (e) => {
+        e.preventDefault();
+        await onConnect();
+      }}
+      data-testid="connectSocket"
+    >
+      Connect websocket
+    </button>
   );
 };
 
@@ -146,6 +154,18 @@ export default function Notifications() {
 
   const [messageBus, setMessageBus] = useState<any[]>([]);
 
+  const onConnect = async () => { 
+    if (socket !== undefined) {
+      await socket.connect()
+    }
+  };
+
+  const onDisconnect = () => { 
+    if (socket !== undefined) {
+      socket.disconnect()
+    }
+  };
+
   useEffect(() => {
     if (session.info.webId !== undefined) {
       getPodUrlAll(session.info.webId as string, {
@@ -169,6 +189,7 @@ export default function Notifications() {
       );
     }
     if (socket !== undefined) {
+      setConnectionStatus("closed");
       socket.on("connected", () => setConnectionStatus("connected"));
       socket.on("closed", () => {
         setConnectionStatus("closed");
@@ -207,7 +228,7 @@ export default function Notifications() {
         </em>
       </p>
 
-      <WebSocketButtons socket={socket} />
+      <WebSocketButtons connectionStatus={connectionStatus} onConnect={onConnect} onDisconnect={onDisconnect} />
       <br></br>
       <ContainerDock parentContainerUrl={parentContainerUrl} />
       <br />
