@@ -30,7 +30,7 @@ import { getTestingEnvironmentBrowser } from "../../e2e-setup";
 
 const { login, password, notificationGateway } = getTestingEnvironmentBrowser();
 
-test.skip("connecting a websocket and disconnecting it", async ({ page }) => {
+test("connecting a websocket and disconnecting it", async ({ page }) => {
   let websocket: PlayWrightWebSocket;
   // Navigate to the test page and log in.
   await page.goto("/");
