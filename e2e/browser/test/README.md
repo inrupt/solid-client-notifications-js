@@ -1,4 +1,4 @@
-# End-to-end tests for solid-client in the browser
+# End-to-end tests for solid-client-notifications in the browser
 
 This directory contains our browser-based end-to-end tests. The interaction
 between the test script, which runs on the command line in Node, and the system
@@ -16,7 +16,7 @@ The system under test is our existing test application, which is also used to tr
 library in the browser, and to verify whether the built code works after a pull
 request.
 
-One thing to note is that its dependency on solid-client-access-grants should be
+One thing to note is that its dependency on `solid-client-notifications` should be
 on the code _inside this repository_, rather than fetched from `npm`. This is achieved
 using `npm link` during the setup (see the installation section for the details).
 
