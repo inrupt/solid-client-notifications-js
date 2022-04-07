@@ -1,4 +1,4 @@
-// Copyright 2021 Inrupt Inc.
+// Copyright 2022 Inrupt Inc.
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal in
 // the Software without restriction, including without limitation the rights to use,
@@ -16,31 +16,13 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-import { t, ClientFunction, Selector } from "testcafe";
-import { screen } from "@testing-library/testcafe";
+import { getTestingEnvironmentBrowser } from "../../e2e-setup";
 
-export class GluuPage {
-  usernameInput;
+async function globalSetup() {
+  // Fail fast with dotenv:
+  getTestingEnvironmentBrowser();
 
-  passwordInput;
-
-  submitButton;
-
-  constructor() {
-    this.usernameInput = screen.getByRole("textbox");
-    this.passwordInput = Selector("input[type=password]");
-    this.submitButton = screen.getByRole("button");
-  }
-
-  async login(username: string, password: string) {
-    await onGluuPage();
-    await t
-      .typeText(this.usernameInput, username)
-      .typeText(this.passwordInput, password)
-      .click(this.submitButton);
-  }
+  // Return the teardown function.
+  return async () => {};
 }
-
-export async function onGluuPage() {
-  await t.expect(Selector("form#loginForm").exists).ok();
-}
+export default globalSetup;

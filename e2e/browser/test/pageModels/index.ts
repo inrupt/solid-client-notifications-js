@@ -1,4 +1,4 @@
-// Copyright 2021 Inrupt Inc.
+// Copyright 2022 Inrupt Inc.
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal in
 // the Software without restriction, including without limitation the rights to use,
@@ -16,52 +16,30 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-import { t, ClientFunction, Selector } from "testcafe";
-import { screen } from "@testing-library/testcafe";
+import { Page } from "@playwright/test";
+import { getTestingEnvironmentBrowser } from "../../../e2e-setup";
 
 export class IndexPage {
-  idpInput;
+  page: Page;
 
-  submitButton;
-
-  constructor() {
-    this.idpInput = screen.getByLabelText("Identity provider:");
-    this.submitButton = screen.getByText("Log in");
+  constructor(page: Page) {
+    this.page = page;
   }
 
-  async startLogin(idp = "https://broker.pod.inrupt.com") {
-    await t
-      .selectText(this.idpInput)
-      .pressKey("delete")
-      .typeText(this.idpInput, idp)
-      .click(this.submitButton)
-      // For some reason the login process does not seem to kicked off
-      // directly in response to the form submission, but after a timeout or something.
-      // Thus, we have to explicitly wait for it to start navigating:
-      .wait(500);
+  async startLogin() {
+    const { idp } = getTestingEnvironmentBrowser();
+    await this.page.fill("[data-testid=identityProviderInput]", idp);
+    await this.page.click("[data-testid=loginButton]");
   }
 
   async handleRedirect() {
-    // It looks like testing-library selectors do not allow us to wait for the element to appear,
-    // hence the use of TestCafe's native Selector:
-    // const initialisationNotification = screen.getByText("End-to-end test helpers initialised.");
-    const initialisationNotification = Selector("[role=alert]");
-    await t
-      .expect(initialisationNotification.exists)
-      .ok(
-        "solid-client-authn took too long to verify the query parameters after redirection.",
-        { timeout: 20000 }
-      );
+    // Wait for the backchannel exchange
+    await this.page.waitForRequest(
+      (request) =>
+        request.method() === "POST" && request.url().includes("/token")
+    );
+    await Promise.all([
+      this.page.waitForResponse((response) => response.status() === 200),
+    ]);
   }
-}
-
-export async function isIndexPage() {
-  // Pretend that `window` actually is defined (even though the `window`
-  // referred to in the ClientFunction is actually in a different runtime),
-  // so static analysis does not stumble over this:
-  const window: any = undefined;
-  return (
-    (await ClientFunction(() => window.location.origin)()) ===
-    "https://localhost:1234"
-  );
 }

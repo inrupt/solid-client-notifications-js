@@ -1,4 +1,4 @@
-// Copyright 2021 Inrupt Inc.
+// Copyright 2022 Inrupt Inc.
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal in
 // the Software without restriction, including without limitation the rights to use,
@@ -56,6 +56,8 @@ export interface TestingEnvironmentNode {
 export interface TestingEnvironmentBrowser {
   login: string;
   password: string;
+  idp: string;
+  notificationGateway: string;
 }
 
 export interface EnvVariables {
@@ -63,8 +65,8 @@ export interface EnvVariables {
   E2E_TEST_NOTIFICATION_PROTOCOL: AvailableProtocol;
   E2E_TEST_IDP: string;
   E2E_TEST_NOTIFICATION_GATEWAY: string;
-  E2E_TEST_CLIENT_ID: string;
-  E2E_TEST_CLIENT_SECRET: string;
+  E2E_TEST_CLIENT_ID: string | undefined;
+  E2E_TEST_CLIENT_SECRET: string | undefined;
   E2E_TEST_UI_LOGIN: string | undefined;
   E2E_TEST_UI_PASSWORD: string | undefined;
 }
@@ -109,24 +111,22 @@ function isTestingEnvironment(
       "The environment variable E2E_TEST_NOTIFICATION_GATEWAY is undefined."
     );
   }
+}
 
-  if (typeof (environment as EnvVariables).E2E_TEST_CLIENT_ID !== "string") {
+export function getTestingEnvironmentNode(): TestingEnvironmentNode {
+  isTestingEnvironment(process.env);
+
+  if (typeof process.env.E2E_TEST_CLIENT_ID !== "string") {
     throw new Error(
       "The environment variable E2E_TEST_CLIENT_ID is undefined."
     );
   }
 
-  if (
-    typeof (environment as EnvVariables).E2E_TEST_CLIENT_SECRET !== "string"
-  ) {
+  if (typeof process.env.E2E_TEST_CLIENT_SECRET !== "string") {
     throw new Error(
       "The environment variable E2E_TEST_CLIENT_SECRET is undefined."
     );
   }
-}
-
-export function getTestingEnvironmentNode(): TestingEnvironmentNode {
-  isTestingEnvironment(process.env);
 
   return {
     idp: process.env.E2E_TEST_IDP,
@@ -139,6 +139,8 @@ export function getTestingEnvironmentNode(): TestingEnvironmentNode {
 }
 
 export function getTestingEnvironmentBrowser(): TestingEnvironmentBrowser {
+  isTestingEnvironment(process.env);
+
   if (process.env.E2E_TEST_UI_LOGIN === undefined) {
     throw new Error("The environment variable E2E_TEST_UI_LOGIN is undefined.");
   }
@@ -149,5 +151,7 @@ export function getTestingEnvironmentBrowser(): TestingEnvironmentBrowser {
   return {
     login: process.env.E2E_TEST_UI_LOGIN,
     password: process.env.E2E_TEST_UI_PASSWORD,
+    idp: process.env.E2E_TEST_IDP,
+    notificationGateway: process.env.E2E_TEST_NOTIFICATION_GATEWAY,
   };
 }

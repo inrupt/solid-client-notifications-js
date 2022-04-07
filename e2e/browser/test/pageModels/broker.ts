@@ -1,4 +1,4 @@
-// Copyright 2021 Inrupt Inc.
+// Copyright 2022 Inrupt Inc.
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal in
 // the Software without restriction, including without limitation the rights to use,
@@ -16,25 +16,16 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-import { t, ClientFunction, Selector } from "testcafe";
-import { screen } from "@testing-library/testcafe";
+import { Page } from "@playwright/test";
 
 export class BrokerPage {
-  authoriseButton: Selector;
+  page: Page;
 
-  denyButton: Selector;
-
-  constructor() {
-    this.authoriseButton = screen.getByText("Allow");
-    this.denyButton = screen.getByText("Cancel");
+  constructor(page: Page) {
+    this.page = page;
   }
 
   async authoriseOnce() {
-    await onAuthorisePage();
-    await t.click(this.authoriseButton);
+    await this.page.click("text=Allow");
   }
-}
-
-export async function onAuthorisePage() {
-  await t.expect(Selector("form#approve").exists).ok();
 }
