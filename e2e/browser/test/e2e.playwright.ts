@@ -30,7 +30,10 @@ import { getTestingEnvironmentBrowser } from "../../e2e-setup";
 
 const { login, password, notificationGateway } = getTestingEnvironmentBrowser();
 
-test("connecting a websocket and disconnecting it", async ({ page }) => {
+// FIXME: There is currently a bug where the websocket is created, but no events
+// are coming through. There is no clear reproduction steps. The tests will be
+// re-enabled once this is fixed and they are no longer flaky.
+test.skip("connecting a websocket and disconnecting it", async ({ page }) => {
   let websocket: PlayWrightWebSocket;
   // Navigate to the test page and log in.
   await page.goto("/");
@@ -77,7 +80,10 @@ test("connecting a websocket and disconnecting it", async ({ page }) => {
   ).resolves.toMatch("closed");
 });
 
-test("connecting a websocket, getting messages, and disconnecting it", async ({
+// FIXME: There is currently a bug where the websocket is created, but no events
+// are coming through. There is no clear reproduction steps. The tests will be
+// re-enabled once this is fixed and they are no longer flaky.
+test.skip("connecting a websocket, getting messages, and disconnecting it", async ({
   page,
 }) => {
   let websocket: PlayWrightWebSocket;

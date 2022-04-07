@@ -64,7 +64,7 @@ const TEST_SLUG = "solid-client-test-e2e-notifications";
 // Allows us to skip a test pending some conditions.
 const testIf = (condition: boolean) => (condition ? it : it.skip);
 
-describe(`Authenticated end-to-end notifications tests for environment [${environment}}]`, () => {
+describe.skip(`Authenticated end-to-end notifications tests for environment [${environment}}]`, () => {
   // Lots of requests being made; we'll give it some extra time.
   jest.setTimeout(15000);
   openidClient.custom.setHttpOptionsDefaults({ timeout: 5000 });

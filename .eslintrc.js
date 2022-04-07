@@ -23,6 +23,7 @@ module.exports = {
   rules: {
     "import/prefer-default-export": 0,
     "max-classes-per-file": 0,
+    "jest/no-disabled-tests": 1
   },
   parserOptions: {
     project: "./tsconfig.eslint.json",
