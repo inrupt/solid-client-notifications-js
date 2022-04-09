@@ -6,7 +6,7 @@ on:
     - cron: "40 10 * * *"
 
 jobs:
-    audit:
-      uses: inrupt/javascript-style-configs/.github/workflows/reusable-audit.yml@main
-      secrets:
-        WEBHOOK_E2E_FAILURE: ${{ secrets.WEBHOOK_E2E_FAILURE }}
+  audit:
+    uses: inrupt/javascript-style-configs/.github/workflows/reusable-audit.yml@main
+    secrets:
+      WEBHOOK_E2E_FAILURE: ${{ secrets.WEBHOOK_E2E_FAILURE }}
