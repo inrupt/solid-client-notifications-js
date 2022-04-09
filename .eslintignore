@@ -1,5 +1,6 @@
-# FIXME: Remove after switching to playwright
-e2e/browser
+# e2e browser testApp has it's own separate eslint configuration:
+e2e/browser/testApp
+# ignore JS config files:
 jest.config.js
 jest.setup.js
 jest.e2e.config.js
