@@ -23,7 +23,7 @@
       "src/liveNotification.ts",
       "src/notification.ts",
       "src/websocketNotification.ts",
-      "src/errors.ts",
+      "src/errors.ts"
     ],
     "exclude": [
       "node_modules/**",
@@ -34,11 +34,11 @@
       // End-to-end tests:
       "e2e/**",
       // Re-exported functions are already documented in their own modules:
-      "src/index.ts",
+      "src/index.ts"
     ],
     "theme": "markdown",
     "readme": "none",
-    "entryDocument": "index.md",
+    "entryDocument": "index.md"
   },
   "include": ["src/**/*.ts", ".eslintrc.js"],
   "exclude": ["**/node_modules", "tests/**/*.js"]
