@@ -22,17 +22,63 @@
 // Typescript and eslint are fighting over whether these are globals
 /* eslint no-shadow: 0 */
 import IsoWebSocket, { MessageEvent, ErrorEvent } from "isomorphic-ws";
-import { BaseNotificationOptions } from "./notification";
+import { BaseNotificationOptions, statuses } from "./interfaces";
 import { LiveNotification } from "./liveNotification";
 
+/**
+ * Constructor for a WebSocket Notification instance, which allows subscribing to resources in the solid ecosystem.
+ * See the [Solid Notifications Protocol Specification](https://solid.github.io/notifications/protocol) for more details.
+ *
+ * ```typescript
+ * import { getDefaultSession } from '@inrupt/solid-authn-browser';
+ * // or for node.js:
+ * //   import { Session } from '@inrupt/solid-authn-node';
+ *
+ * const session = getDefaultSession();
+ * // for node.js:
+ * //   const session = new Session();
+ * //   await session.login({
+ * //     oidcIssuer,
+ * //     clientId,
+ * //     clientSecret,
+ * //   });
+ *
+ * const socket = new WebsocketNotification(parentContainerUrl, {
+ *   fetch: session.fetch,
+ * });
+ *
+ * socket.on("message", (message) => {
+ *   const notification = JSON.parse(message);
+ *   console.log("Change:", notification);
+ * });
+ *
+ * // Connect for receiving notifications:
+ * await socket.connect();
+ *
+ * // later:
+ * socket.disconnect();
+ * ```
+ */
 export class WebsocketNotification extends LiveNotification {
+  /**
+   * @private
+   */
   webSocket?: IsoWebSocket;
+
+  /** @internal */
+  status: statuses = "closed";
 
   constructor(topic: string, options?: BaseNotificationOptions) {
     // Hardcode the protocol to WS to ask the server specifically for a websocket connection
     super(topic, ["ws"], options);
   }
 
+  /**
+   * Connects the websocket to start receiving notifications. If no
+   * `providedEndpoint` or `providedSubprotocol` parameter is present, then
+   * those will automatically be discovered based on the capabilities of the
+   * host of the resource that you're subscribing to notifications for.
+   */
   connect = async (
     providedEndpoint?: string,
     providedSubprotocol?: string

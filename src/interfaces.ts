@@ -19,44 +19,47 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-import { EventEmitter } from "events";
-import { NotImplementedError } from "./errors";
+import { fetch as crossFetch } from "cross-fetch";
 
-import { BaseNotification } from "./notification";
-import { BaseNotificationOptions, protocols } from "./interfaces";
+export type protocols = "ws" | string;
+export type statuses = "connecting" | "connected" | "closing" | "closed";
 
-/**
- * @internal
- */
-export class LiveNotification extends BaseNotification {
-  /** @internal */
-  protocol?: protocols;
+/** @internal */
+export interface NegotiationInfo {
+  endpoint: string;
+  procotol: protocols;
+  features: FeatureOptions;
+}
 
-  /** @internal */
-  emitter: EventEmitter;
+/** @internal */
+export interface NotificationConnectionInfo {
+  endpoint: string;
+  protocol: protocols;
+  subprotocol: string;
+}
 
-  // TODO move constructor options to options instead of arguments
-  constructor(
-    topic: string,
-    protocolList: protocols[],
-    options?: BaseNotificationOptions
-  ) {
-    super(topic, protocolList, options);
-    this.emitter = new EventEmitter();
-  }
+export interface BaseNotificationOptions {
+  features?: FeatureOptions;
+  /**
+   * Automatically discovered based on the topic passed
+   */
+  gateway?: string;
+  /**
+   * Automatically discovered based on the topic passed
+   */
+  host?: string;
 
-  connect = (): void => {
-    this.status = "closed";
-    throw new NotImplementedError();
-  };
+  /**
+   * A WHATWG Fetch API compatible function used when making requests for
+   * discovering metadata for notifications. See the documentation for
+   * `setSessionFetch` in the `WebsocketNotification` class.
+   */
+  fetch?: typeof crossFetch;
+}
 
-  disconnect = (): void => {
-    this.status = "closed";
-    throw new NotImplementedError();
-  };
-
-  /* eslint @typescript-eslint/no-explicit-any: 0 */
-  on = (eventName: string, listener: (...args: any[]) => void): void => {
-    this.emitter.on(eventName, listener);
-  };
+export interface FeatureOptions {
+  state?: string;
+  ttl?: number;
+  rate?: number;
+  filter?: string;
 }

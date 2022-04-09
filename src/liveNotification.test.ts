@@ -21,7 +21,7 @@
 
 import EventEmitter from "events";
 import { LiveNotification } from "./liveNotification";
-import { protocols } from "./notification";
+import { protocols } from "./interfaces";
 
 describe("LiveNotification", () => {
   test("has an EventEmitter", () => {

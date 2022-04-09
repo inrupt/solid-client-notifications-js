@@ -98,3 +98,11 @@ Classes
 
    /classes/**
 
+Interfaces
+~~~~~~~~~~
+
+.. toctree::
+   :glob:
+   :titlesonly:
+
+   /interfaces/**

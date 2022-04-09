@@ -26,7 +26,7 @@ export {
   NotificationConnectionInfo,
   BaseNotificationOptions,
   FeatureOptions,
-} from "./notification";
+} from "./interfaces";
 
 export { WebsocketNotification } from "./websocketNotification";
 

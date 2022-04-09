@@ -21,49 +21,38 @@
 
 import { fetch as crossFetch } from "cross-fetch";
 import { FetchError } from "./errors";
+import {
+  protocols,
+  FeatureOptions,
+  statuses,
+  BaseNotificationOptions,
+  NegotiationInfo,
+  NotificationConnectionInfo,
+} from "./interfaces";
 
-export type protocols = "ws" | string;
-export type statuses = "connecting" | "connected" | "closing" | "closed";
-
-export type NegotiationInfo = {
-  endpoint: string;
-  procotol: protocols;
-  features: FeatureOptions;
-};
-
-export type NotificationConnectionInfo = {
-  endpoint: string;
-  protocol: protocols;
-  subprotocol: string;
-};
-
-export type BaseNotificationOptions = {
-  features?: FeatureOptions;
-  gateway?: string;
-  host?: string;
-  fetch?: typeof crossFetch;
-};
-
-export type FeatureOptions = {
-  state?: string;
-  ttl?: number;
-  rate?: number;
-  filter?: string;
-};
-
+/**
+ * @internal
+ */
 export class BaseNotification {
+  /** @internal */
   topic: string;
 
+  /** @internal */
   host: string;
 
+  /** @internal */
   gateway?: string;
 
+  /** @internal */
   fetch: typeof crossFetch;
 
+  /** @internal */
   protocols: Array<protocols>;
 
+  /** @internal */
   features: FeatureOptions;
 
+  /** @internal */
   status: statuses = "closed";
 
   /** @internal */
@@ -77,9 +66,10 @@ export class BaseNotification {
     return new URL("/.well-known/solid", host).href;
   }
 
-  // Dynamically import solid-client-authn-browser so that Notifiction doesn't have a hard
+  // Dynamically import solid-client-authn-browser so that Notification doesn't have a hard
   // dependency.
   /* eslint consistent-return: 0 */
+  /** @internal */
   static async getDefaultSessionFetch(): Promise<
     typeof crossFetch | undefined
   > {
@@ -116,6 +106,18 @@ export class BaseNotification {
     this.host = host || BaseNotification.getRootDomain(topic);
   }
 
+  /**
+   * Allows setting a [WHATWG Fetch API][fetch] compatible function
+   * for making HTTP requests. When [@inrupt/solid-client-authn-browser][scab]
+   * is available and this property is not set, `fetch` will be imported from
+   * there. Otherwise, the HTTP requests will be unauthenticated.
+   *
+   * [fetch]: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
+   *
+   * [scab]: https://npmjs.com/package/@inrupt/solid-client-authn-browser
+   *
+   * @param sessionFetch
+   */
   setSessionFetch = (sessionFetch: typeof crossFetch = crossFetch): void => {
     this.fetch = sessionFetch;
   };
@@ -151,6 +153,7 @@ export class BaseNotification {
     return notificationGateway;
   }
 
+  /** @internal */
   async fetchProtocolNegotiationInfo(): Promise<NegotiationInfo> {
     if (!this.gateway) {
       await this.fetchNegotiationGatewayUrl();
@@ -184,6 +187,7 @@ export class BaseNotification {
     return response.json();
   }
 
+  /** @internal */
   async fetchNotificationConnectionInfo(): Promise<NotificationConnectionInfo> {
     const { endpoint } = await this.fetchProtocolNegotiationInfo();
 
