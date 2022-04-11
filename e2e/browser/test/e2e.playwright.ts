@@ -1,4 +1,6 @@
+//
 // Copyright 2022 Inrupt Inc.
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal in
 // the Software without restriction, including without limitation the rights to use,
@@ -15,12 +17,14 @@
 // HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+//
 
-/* eslint-disable jest/no-done-callback */
+/* eslint-disable jest/no-test-callback */
 
-// eslint-disable-next-line no-shadow
 import {
+  // eslint-disable-next-line no-shadow
   test,
+  // eslint-disable-next-line no-shadow
   expect,
   WebSocket as PlayWrightWebSocket,
 } from "@playwright/test";
@@ -128,7 +132,7 @@ test.skip("connecting a websocket, getting messages, and disconnecting it", asyn
     page.click("button[data-testid=createContainer]"),
   ]);
 
-  expect(framesReceived.length).toBe(1);
+  expect(framesReceived).toHaveLength(1);
   expect(framesReceived[0].type).toContain("Update");
 
   // Make sure the container can be removed.
@@ -140,7 +144,7 @@ test.skip("connecting a websocket, getting messages, and disconnecting it", asyn
     websocket.waitForEvent("framereceived"),
   ]);
 
-  expect(framesReceived.length).toBe(2);
+  expect(framesReceived).toHaveLength(2);
   expect(framesReceived[1].type).toContain("Update");
 
   await page.click("button[data-testid=disconnectSocket]");
