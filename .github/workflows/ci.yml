@@ -10,24 +10,24 @@ jobs:
     strategy:
       matrix:
         # Available OS's: https://help.github.com/en/actions/reference/virtual-environments-for-github-hosted-runners
-        os: [ubuntu-20.04, windows-2019, macos-10.15]
+        os: [ubuntu-latest, windows-latest, macos-latest]
         node-version: [16.x, 14.x, 12.x]
     steps:
-    - uses: actions/checkout@v2.3.4
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v2.1.5
-      with:
-        node-version: ${{ matrix.node-version }}
-    - name: Cache node modules
-      uses: actions/cache@v2.1.5
-      env:
-        cache-name: cache-node-modules
-      with:
-        path: node_modules
-        key: ${{ runner.os }}-node${{ runner.node-version }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-    - run: npm ci
-    - run: npm run build
-    - run: npm test
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Cache node modules
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node${{ runner.node-version }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+      - run: npm ci
+      - run: npm run build
+      - run: npm test
 
   lint:
     # FIXME: use a fixed version after it has been released
