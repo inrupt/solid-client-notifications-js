@@ -60,10 +60,8 @@ import { LiveNotification } from "./liveNotification";
  * ```
  */
 export class WebsocketNotification extends LiveNotification {
-  /**
-   * @private
-   */
-  webSocket?: IsoWebSocket;
+  /** @internal */
+  websocket?: IsoWebSocket;
 
   /** @internal */
   status: statuses = "closed";
@@ -94,32 +92,32 @@ export class WebsocketNotification extends LiveNotification {
       subprotocol = connectionInfo.subprotocol;
     }
 
-    this.webSocket = new IsoWebSocket(endpoint, subprotocol);
+    this.websocket = new IsoWebSocket(endpoint, subprotocol);
 
-    this.webSocket.onopen = () => {
+    this.websocket.onopen = () => {
       this.status = "connected";
       this.emitter.emit("connected");
     };
 
-    this.webSocket.onmessage = (e: MessageEvent) => {
+    this.websocket.onmessage = (e: MessageEvent) => {
       this.emitter.emit("message", e.data);
     };
 
     // TODO auto-reconnect once we get a TTL from notification connection info
-    this.webSocket.onclose = () => {
+    this.websocket.onclose = () => {
       this.status = "closed";
       this.emitter.emit("closed");
     };
 
-    this.webSocket.onerror = (e: ErrorEvent) => {
+    this.websocket.onerror = (e: ErrorEvent) => {
       this.emitter.emit("error", e);
     };
   };
 
   disconnect = (): void => {
-    if (this.webSocket) {
-      this.webSocket.close();
-      this.webSocket = undefined;
+    if (this.websocket) {
+      this.websocket.close();
+      this.websocket = undefined;
     }
   };
 }
