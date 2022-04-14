@@ -85,7 +85,7 @@ describe("WebsocketNotification", () => {
       const ws = new WebsocketNotification(topic, { fetch: fetchFn });
 
       await ws.connect(wssEndpoint);
-      ws.webSocket?.onopen({} as OpenEvent);
+      ws.websocket?.onopen({} as OpenEvent);
 
       expect(ws.status).toEqual("connected");
     });
@@ -101,8 +101,8 @@ describe("WebsocketNotification", () => {
       ws.on("message", messageSpy);
 
       await ws.connect(wssEndpoint);
-      ws.webSocket?.onopen({} as OpenEvent);
-      ws.webSocket?.onmessage({ data: message } as MessageEvent);
+      ws.websocket?.onopen({} as OpenEvent);
+      ws.websocket?.onmessage({ data: message } as MessageEvent);
 
       expect(messageSpy).toHaveBeenCalledWith(message);
     });
@@ -118,7 +118,7 @@ describe("WebsocketNotification", () => {
 
       await ws.connect(wssEndpoint);
 
-      ws.webSocket?.onerror({} as ErrorEvent);
+      ws.websocket?.onerror({} as ErrorEvent);
 
       expect(errorSpy).toHaveBeenCalled();
     });
@@ -129,11 +129,11 @@ describe("WebsocketNotification", () => {
       const ws = new WebsocketNotification(topic, { fetch: fetchFn });
 
       await ws.connect(wssEndpoint);
-      ws.webSocket?.onopen({} as OpenEvent);
+      ws.websocket?.onopen({} as OpenEvent);
 
       expect(ws.status).toEqual("connected");
 
-      ws.webSocket?.onclose({} as CloseEvent);
+      ws.websocket?.onclose({} as CloseEvent);
 
       expect(ws.status).toEqual("closed");
     });
@@ -147,7 +147,7 @@ describe("WebsocketNotification", () => {
       ws.on("closed", closedSpy);
 
       await ws.connect(wssEndpoint);
-      ws.webSocket?.onclose({} as CloseEvent);
+      ws.websocket?.onclose({} as CloseEvent);
 
       expect(closedSpy).toHaveBeenCalled();
     });
@@ -164,9 +164,9 @@ describe("WebsocketNotification", () => {
 
       await ws.connect(wssEndpoint);
       ws.disconnect();
-      ws.webSocket?.onclose({} as CloseEvent);
+      ws.websocket?.onclose({} as CloseEvent);
 
-      expect(ws.webSocket).toBeUndefined();
+      expect(ws.websocket).toBeUndefined();
     });
 
     it("does nothing if the websocket was never initialized", () => {
@@ -176,7 +176,7 @@ describe("WebsocketNotification", () => {
 
       ws.disconnect();
 
-      expect(ws.webSocket).toBeUndefined();
+      expect(ws.websocket).toBeUndefined();
     });
   });
 });

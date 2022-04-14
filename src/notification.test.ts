@@ -24,7 +24,8 @@
 
 import fetch from "jest-fetch-mock";
 import { fetch as fetchFn } from "@inrupt/solid-client-authn-browser";
-import { BaseNotification, protocols } from "./notification";
+import { BaseNotification } from "./notification";
+import { protocols } from "./interfaces";
 
 jest.mock("@inrupt/solid-client-authn-browser");
 

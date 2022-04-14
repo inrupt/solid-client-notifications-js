@@ -22,22 +22,24 @@
 import { EventEmitter } from "events";
 import { NotImplementedError } from "./errors";
 
-import {
-  BaseNotification,
-  BaseNotificationOptions,
-  protocols,
-} from "./notification";
+import { BaseNotification } from "./notification";
+import { NotificationOptions, protocols } from "./interfaces";
 
+/**
+ * @internal
+ */
 export class LiveNotification extends BaseNotification {
+  /** @internal */
   protocol?: protocols;
 
+  /** @internal */
   emitter: EventEmitter;
 
   // TODO move constructor options to options instead of arguments
   constructor(
     topic: string,
     protocolList: protocols[],
-    options?: BaseNotificationOptions
+    options?: NotificationOptions
   ) {
     super(topic, protocolList, options);
     this.emitter = new EventEmitter();
@@ -54,7 +56,7 @@ export class LiveNotification extends BaseNotification {
   };
 
   /* eslint @typescript-eslint/no-explicit-any: 0 */
-  on = (eventName: string, eventFn: (arg?: any) => void): void => {
-    this.emitter.on(eventName, eventFn);
+  on = (eventName: string, listener: (...args: any[]) => void): void => {
+    this.emitter.on(eventName, listener);
   };
 }

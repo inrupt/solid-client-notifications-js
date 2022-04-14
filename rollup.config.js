@@ -54,6 +54,7 @@ export default {
         compilerOptions: {
           module: "esnext",
         },
+        exclude: ["**/*.test.ts"],
       },
     }),
   ],

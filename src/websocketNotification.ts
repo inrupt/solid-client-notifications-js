@@ -22,17 +22,61 @@
 // Typescript and eslint are fighting over whether these are globals
 /* eslint no-shadow: 0 */
 import IsoWebSocket, { MessageEvent, ErrorEvent } from "isomorphic-ws";
-import { BaseNotificationOptions } from "./notification";
+import { NotificationOptions, statuses } from "./interfaces";
 import { LiveNotification } from "./liveNotification";
 
+/**
+ * Constructor for a WebSocket Notification instance, which allows subscribing to resources in the solid ecosystem.
+ * See the [Solid Notifications Protocol Specification](https://solid.github.io/notifications/protocol) for more details.
+ *
+ * ```typescript
+ * import { getDefaultSession } from '@inrupt/solid-authn-browser';
+ * // or for node.js:
+ * //   import { Session } from '@inrupt/solid-authn-node';
+ *
+ * const session = getDefaultSession();
+ * // for node.js:
+ * //   const session = new Session();
+ * //   await session.login({
+ * //     oidcIssuer,
+ * //     clientId,
+ * //     clientSecret,
+ * //   });
+ *
+ * const socket = new WebsocketNotification(parentContainerUrl, {
+ *   fetch: session.fetch,
+ * });
+ *
+ * socket.on("message", (message) => {
+ *   const notification = JSON.parse(message);
+ *   console.log("Change:", notification);
+ * });
+ *
+ * // Connect for receiving notifications:
+ * await socket.connect();
+ *
+ * // later:
+ * socket.disconnect();
+ * ```
+ */
 export class WebsocketNotification extends LiveNotification {
-  webSocket?: IsoWebSocket;
+  /** @internal */
+  websocket?: IsoWebSocket;
 
-  constructor(topic: string, options?: BaseNotificationOptions) {
+  /** @internal */
+  status: statuses = "closed";
+
+  constructor(topic: string, options?: NotificationOptions) {
     // Hardcode the protocol to WS to ask the server specifically for a websocket connection
     super(topic, ["ws"], options);
   }
 
+  /**
+   * Connects the websocket to start receiving notifications. If no
+   * `providedEndpoint` or `providedSubprotocol` parameter is present, then
+   * those will automatically be discovered based on the capabilities of the
+   * host of the resource that you're subscribing to notifications for.
+   */
   connect = async (
     providedEndpoint?: string,
     providedSubprotocol?: string
@@ -48,32 +92,32 @@ export class WebsocketNotification extends LiveNotification {
       subprotocol = connectionInfo.subprotocol;
     }
 
-    this.webSocket = new IsoWebSocket(endpoint, subprotocol);
+    this.websocket = new IsoWebSocket(endpoint, subprotocol);
 
-    this.webSocket.onopen = () => {
+    this.websocket.onopen = () => {
       this.status = "connected";
       this.emitter.emit("connected");
     };
 
-    this.webSocket.onmessage = (e: MessageEvent) => {
+    this.websocket.onmessage = (e: MessageEvent) => {
       this.emitter.emit("message", e.data);
     };
 
     // TODO auto-reconnect once we get a TTL from notification connection info
-    this.webSocket.onclose = () => {
+    this.websocket.onclose = () => {
       this.status = "closed";
       this.emitter.emit("closed");
     };
 
-    this.webSocket.onerror = (e: ErrorEvent) => {
+    this.websocket.onerror = (e: ErrorEvent) => {
       this.emitter.emit("error", e);
     };
   };
 
   disconnect = (): void => {
-    if (this.webSocket) {
-      this.webSocket.close();
-      this.webSocket = undefined;
+    if (this.websocket) {
+      this.websocket.close();
+      this.websocket = undefined;
     }
   };
 }

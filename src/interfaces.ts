@@ -19,15 +19,47 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-export {
-  protocols,
-  statuses,
-  NegotiationInfo,
-  NotificationConnectionInfo,
-  NotificationOptions,
-  FeatureOptions,
-} from "./interfaces";
+import { fetch as crossFetch } from "cross-fetch";
 
-export { WebsocketNotification } from "./websocketNotification";
+export type protocols = "ws" | string;
+export type statuses = "connecting" | "connected" | "closing" | "closed";
 
-export { FetchError, NotImplementedError } from "./errors";
+/** @internal */
+export interface NegotiationInfo {
+  endpoint: string;
+  procotol: protocols;
+  features: FeatureOptions;
+}
+
+/** @internal */
+export interface NotificationConnectionInfo {
+  endpoint: string;
+  protocol: protocols;
+  subprotocol: string;
+}
+
+export interface NotificationOptions {
+  features?: FeatureOptions;
+  /**
+   * Automatically discovered based on the topic passed
+   */
+  gateway?: string;
+  /**
+   * Automatically discovered based on the topic passed
+   */
+  host?: string;
+
+  /**
+   * A WHATWG Fetch API compatible function used when making requests for
+   * discovering metadata for notifications. See the documentation for
+   * `setSessionFetch` in the `WebsocketNotification` class.
+   */
+  fetch?: typeof crossFetch;
+}
+
+export interface FeatureOptions {
+  state?: string;
+  ttl?: number;
+  rate?: number;
+  filter?: string;
+}
