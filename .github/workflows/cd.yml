@@ -220,9 +220,11 @@ jobs:
   # to detect issues introduced by the build process:
   cd-end-to-end-tests:
     runs-on: ubuntu-latest
+    environment:
+      name: "ESS Production"
     strategy:
       matrix:
-        node-version: [14.x]
+        node-version: [16.x]
     needs: [prepare-deployment, publish-npm]
     # Dependabot does not have access to our secrets,
     # so publishing packages for Dependabot PRs can only be manually started.
@@ -239,23 +241,21 @@ jobs:
         # The `--force` allows us to install it even though our own package has the same name.
         # See https://docs.npmjs.com/cli/v6/commands/npm-install#limitations-of-npms-install-algorithm
         run: |
-          npm install --force @inrupt/solid-client@$VERSION_NR
+          npm install --force @inrupt/solid-client-notifications@$VERSION_NR
         env:
           VERSION_NR: ${{ needs.publish-npm.outputs.version-nr }}
       - name: Make sure that the end-to-end tests run against the just-published package
         run: |
-          cd src/e2e-node
+          cd e2e/node
           # For all files (`-type f`) in this directory,
-          # replace `../index` (i.e. in the import statement) with `@inrupt/solid-client`:
-          find ./ -type f -exec sed --in-place --expression='s/\.\.\/index/@inrupt\/solid-client/g' {} \;
+          # replace `../../src/index` (i.e. in the import statement) with `@inrupt/solid-client`:
+          find ./ -type f -exec sed --in-place --expression='s/\.\.\/\.\.\/src\/index/@inrupt\/solid-client-notifications/g' {} \;
       - name: Run the Node-based end-to-end tests
         run: npm run test:e2e:node
         env:
-          E2E_TEST_ESS_POD: ${{ secrets.E2E_TEST_ESS_PROD_POD }}
-          E2E_TEST_ESS_IDP_URL: ${{ secrets.E2E_TEST_ESS_PROD_IDP_URL }}
-          E2E_TEST_ESS_CLIENT_ID: ${{ secrets.E2E_TEST_ESS_PROD_CLIENT_ID }}
-          E2E_TEST_ESS_CLIENT_SECRET: ${{ secrets.E2E_TEST_ESS_PROD_CLIENT_SECRET }}
-          E2E_TEST_DEV_NEXT_POD: ${{ secrets.E2E_TEST_DEV_NEXT_POD }}
-          E2E_TEST_DEV_NEXT_IDP_URL: ${{ secrets.E2E_TEST_DEV_NEXT_IDP_URL }}
-          E2E_TEST_DEV_NEXT_CLIENT_ID: ${{ secrets.E2E_TEST_DEV_NEXT_CLIENT_ID }}
-          E2E_TEST_DEV_NEXT_CLIENT_SECRET: ${{ secrets.E2E_TEST_DEV_NEXT_CLIENT_SECRET }}
+          E2E_TEST_NOTIFICATION_GATEWAY: ${{ secrets.E2E_TEST_NOTIFICATION_GATEWAY }}
+          E2E_TEST_NOTIFICATION_PROTOCOL: ${{ secrets.E2E_TEST_NOTIFICATION_PROTOCOL }}
+          E2E_TEST_IDP: ${{ secrets.E2E_TEST_IDP }}
+          E2E_TEST_CLIENT_ID: ${{ secrets.E2E_TEST_CLIENT_ID }}
+          E2E_TEST_CLIENT_SECRET: ${{ secrets.E2E_TEST_CLIENT_SECRET }}
+          E2E_TEST_ENVIRONMENT: "ESS Production"
