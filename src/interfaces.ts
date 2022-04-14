@@ -38,7 +38,7 @@ export interface NotificationConnectionInfo {
   subprotocol: string;
 }
 
-export interface BaseNotificationOptions {
+export interface NotificationOptions {
   features?: FeatureOptions;
   /**
    * Automatically discovered based on the topic passed

@@ -23,7 +23,7 @@ import { EventEmitter } from "events";
 import { NotImplementedError } from "./errors";
 
 import { BaseNotification } from "./notification";
-import { BaseNotificationOptions, protocols } from "./interfaces";
+import { NotificationOptions, protocols } from "./interfaces";
 
 /**
  * @internal
@@ -39,7 +39,7 @@ export class LiveNotification extends BaseNotification {
   constructor(
     topic: string,
     protocolList: protocols[],
-    options?: BaseNotificationOptions
+    options?: NotificationOptions
   ) {
     super(topic, protocolList, options);
     this.emitter = new EventEmitter();

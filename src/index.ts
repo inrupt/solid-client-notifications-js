@@ -24,7 +24,7 @@ export {
   statuses,
   NegotiationInfo,
   NotificationConnectionInfo,
-  BaseNotificationOptions,
+  NotificationOptions,
   FeatureOptions,
 } from "./interfaces";
 

@@ -22,7 +22,7 @@
 // Typescript and eslint are fighting over whether these are globals
 /* eslint no-shadow: 0 */
 import IsoWebSocket, { MessageEvent, ErrorEvent } from "isomorphic-ws";
-import { BaseNotificationOptions, statuses } from "./interfaces";
+import { NotificationOptions, statuses } from "./interfaces";
 import { LiveNotification } from "./liveNotification";
 
 /**
@@ -66,7 +66,7 @@ export class WebsocketNotification extends LiveNotification {
   /** @internal */
   status: statuses = "closed";
 
-  constructor(topic: string, options?: BaseNotificationOptions) {
+  constructor(topic: string, options?: NotificationOptions) {
     // Hardcode the protocol to WS to ask the server specifically for a websocket connection
     super(topic, ["ws"], options);
   }

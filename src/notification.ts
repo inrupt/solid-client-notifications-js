@@ -25,7 +25,7 @@ import {
   protocols,
   FeatureOptions,
   statuses,
-  BaseNotificationOptions,
+  NotificationOptions,
   NegotiationInfo,
   NotificationConnectionInfo,
 } from "./interfaces";
@@ -86,7 +86,7 @@ export class BaseNotification {
   constructor(
     topic: string,
     protocolList: protocols[],
-    options: BaseNotificationOptions = {}
+    options: NotificationOptions = {}
   ) {
     const { gateway, host, features = {}, fetch: fetchFn } = options;
 

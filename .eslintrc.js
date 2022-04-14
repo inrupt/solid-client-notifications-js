@@ -23,7 +23,8 @@ module.exports = {
   rules: {
     "import/prefer-default-export": 0,
     "max-classes-per-file": 0,
-    "jest/no-disabled-tests": 1
+    "jest/no-disabled-tests": 1,
+    "no-shadow": [1, { allow: ["NotificationOptions"] }],
   },
   parserOptions: {
     project: "./tsconfig.eslint.json",
