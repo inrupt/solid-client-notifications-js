@@ -26,7 +26,7 @@ import { BaseNotification } from "./notification";
 import { NotificationOptions, protocols } from "./interfaces";
 
 /**
- * @internal
+ * @hidden
  */
 export class LiveNotification extends BaseNotification {
   /** @internal */
