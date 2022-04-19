@@ -13,7 +13,24 @@ For Solid Servers that support notifications, they are sent when a resource is
 created, updated, deleted, or when a child resource is added to or removed from
 a container.
 
-**This library currently only supports notifications sent via WebSockets.**
+.. admonition:: Supported Protocols
+   :class: caution
+
+   This library currently only supports an `early version of WebSocket
+   notifications
+   <https://docs.inrupt.com/ess/1.1/services/service-websocket/>`__, which
+   formed the basis of the Solid Notification Protocol 1.0 draft specification.
+
+   The `Solid Notification Protocol 1.0
+   <https://solid.github.io/notifications/protocol>`__ is a draft specification
+   undergoing technical review as it matures into a formal recommendation. A
+   future release will support this draft specification once implementations
+   become available. 
+   
+   **Please note:** the `legacy (insecure) WebSocket
+   <https://github.com/solid/solid-spec/blob/master/api-websockets.md>`__
+   mechanism, which is not recommended for secure messaging, is not supported by
+   this library.
 
 It is part of a `family open source JavaScript libraries
 <https://docs.inrupt.com/developer-tools/javascript/client-libraries/>`__
