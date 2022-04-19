@@ -37,10 +37,17 @@
   "exports": {
     ".": {
       "require": "./dist/index.js",
-      "import": "./dist/index.mjs"
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
     },
-    "./errors": "./dist/errors.mjs",
-    "./websocketNotification": "./dist/websocketNotification.mjs"
+    "./errors": {
+      "import": "./dist/errors.mjs",
+      "types": "./dist/errors.d.ts"
+    },
+    "./websocketNotification": {
+      "import": "./dist/websocketNotification.mjs",
+      "types": "./dist/websocketNotification.d.ts"
+    }
   },
   "files": [
     "dist",
