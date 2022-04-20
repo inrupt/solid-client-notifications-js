@@ -25,6 +25,30 @@ import IsoWebSocket, { MessageEvent, ErrorEvent } from "isomorphic-ws";
 import { NotificationOptions, statuses } from "./interfaces";
 import { LiveNotification } from "./liveNotification";
 
+export declare interface WebsocketNotification {
+  /**
+   * Emitted when the connection is established
+   */
+  on(event: "connected", listener: () => void): this;
+
+  /**
+   * Emitted when the connection is closed
+   */
+  on(event: "closed", listener: () => void): this;
+
+  /**
+   * Emitted when a valid notification is received, the payload is a
+   * [activitystreams Activity](https://www.w3.org/TR/activitystreams-vocabulary/#dfn-activity)
+   */
+  // TODO: use more specific type than object in the future
+  on(event: "message", listener: (payload: object) => void): this;
+
+  /**
+   * Emitted when an error is encountered on the WebSocket
+   */
+  on(event: "error", listener: (error: ErrorEvent) => void): this;
+}
+
 /**
  * Constructor for a WebSocket Notification instance, which allows subscribing to resources in the solid ecosystem.
  * See the [Solid Notifications Protocol Specification](https://solid.github.io/notifications/protocol) for more details.
@@ -100,7 +124,30 @@ export class WebsocketNotification extends LiveNotification {
     };
 
     this.websocket.onmessage = (e: MessageEvent) => {
-      this.emitter.emit("message", e.data);
+      // The protocol only transmits JSON as strings, and does not use binary messages
+      if (typeof e.data !== "string") {
+        // eslint-disable-next-line no-console
+        console.warn(
+          `Received non-string websocket message, most likely an error:`,
+          e.data
+        );
+        return;
+      }
+
+      let payload: ReturnType<JSON["parse"]>;
+      try {
+        payload = JSON.parse(e.data);
+      } catch (err) {
+        // eslint-disable-next-line no-console
+        console.warn(
+          `Received non-JSON websocket message, most likely an error:`,
+          e.data,
+          err
+        );
+        return;
+      }
+
+      this.emitter.emit("message", payload);
     };
 
     // TODO auto-reconnect once we get a TTL from notification connection info

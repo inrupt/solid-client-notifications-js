@@ -25,6 +25,10 @@ import { NotImplementedError } from "./errors";
 import { BaseNotification } from "./notification";
 import { NotificationOptions, protocols } from "./interfaces";
 
+export declare interface LiveNotification {
+  on(eventName: string, listener: (...args: any[]) => void): this;
+}
+
 /**
  * @hidden
  */
@@ -56,7 +60,9 @@ export class LiveNotification extends BaseNotification {
   };
 
   /* eslint @typescript-eslint/no-explicit-any: 0 */
-  on = (eventName: string, listener: (...args: any[]) => void): void => {
+  on(eventName: string, listener: (...args: any[]) => void): this {
     this.emitter.on(eventName, listener);
-  };
+
+    return this;
+  }
 }

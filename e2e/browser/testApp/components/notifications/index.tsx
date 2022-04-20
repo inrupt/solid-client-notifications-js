@@ -209,10 +209,7 @@ export default function Notifications() {
       });
       socket.on("error", () => setConnectionStatus("error"));
       socket.on("message", (message) => {
-        setMessageBus((previousMessageBus) => [
-          JSON.parse(message),
-          ...previousMessageBus,
-        ]);
+        setMessageBus((previousMessageBus) => [message, ...previousMessageBus]);
       });
     }
   }, [socket, parentContainerUrl]);
