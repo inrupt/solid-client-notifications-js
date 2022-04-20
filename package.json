@@ -80,7 +80,7 @@
     "nlfurniss-typedoc-plugin-sourcefile-url": "^2.0.0",
     "node-fetch": "^2.6.6",
     "openid-client": "^4.9.1",
-    "prettier": "2.2.1",
+    "prettier": "2.6.2",
     "rimraf": "^3.0.2",
     "rollup": "^2.60.0",
     "rollup-plugin-typescript2": "^0.30.0",
