@@ -67,7 +67,16 @@ const TEST_SLUG = "solid-client-test-e2e-notifications";
 // Allows us to skip a test pending some conditions.
 const testIf = (condition: boolean) => (condition ? it : it.skip);
 
-describe.skip(`Authenticated end-to-end notifications tests for environment [${environment}}]`, () => {
+const nextWebsocketMessage = async (ws: WebsocketNotification) => {
+  return new Promise((resolve) => {
+    // TODO: implement ws.once
+    ws?.emitter?.once("message", (payload: object) => {
+      resolve(payload);
+    });
+  });
+};
+
+describe(`Authenticated end-to-end notifications tests for environment [${environment}}]`, () => {
   // Lots of requests being made; we'll give it some extra time.
   jest.setTimeout(15000);
   openidClient.custom.setHttpOptionsDefaults({ timeout: 5000 });
@@ -144,29 +153,28 @@ describe.skip(`Authenticated end-to-end notifications tests for environment [${e
 
       expect(ws.status).toBe("connected");
 
-      const events: Array<unknown> = [];
+      const events: Array<object> = [];
       ws.on("message", (message) => {
         events.push(message);
+        // console.log(JSON.stringify(message, null, 2));
       });
 
+      const createContainerMessage = nextWebsocketMessage(ws);
       // Wait for the container to be created and for the notification to be received
-      const [childContainer] = await Promise.all([
-        createContainerInContainer(rootContainer, {
-          fetch: userAgentFetch,
-        }),
-        new Promise((resolve) => {
-          ws?.on("message", () => {
-            resolve(undefined);
-          });
-        }),
-      ]);
+      const childContainer = await createContainerInContainer(rootContainer, {
+        fetch: userAgentFetch,
+      });
 
+      await createContainerMessage;
       // One event should have been sent on the container creation
       expect(events).toHaveLength(1);
 
+      const deleteContainerMessage = nextWebsocketMessage(ws);
       await deleteContainer(getSourceIri(childContainer), {
         fetch: userAgentFetch,
       });
+
+      await deleteContainerMessage;
 
       // One additional event should have been sent on the container deletion
       expect(events).toHaveLength(2);
