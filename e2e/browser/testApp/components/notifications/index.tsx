@@ -167,16 +167,26 @@ export default function Notifications() {
 
   const [messageBus, setMessageBus] = useState<any[]>([]);
 
-  const onConnect = async () => {
+  const handleConnect = async () => {
     if (socket !== undefined) {
       await socket.connect();
     }
   };
 
-  const onDisconnect = () => {
+  const handleDisconnect = () => {
     if (socket !== undefined) {
       socket.disconnect();
     }
+  };
+
+  const onConnected = () => setConnectionStatus("connected");
+  const onClose = () => {
+    setConnectionStatus("closed");
+    setMessageBus([]);
+  };
+  const onError = () => setConnectionStatus("error");
+  const onMessage = (message: object) => {
+    setMessageBus((previousMessageBus) => [message, ...previousMessageBus]);
   };
 
   useEffect(() => {
@@ -202,16 +212,20 @@ export default function Notifications() {
     }
     if (socket !== undefined) {
       setConnectionStatus("closed");
-      socket.on("connected", () => setConnectionStatus("connected"));
-      socket.on("closed", () => {
-        setConnectionStatus("closed");
-        setMessageBus([]);
-      });
-      socket.on("error", () => setConnectionStatus("error"));
-      socket.on("message", (message) => {
-        setMessageBus((previousMessageBus) => [message, ...previousMessageBus]);
-      });
+      socket.on("connected", onConnected);
+      socket.on("closed", onClose);
+      socket.on("error", onError);
+      socket.on("message", onMessage);
     }
+
+    return () => {
+      if (socket !== undefined) {
+        socket.off("connected", onConnected);
+        socket.off("closed", onClose);
+        socket.off("error", onError);
+        socket.off("message", onMessage);
+      }
+    };
   }, [socket, parentContainerUrl]);
 
   return (
@@ -229,8 +243,8 @@ export default function Notifications() {
 
       <WebSocketButtons
         connectionStatus={connectionStatus}
-        onConnect={onConnect}
-        onDisconnect={onDisconnect}
+        onConnect={handleConnect}
+        onDisconnect={handleDisconnect}
       />
       <br></br>
       <ContainerDock parentContainerUrl={parentContainerUrl} />

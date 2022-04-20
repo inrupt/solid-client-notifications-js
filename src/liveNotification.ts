@@ -65,4 +65,9 @@ export class LiveNotification extends BaseNotification {
 
     return this;
   }
+
+  off(eventName: string, listener: (...args: any[]) => void): this {
+    this.emitter.off(eventName, listener);
+    return this;
+  }
 }
