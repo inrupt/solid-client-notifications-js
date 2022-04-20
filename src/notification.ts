@@ -20,7 +20,9 @@
 //
 
 import { fetch as crossFetch } from "cross-fetch";
-import { FetchError } from "./errors";
+import { getIri, getThingAll, getWellKnownSolid } from "@inrupt/solid-client";
+
+import { FetchError, NotSupported } from "./errors";
 import {
   protocols,
   FeatureOptions,
@@ -38,9 +40,6 @@ export class BaseNotification {
   topic: string;
 
   /** @internal */
-  host: string;
-
-  /** @internal */
   gateway?: string;
 
   /** @internal */
@@ -54,17 +53,6 @@ export class BaseNotification {
 
   /** @internal */
   status: statuses = "closed";
-
-  /** @internal */
-  static getRootDomain(topic: string): string {
-    const parsedUrl = new URL(topic);
-    return `${parsedUrl.protocol}//${parsedUrl.hostname}`;
-  }
-
-  /** @internal */
-  static getSolidWellKnownUrl(host: string): string {
-    return new URL("/.well-known/solid", host).href;
-  }
 
   // Dynamically import solid-client-authn-browser so that Notification doesn't have a hard
   // dependency.
@@ -88,7 +76,7 @@ export class BaseNotification {
     protocolList: protocols[],
     options: NotificationOptions = {}
   ) {
-    const { gateway, host, features = {}, fetch: fetchFn } = options;
+    const { gateway, features = {}, fetch: fetchFn } = options;
 
     this.topic = topic;
     this.protocols = protocolList;
@@ -102,8 +90,6 @@ export class BaseNotification {
       /* eslint @typescript-eslint/no-floating-promises: 0 */
       BaseNotification.getDefaultSessionFetch().then(this.setSessionFetch);
     }
-
-    this.host = host || BaseNotification.getRootDomain(topic);
   }
 
   /**
@@ -128,26 +114,35 @@ export class BaseNotification {
       return this.gateway;
     }
 
-    const response = await this.fetch(
-      BaseNotification.getSolidWellKnownUrl(this.host),
-      {
-        headers: {
-          Accept: "application/ld+json",
-        },
-      }
+    const wellKnown = await getWellKnownSolid(this.topic).catch(() => {
+      // The storage server for the topic resource didn't respond well to
+      // getWellKnownSolid requests:
+      throw new NotSupported();
+    });
+
+    const wellKnownSubjects = getThingAll(wellKnown, {
+      acceptBlankNodes: true,
+    });
+    const wellKnownSubject = wellKnownSubjects[0];
+
+    // First try reading the 2.0 predicate:
+    let notificationGateway = getIri(
+      wellKnownSubject,
+      "http://www.w3.org/ns/solid/terms#notificationGateway"
     );
 
-    if (response.status !== 200) {
-      throw new FetchError(
-        response.url,
-        response.status,
-        response.statusText,
-        "negotiation gateway url",
-        response
+    // Then try the earlier 1.1 predicate:
+    if (!notificationGateway) {
+      notificationGateway = getIri(
+        wellKnownSubject,
+        "http://inrupt.com/ns/ess#notificationGatewayEndpoint"
       );
     }
 
-    const { notificationGateway } = await response.json();
+    // If we don't get either, then error out:
+    if (!notificationGateway) {
+      throw new NotSupported();
+    }
 
     this.gateway = notificationGateway;
     return notificationGateway;
@@ -156,7 +151,7 @@ export class BaseNotification {
   /** @internal */
   async fetchProtocolNegotiationInfo(): Promise<NegotiationInfo> {
     if (!this.gateway) {
-      await this.fetchNegotiationGatewayUrl();
+      this.gateway = await this.fetchNegotiationGatewayUrl();
     }
 
     // Typescript doesn't notice that this.gateway was changed in fetchNegotiationGatewayUrl,

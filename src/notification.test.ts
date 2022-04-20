@@ -69,6 +69,16 @@ const mockedFetchWithError = (
   return mockedFetch(fetch).mockResolvedValue(new Response(body, { status }));
 };
 
+const mockedGetWellKnownSolid = () => {
+  const { getWellKnownSolid } = jest.requireMock(
+    "@inrupt/solid-client"
+  ) as jest.Mocked<typeof SolidClient>;
+
+  return getWellKnownSolid;
+};
+
+const NOT_SUPPORTED_ERROR_MATCHER = /not support notifications/;
+
 describe("BaseNotification", () => {
   afterEach(() => {
     jest.clearAllMocks();
@@ -105,71 +115,184 @@ describe("BaseNotification", () => {
     });
   });
 
-  describe.skip("fetchNegotiationGatewayUrl", () => {
+  describe("fetchNegotiationGatewayUrl", () => {
     test("does not fetch if the gateway is already defined", async () => {
+      const fetchFn = mockedFetch();
+      const getWellKnownSolidMock = mockedGetWellKnownSolid();
+
       const gateway = "https://fake.url/notifications/";
       const topic = "https://fake.url/some-resource";
       const protocol = ["ws"] as Array<protocols>;
-      const fetchFn = jest.fn();
+      const options = {
+        gateway,
+        fetch: fetchFn,
+      };
+
+      const notification = new BaseNotification(topic, protocol, options);
+
+      const notificationGateway =
+        await notification.fetchNegotiationGatewayUrl();
+
+      expect(notificationGateway).toEqual(gateway);
+      expect(getWellKnownSolidMock).not.toHaveBeenCalled();
+    });
+
+    test("throws an error if the call to getWellKnownSolid fails", async () => {
+      const fetchFn = mockedFetch();
+      const getWellKnownSolidMock = mockedGetWellKnownSolid().mockRejectedValue(
+        new Error("Some Error")
+      );
+
+      const topic = "https://fake.url/some-resource";
+      const protocol = ["ws"] as Array<protocols>;
 
       const notification = new BaseNotification(topic, protocol, {
-        gateway,
+        fetch: fetchFn,
+      });
+
+      await expect(notification.fetchNegotiationGatewayUrl()).rejects.toThrow(
+        NOT_SUPPORTED_ERROR_MATCHER
+      );
+
+      expect(getWellKnownSolidMock).toHaveBeenCalledTimes(1);
+    });
+
+    test("is compatible with the well-known file on ESS 2.0", async () => {
+      const fetchFn = mockedFetch();
+      const getWellKnownSolidMock = mockedGetWellKnownSolid();
+
+      const gateway = "https://gateway.test/notifications/";
+      const storageServer = "https://storage.test";
+      const topic = "https://storage.test/some-resource";
+      const protocol = ["ws"] as Array<protocols>;
+
+      getWellKnownSolidMock.mockResolvedValue({
+        graphs: {
+          default: {
+            "_:b0": {
+              type: "Subject",
+              url: "_:b0",
+              predicates: {
+                "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": {
+                  namedNodes: [
+                    "http://www.w3.org/ns/solid/terms#DiscoveryDocument",
+                  ],
+                },
+                "http://www.w3.org/ns/solid/terms#notificationGateway": {
+                  namedNodes: [gateway],
+                },
+              },
+            },
+          },
+        },
+        type: "Dataset",
+        internal_resourceInfo: {
+          sourceIri: `${storageServer}/.well-known/solid`,
+          isRawData: false,
+          contentType: "application/ld+json",
+          linkedResources: {},
+        },
+      });
+
+      const notification = new BaseNotification(topic, protocol, {
         fetch: fetchFn,
       });
 
       const notificationGateway =
         await notification.fetchNegotiationGatewayUrl();
 
-      expect(notificationGateway).toEqual(gateway);
       expect(fetchFn).not.toHaveBeenCalled();
+      expect(getWellKnownSolidMock).toHaveBeenCalledTimes(1);
+      expect(notificationGateway).toEqual(gateway);
     });
 
-    test("requests the well-known file to load the notificationGateway url", async () => {
-      const gateway = "https://fake.url/notifications/";
-      fetch.mockResponseOnce(JSON.stringify({ notificationGateway: gateway }));
+    test("is compatible with the well-known file on ESS 1.1", async () => {
+      const fetchFn = mockedFetch();
+      const getWellKnownSolidMock = mockedGetWellKnownSolid();
 
-      const topic = "https://fake.url/some-resource";
+      const gateway = "https://gateway.test/notifications/";
+      const pod = "https://storage.test/some-pod/";
+      const topic = new URL("some-resource", pod).toString();
       const protocol = ["ws"] as Array<protocols>;
 
-      const notification = new BaseNotification(topic, protocol, { fetch });
+      getWellKnownSolidMock.mockResolvedValue({
+        graphs: {
+          default: {
+            "_:b0": {
+              type: "Subject",
+              url: "_:b0",
+              predicates: {
+                "http://inrupt.com/ns/ess#consentIssuer": {
+                  namedNodes: ["https://consent.test"],
+                },
+                "http://inrupt.com/ns/ess#notificationGatewayEndpoint": {
+                  namedNodes: [gateway],
+                },
+                "http://www.w3.org/ns/pim/space#storage": {
+                  namedNodes: [pod],
+                },
+              },
+            },
+          },
+        },
+        type: "Dataset",
+        internal_resourceInfo: {
+          sourceIri: `${pod}/.well-known/solid`,
+          isRawData: false,
+          contentType: "application/ld+json",
+          linkedResources: {},
+        },
+      });
+
+      const notification = new BaseNotification(topic, protocol, {
+        fetch: fetchFn,
+      });
+
       const notificationGateway =
         await notification.fetchNegotiationGatewayUrl();
 
+      expect(fetchFn).not.toHaveBeenCalled();
+      expect(getWellKnownSolidMock).toHaveBeenCalledTimes(1);
       expect(notificationGateway).toEqual(gateway);
     });
 
-    test("requests the well-known file as json-ld", async () => {
-      const gateway = "https://fake.url/notifications/";
-      fetch.mockResponseOnce(JSON.stringify({ notificationGateway: gateway }));
+    test("throws an error if no Notification Gateway is found", async () => {
+      const fetchFn = mockedFetch();
+      const getWellKnownSolidMock = mockedGetWellKnownSolid();
 
-      const topic = "https://fake.url/some-resource";
+      const pod = "https://storage.test/some-pod/";
+      const topic = new URL("some-resource", pod).toString();
       const protocol = ["ws"] as Array<protocols>;
 
-      const notification = new BaseNotification(topic, protocol, { fetch });
-      await notification.fetchNegotiationGatewayUrl();
-
-      expect(fetch).toHaveBeenCalledWith(
-        BaseNotification.getSolidWellKnownUrl(notification.host),
-        {
-          headers: {
-            Accept: "application/ld+json",
+      getWellKnownSolidMock.mockResolvedValue({
+        graphs: {
+          default: {
+            "_:b0": {
+              type: "Subject",
+              url: "_:b0",
+              predicates: {},
+            },
           },
-        }
-      );
-    });
-
-    test("throws a FetchError if the well-known fetch fails", async () => {
-      fetch.mockResponseOnce("", {
-        status: 400,
-        statusText: "Invalid request",
+        },
+        type: "Dataset",
+        internal_resourceInfo: {
+          sourceIri: `${pod}/.well-known/solid`,
+          isRawData: false,
+          contentType: "application/ld+json",
+          linkedResources: {},
+        },
       });
 
-      const topic = "https://fake.url/some-resource";
-      const protocol = ["ws"] as Array<protocols>;
+      const notification = new BaseNotification(topic, protocol, {
+        fetch: fetchFn,
+      });
 
-      const notification = new BaseNotification(topic, protocol, { fetch });
+      await expect(notification.fetchNegotiationGatewayUrl()).rejects.toThrow(
+        NOT_SUPPORTED_ERROR_MATCHER
+      );
 
-      await expect(notification.fetchNegotiationGatewayUrl()).rejects.toThrow();
+      expect(fetchFn).not.toHaveBeenCalled();
+      expect(getWellKnownSolidMock).toHaveBeenCalledTimes(1);
     });
   });
 

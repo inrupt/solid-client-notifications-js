@@ -101,5 +101,8 @@
     "events": "^3.3.0",
     "isomorphic-ws": "^4.0.1",
     "ws": "^7.5.5"
+  },
+  "peerDependencies": {
+    "@inrupt/solid-client": "^1.21.0"
   }
 }
