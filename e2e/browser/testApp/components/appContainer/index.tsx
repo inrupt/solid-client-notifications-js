@@ -3,8 +3,6 @@ import {
   login,
   logout,
   handleIncomingRedirect,
-  getDefaultSession,
-  Session,
   ISessionInfo,
 } from "@inrupt/solid-client-authn-browser";
 import Notifications from "../notifications";

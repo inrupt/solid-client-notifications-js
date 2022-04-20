@@ -90,23 +90,6 @@ describe("WebsocketNotification", () => {
       expect(ws.status).toEqual("connected");
     });
 
-    it("emits a message when the websocket receives a message", async () => {
-      const topic = "https://fake.url/some-resource";
-      const fetchFn = jest.fn();
-      const ws = new WebsocketNotification(topic, { fetch: fetchFn });
-
-      const messageSpy = jest.fn();
-      const message = "hello";
-
-      ws.on("message", messageSpy);
-
-      await ws.connect(wssEndpoint);
-      ws.websocket?.onopen({} as OpenEvent);
-      ws.websocket?.onmessage({ data: message } as MessageEvent);
-
-      expect(messageSpy).toHaveBeenCalledWith(message);
-    });
-
     it("emits an error when the websocket emits an error", async () => {
       const topic = "https://fake.url/some-resource";
       const fetchFn = jest.fn();
@@ -150,6 +133,85 @@ describe("WebsocketNotification", () => {
       ws.websocket?.onclose({} as CloseEvent);
 
       expect(closedSpy).toHaveBeenCalled();
+    });
+  });
+
+  describe("on message", () => {
+    it("emits a message when the websocket receives a valid message", async () => {
+      const topic = "https://fake.url/some-resource";
+      const fetchFn = jest.fn();
+      const ws = new WebsocketNotification(topic, { fetch: fetchFn });
+
+      const messageSpy = jest.fn();
+      const message = `{"id":"urn:uuid:92a3d416-1d23-4c74-9ef5-41d62f329a07","type":["http://www.w3.org/ns/prov#Activity","Update"],"actor":[""],"object":{"id":"https://storage.inrupt.com/e9179f88-ca8f-45e1-a1b9-88a83f61db5e/","state":"8654e150-75c0-4fab-85f4-2f015b60da2d","type":["http://www.w3.org/ns/ldp#Container","http://www.w3.org/ns/ldp#Resource","http://www.w3.org/ns/ldp#RDFSource","http://www.w3.org/ns/ldp#BasicContainer"]},"published":"2022-04-20T00:17:21.714135Z","@context":["https://www.w3.org/ns/activitystreams",{"state":{"@id":"http://www.w3.org/2011/http-headers#etag"}}]}`;
+      const parsedMessage = {
+        id: "urn:uuid:92a3d416-1d23-4c74-9ef5-41d62f329a07",
+        type: ["http://www.w3.org/ns/prov#Activity", "Update"],
+        actor: [""],
+        object: {
+          id: "https://storage.inrupt.com/e9179f88-ca8f-45e1-a1b9-88a83f61db5e/",
+          state: "8654e150-75c0-4fab-85f4-2f015b60da2d",
+          type: [
+            "http://www.w3.org/ns/ldp#Container",
+            "http://www.w3.org/ns/ldp#Resource",
+            "http://www.w3.org/ns/ldp#RDFSource",
+            "http://www.w3.org/ns/ldp#BasicContainer",
+          ],
+        },
+        published: "2022-04-20T00:17:21.714135Z",
+        "@context": [
+          "https://www.w3.org/ns/activitystreams",
+          { state: { "@id": "http://www.w3.org/2011/http-headers#etag" } },
+        ],
+      };
+
+      ws.on("message", messageSpy);
+
+      await ws.connect(wssEndpoint);
+      ws.websocket?.onopen({} as OpenEvent);
+      ws.websocket?.onmessage({ data: message } as MessageEvent);
+
+      expect(messageSpy).toHaveBeenCalledWith(parsedMessage);
+    });
+
+    it("does not emit a message if the message is invalid JSON", async () => {
+      const topic = "https://fake.url/some-resource";
+      const fetchFn = jest.fn();
+      const ws = new WebsocketNotification(topic, { fetch: fetchFn });
+
+      const messageSpy = jest.fn();
+      const message = `invalid JSON`;
+
+      ws.on("message", messageSpy);
+
+      await ws.connect(wssEndpoint);
+      ws.websocket?.onopen({} as OpenEvent);
+      ws.websocket?.onmessage({ data: message } as MessageEvent);
+
+      expect(messageSpy).not.toHaveBeenCalled();
+    });
+
+    it("does not emit a message if the message is not a string", async () => {
+      const topic = "https://fake.url/some-resource";
+      const fetchFn = jest.fn();
+      const ws = new WebsocketNotification(topic, { fetch: fetchFn });
+
+      const messageSpy = jest.fn();
+
+      // Sets message to be an ArrayBuffer theoretically the websocket should
+      // also have bufferType === "arraybuffer", for an ArrayBuffer instead of
+      // Blob to be emitted, but the ws module only implements ArrayBuffers.
+      // More info:
+      // https://websockets.spec.whatwg.org/#dom-binarytype-arraybuffer
+      const message = new TextEncoder().encode("test");
+
+      ws.on("message", messageSpy);
+
+      await ws.connect(wssEndpoint);
+      ws.websocket?.onopen({} as OpenEvent);
+      ws.websocket?.onmessage({ data: message } as MessageEvent);
+
+      expect(messageSpy).not.toHaveBeenCalled();
     });
   });
 
