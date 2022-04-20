@@ -21,11 +21,11 @@
 
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 
-import { getTestingEnvironmentBrowser } from "../../e2e-setup";
+import { setupEnv } from "../../utils/setupEnv";
 
 async function globalSetup() {
   // Fail fast with dotenv:
-  getTestingEnvironmentBrowser();
+  setupEnv();
 
   // Return the teardown function.
   return async () => {};

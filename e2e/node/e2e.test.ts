@@ -44,14 +44,7 @@ import {
 } from "@inrupt/solid-client";
 import { WebsocketNotification, ErrorEvent } from "../../src/index";
 
-import { getTestingEnvironmentNode } from "../e2e-setup";
-
-config({
-  path: __dirname,
-  // In CI, actual environment variables will overwrite values from .env files.
-  // We don't need warning messages in the logs for that:
-  silent: process.env.CI === "true",
-});
+import { getTestingEnvironmentNode } from "../utils/getTestingEnvironment";
 
 const {
   idp: oidcIssuer,

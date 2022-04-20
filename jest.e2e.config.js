@@ -30,4 +30,5 @@ module.exports = {
   testTimeout: 10000,
   testRegex: "e2e/node/.*.test.ts",
   injectGlobals: false,
+  setupFiles: ["<rootDir>/e2e/node/setup.ts"],
 };

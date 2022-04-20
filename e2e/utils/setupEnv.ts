@@ -19,35 +19,18 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-import { Page } from "@playwright/test";
-import { getTestingEnvironmentBrowser } from "../../../utils/getTestingEnvironment";
+import { config } from "dotenv-flow";
+import { join } from "path";
 
-export class IndexPage {
-  page: Page;
-
-  constructor(page: Page) {
-    this.page = page;
+export function setupEnv() {
+  // If we're in CI, the environment is already configured.
+  if (process.env.CI) {
+    return;
   }
 
-  async startLogin() {
-    const { idp } = getTestingEnvironmentBrowser();
-    await this.page.fill("[data-testid=identityProviderInput]", idp);
-    await Promise.all([
-      // It is important to call waitForNavigation before click to set up waiting.
-      this.page.waitForNavigation(),
-      // Clicking the link will indirectly cause a navigation.
-      this.page.click("[data-testid=loginButton]"),
-    ]);
-  }
-
-  async handleRedirect() {
-    // Wait for the backchannel exchange
-    await this.page.waitForRequest(
-      (request) =>
-        request.method() === "POST" && request.url().includes("/token")
-    );
-    await Promise.all([
-      this.page.waitForResponse((response) => response.status() === 200),
-    ]);
-  }
+  // Otherwise load dotenv configuration
+  config({
+    path: join(__dirname, "..", "env"),
+    silent: true,
+  });
 }

@@ -30,7 +30,7 @@ import {
 } from "@playwright/test";
 import { essUserLogin } from "./roles";
 
-import { getTestingEnvironmentBrowser } from "../../e2e-setup";
+import { getTestingEnvironmentBrowser } from "../../utils/getTestingEnvironment";
 
 const { login, password, notificationGateway } = getTestingEnvironmentBrowser();
 
