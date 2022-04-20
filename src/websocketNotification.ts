@@ -25,6 +25,9 @@ import IsoWebSocket, { MessageEvent, ErrorEvent } from "isomorphic-ws";
 import { NotificationOptions, statuses } from "./interfaces";
 import { LiveNotification } from "./liveNotification";
 
+// Re-export ErrorEvent for use in tests:
+export { ErrorEvent } from "isomorphic-ws";
+
 export declare interface WebsocketNotification {
   /**
    * Emitted when the connection is established

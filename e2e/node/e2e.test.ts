@@ -42,7 +42,7 @@ import {
   deleteContainer,
   getSourceIri,
 } from "@inrupt/solid-client";
-import { WebsocketNotification } from "../../src/index";
+import { WebsocketNotification, ErrorEvent } from "../../src/index";
 
 import { getTestingEnvironmentNode } from "../e2e-setup";
 
@@ -137,7 +137,7 @@ describe.skip(`Authenticated end-to-end notifications tests for environment [${e
         ws?.on("connected", () => {
           resolve(undefined);
         });
-        ws?.on("error", (e: Error) => {
+        ws?.on("error", (e: ErrorEvent) => {
           reject(e);
         });
       });
@@ -146,7 +146,7 @@ describe.skip(`Authenticated end-to-end notifications tests for environment [${e
 
       const events: Array<unknown> = [];
       ws.on("message", (message) => {
-        events.push(JSON.parse(message));
+        events.push(message);
       });
 
       // Wait for the container to be created and for the notification to be received
@@ -177,7 +177,7 @@ describe.skip(`Authenticated end-to-end notifications tests for environment [${e
         ws?.on("closed", () => {
           resolve(undefined);
         });
-        ws?.on("error", (e: Error) => {
+        ws?.on("error", (e: ErrorEvent) => {
           reject(e);
         });
       });
