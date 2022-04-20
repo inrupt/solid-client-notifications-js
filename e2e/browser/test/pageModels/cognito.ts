@@ -31,6 +31,11 @@ export class CognitoPage {
   async login(username: string, password: string) {
     await this.page.fill(".visible-lg [type=text]", username);
     await this.page.fill(".visible-lg [type=password]", password);
-    await this.page.click(".visible-lg [aria-label=submit]");
+    await Promise.all([
+      // It is important to call waitForNavigation before click to set up waiting.
+      this.page.waitForNavigation(),
+      // Clicking the link will indirectly cause a navigation.
+      this.page.click(".visible-lg [aria-label=submit]"),
+    ]);
   }
 }

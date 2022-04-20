@@ -32,7 +32,12 @@ export class IndexPage {
   async startLogin() {
     const { idp } = getTestingEnvironmentBrowser();
     await this.page.fill("[data-testid=identityProviderInput]", idp);
-    await this.page.click("[data-testid=loginButton]");
+    await Promise.all([
+      // It is important to call waitForNavigation before click to set up waiting.
+      this.page.waitForNavigation(),
+      // Clicking the link will indirectly cause a navigation.
+      this.page.click("[data-testid=loginButton]"),
+    ]);
   }
 
   async handleRedirect() {
