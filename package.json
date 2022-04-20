@@ -65,7 +65,7 @@
     "@inrupt/solid-client": "^1.21.0",
     "@inrupt/solid-client-authn-browser": "^1.11.2",
     "@inrupt/solid-client-authn-node": "^1.11.2",
-    "@playwright/test": "^1.20.1",
+    "@playwright/test": "^1.21.1",
     "@skypack/package-check": "^0.2.2",
     "@types/dotenv-flow": "^3.2.0",
     "@types/jest": "^27.0.2",
