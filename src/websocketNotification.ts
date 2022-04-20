@@ -63,7 +63,7 @@ export class WebsocketNotification extends LiveNotification {
   /** @internal */
   websocket?: IsoWebSocket;
 
-  /** @internal */
+  /** @hidden */
   status: statuses = "closed";
 
   constructor(topic: string, options?: NotificationOptions) {

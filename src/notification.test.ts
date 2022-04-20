@@ -97,7 +97,8 @@ describe("BaseNotification", () => {
         fetch: fetchFn,
       });
 
-      const notificationGateway = await notification.fetchNegotiationGatewayUrl();
+      const notificationGateway =
+        await notification.fetchNegotiationGatewayUrl();
 
       expect(notificationGateway).toEqual(gateway);
       expect(fetchFn).not.toHaveBeenCalled();
@@ -111,7 +112,8 @@ describe("BaseNotification", () => {
       const protocol = ["ws"] as Array<protocols>;
 
       const notification = new BaseNotification(topic, protocol, { fetch });
-      const notificationGateway = await notification.fetchNegotiationGatewayUrl();
+      const notificationGateway =
+        await notification.fetchNegotiationGatewayUrl();
 
       expect(notificationGateway).toEqual(gateway);
     });

@@ -24,14 +24,14 @@ import { fetch as crossFetch } from "cross-fetch";
 export type protocols = "ws" | string;
 export type statuses = "connecting" | "connected" | "closing" | "closed";
 
-/** @internal */
+/** @hidden */
 export interface NegotiationInfo {
   endpoint: string;
   procotol: protocols;
   features: FeatureOptions;
 }
 
-/** @internal */
+/** @hidden */
 export interface NotificationConnectionInfo {
   endpoint: string;
   protocol: protocols;
