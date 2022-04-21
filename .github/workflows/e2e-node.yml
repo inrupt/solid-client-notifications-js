@@ -19,7 +19,9 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         node-version: [16.x]
-        environment-name: ["ESS PodSpaces", "ESS PodSpaces Next"]
+        # disable PodSpaces, as ESS 1.1 doesn't work with getWellKnownSolid yet:
+        # environment-name: ["ESS PodSpaces", "ESS PodSpaces Next"]
+        environment-name: ["ESS PodSpaces Next"]
     steps:
       - uses: actions/checkout@v3
       - name: Use Node.js ${{ matrix.node-version }}
