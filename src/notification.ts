@@ -37,6 +37,12 @@ import {
  */
 export class BaseNotification {
   /** @internal */
+  fetchLoaded = false;
+
+  /** @internal */
+  fetchLoader: Promise<void>;
+
+  /** @internal */
   topic: string;
 
   /** @internal */
@@ -67,8 +73,9 @@ export class BaseNotification {
       );
 
       return fetchFn;
-      /* eslint no-empty: 0 */
-    } catch (e) {}
+    } catch (e) {
+      /* empty */
+    }
   }
 
   constructor(
@@ -82,14 +89,31 @@ export class BaseNotification {
     this.protocols = protocolList;
     this.features = features;
     this.gateway = gateway;
-    this.fetch = fetchFn || crossFetch;
 
-    // Attempt to load the fetch function from the default session if no fetchFn was passed in.
-    if (!fetchFn) {
-      // We don't care if this errors.
-      /* eslint @typescript-eslint/no-floating-promises: 0 */
-      BaseNotification.getDefaultSessionFetch().then(this.setSessionFetch);
-    }
+    // Load fetch:
+    this.fetch = crossFetch;
+    this.setSessionFetch();
+
+    this.fetchLoaded = false;
+    this.fetchLoader = new Promise<void>((resolve) => {
+      if (fetchFn) {
+        this.setSessionFetch(fetchFn);
+        resolve();
+      } else {
+        // Attempt to load the fetch function from the default session if no fetchFn was passed in.
+        BaseNotification.getDefaultSessionFetch()
+          .then((defaultFetchFn) => {
+            if (defaultFetchFn) {
+              this.setSessionFetch(defaultFetchFn);
+            }
+          })
+          .finally(() => {
+            resolve();
+          });
+      }
+    }).then(() => {
+      this.fetchLoaded = true;
+    });
   }
 
   /**
@@ -150,6 +174,10 @@ export class BaseNotification {
 
   /** @internal */
   async fetchProtocolNegotiationInfo(): Promise<NegotiationInfo> {
+    if (!this.fetchLoaded) {
+      await this.fetchLoader;
+    }
+
     if (!this.gateway) {
       this.gateway = await this.fetchNegotiationGatewayUrl();
     }
@@ -184,6 +212,10 @@ export class BaseNotification {
 
   /** @internal */
   async fetchNotificationConnectionInfo(): Promise<NotificationConnectionInfo> {
+    if (!this.fetchLoaded) {
+      await this.fetchLoader;
+    }
+
     const { endpoint } = await this.fetchProtocolNegotiationInfo();
 
     const response = await this.fetch(endpoint, {
