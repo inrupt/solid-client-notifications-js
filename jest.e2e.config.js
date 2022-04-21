@@ -24,11 +24,10 @@
 module.exports = {
   preset: "ts-jest",
   testEnvironment: "node",
-  clearMocks: true,
-  // Because we're making HTTP requests that can take a while, tests should be
-  // given a little longer to complete:
-  testTimeout: 10000,
   testRegex: "e2e/node/.*.test.ts",
+  clearMocks: true,
+  // Increase timeout to accommodate variable network latency
+  testTimeout: 30000,
   injectGlobals: false,
   setupFiles: ["<rootDir>/e2e/node/setup.ts"],
 };

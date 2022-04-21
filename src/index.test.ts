@@ -19,6 +19,8 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+import { test, describe, expect } from "@jest/globals";
+
 import {
   WebsocketNotification,
   FetchError,

@@ -19,9 +19,10 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-// Typescript and eslint are fighting over whether these are globals
-/* eslint no-shadow: 0 */
+import { it, describe, expect, jest } from "@jest/globals";
+
 import { MessageEvent, OpenEvent, CloseEvent, ErrorEvent } from "isomorphic-ws";
+import { NotificationConnectionInfo } from "./interfaces";
 
 import { WebsocketNotification } from "./websocketNotification";
 
@@ -33,9 +34,8 @@ describe("WebsocketNotification", () => {
   describe("constructor", () => {
     it("constructor hardcodes the protocol to ws", () => {
       const topic = "https://fake.url/some-resource";
-      const fetchFn = jest.fn();
 
-      const ws = new WebsocketNotification(topic, { fetch: fetchFn });
+      const ws = new WebsocketNotification(topic);
 
       expect(ws.protocols).toEqual(["ws"]);
     });
@@ -44,9 +44,8 @@ describe("WebsocketNotification", () => {
   describe("connect", () => {
     it("sets the status to connecting", async () => {
       const topic = "https://fake.url/some-resource";
-      const fetchFn = jest.fn();
 
-      const ws = new WebsocketNotification(topic, { fetch: fetchFn });
+      const ws = new WebsocketNotification(topic);
 
       await ws.connect(wssEndpoint);
 
@@ -55,9 +54,8 @@ describe("WebsocketNotification", () => {
 
     it("does not fetch notification connection info if given", async () => {
       const topic = "https://fake.url/some-resource";
-      const fetchFn = jest.fn();
 
-      const ws = new WebsocketNotification(topic, { fetch: fetchFn });
+      const ws = new WebsocketNotification(topic);
       ws.fetchNotificationConnectionInfo = jest.fn();
 
       await ws.connect(wssEndpoint);
@@ -67,12 +65,15 @@ describe("WebsocketNotification", () => {
 
     it("fetches notification connection info if not given", async () => {
       const topic = "https://fake.url/some-resource";
-      const fetchFn = jest.fn();
-      const ws = new WebsocketNotification(topic, { fetch: fetchFn });
+      const ws = new WebsocketNotification(topic);
 
-      ws.fetchNotificationConnectionInfo = jest.fn().mockResolvedValue({
-        endpoint: wssEndpoint,
-      });
+      ws.fetchNotificationConnectionInfo = jest
+        .fn<Promise<NotificationConnectionInfo>, never>()
+        .mockResolvedValue({
+          endpoint: wssEndpoint,
+          protocol: "ws",
+          subprotocol: "solid-0.2",
+        });
 
       await ws.connect();
 
@@ -81,8 +82,7 @@ describe("WebsocketNotification", () => {
 
     it("sets the status to connected when the websocket is opened", async () => {
       const topic = "https://fake.url/some-resource";
-      const fetchFn = jest.fn();
-      const ws = new WebsocketNotification(topic, { fetch: fetchFn });
+      const ws = new WebsocketNotification(topic);
 
       await ws.connect(wssEndpoint);
       ws.websocket?.onopen({} as OpenEvent);
@@ -92,8 +92,7 @@ describe("WebsocketNotification", () => {
 
     it("emits an error when the websocket emits an error", async () => {
       const topic = "https://fake.url/some-resource";
-      const fetchFn = jest.fn();
-      const ws = new WebsocketNotification(topic, { fetch: fetchFn });
+      const ws = new WebsocketNotification(topic);
 
       const errorSpy = jest.fn();
 
@@ -108,8 +107,7 @@ describe("WebsocketNotification", () => {
 
     it("sets the status to closed when the websocket is closed", async () => {
       const topic = "https://fake.url/some-resource";
-      const fetchFn = jest.fn();
-      const ws = new WebsocketNotification(topic, { fetch: fetchFn });
+      const ws = new WebsocketNotification(topic);
 
       await ws.connect(wssEndpoint);
       ws.websocket?.onopen({} as OpenEvent);
@@ -123,8 +121,7 @@ describe("WebsocketNotification", () => {
 
     it("emits a closed event when the websocket is closed", async () => {
       const topic = "https://fake.url/some-resource";
-      const fetchFn = jest.fn();
-      const ws = new WebsocketNotification(topic, { fetch: fetchFn });
+      const ws = new WebsocketNotification(topic);
 
       const closedSpy = jest.fn();
       ws.on("closed", closedSpy);
@@ -139,8 +136,7 @@ describe("WebsocketNotification", () => {
   describe("on message", () => {
     it("emits a message when the websocket receives a valid message", async () => {
       const topic = "https://fake.url/some-resource";
-      const fetchFn = jest.fn();
-      const ws = new WebsocketNotification(topic, { fetch: fetchFn });
+      const ws = new WebsocketNotification(topic);
 
       const messageSpy = jest.fn();
       const message = `{"id":"urn:uuid:92a3d416-1d23-4c74-9ef5-41d62f329a07","type":["http://www.w3.org/ns/prov#Activity","Update"],"actor":[""],"object":{"id":"https://storage.inrupt.com/e9179f88-ca8f-45e1-a1b9-88a83f61db5e/","state":"8654e150-75c0-4fab-85f4-2f015b60da2d","type":["http://www.w3.org/ns/ldp#Container","http://www.w3.org/ns/ldp#Resource","http://www.w3.org/ns/ldp#RDFSource","http://www.w3.org/ns/ldp#BasicContainer"]},"published":"2022-04-20T00:17:21.714135Z","@context":["https://www.w3.org/ns/activitystreams",{"state":{"@id":"http://www.w3.org/2011/http-headers#etag"}}]}`;
@@ -176,12 +172,12 @@ describe("WebsocketNotification", () => {
 
     it("does not emit a message if the message is invalid JSON", async () => {
       const topic = "https://fake.url/some-resource";
-      const fetchFn = jest.fn();
-      const ws = new WebsocketNotification(topic, { fetch: fetchFn });
+      const ws = new WebsocketNotification(topic);
 
       const messageSpy = jest.fn();
       const message = `invalid JSON`;
 
+      console.info("Note: we expect a console.warn to come next");
       ws.on("message", messageSpy);
 
       await ws.connect(wssEndpoint);
@@ -193,8 +189,7 @@ describe("WebsocketNotification", () => {
 
     it("does not emit a message if the message is not a string", async () => {
       const topic = "https://fake.url/some-resource";
-      const fetchFn = jest.fn();
-      const ws = new WebsocketNotification(topic, { fetch: fetchFn });
+      const ws = new WebsocketNotification(topic);
 
       const messageSpy = jest.fn();
 
@@ -205,6 +200,7 @@ describe("WebsocketNotification", () => {
       // https://websockets.spec.whatwg.org/#dom-binarytype-arraybuffer
       const message = new TextEncoder().encode("test");
 
+      console.info("Note: we expect a console.warn to come next");
       ws.on("message", messageSpy);
 
       await ws.connect(wssEndpoint);
@@ -218,8 +214,7 @@ describe("WebsocketNotification", () => {
   describe("disconnect", () => {
     it("closes the websocket", async () => {
       const topic = "https://fake.url/some-resource";
-      const fetchFn = jest.fn();
-      const ws = new WebsocketNotification(topic, { fetch: fetchFn });
+      const ws = new WebsocketNotification(topic);
 
       const closedSpy = jest.fn();
       ws.on("closed", closedSpy);
@@ -233,8 +228,7 @@ describe("WebsocketNotification", () => {
 
     it("does nothing if the websocket was never initialized", () => {
       const topic = "https://fake.url/some-resource";
-      const fetchFn = jest.fn();
-      const ws = new WebsocketNotification(topic, { fetch: fetchFn });
+      const ws = new WebsocketNotification(topic);
 
       ws.disconnect();
 

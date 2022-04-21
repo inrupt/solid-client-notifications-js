@@ -27,7 +27,7 @@ export type statuses = "connecting" | "connected" | "closing" | "closed";
 /** @hidden */
 export interface NegotiationInfo {
   endpoint: string;
-  procotol: protocols;
+  protocol: protocols;
   features: FeatureOptions;
 }
 
