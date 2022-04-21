@@ -36,7 +36,7 @@ export class LiveNotification extends BaseNotification {
   /** @internal */
   protocol?: protocols;
 
-  /** @internal */
+  /** @hidden */
   emitter: EventEmitter;
 
   // TODO move constructor options to options instead of arguments
