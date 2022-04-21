@@ -216,12 +216,12 @@ jobs:
           name: webpack-dist
           path: .github/workflows/cd-packaging-tests/bundler-webpack/dist
 
-    # Run our Node-based end-to-end tests against the published package at least once,
+  # Run our Node-based end-to-end tests against the published package at least once,
   # to detect issues introduced by the build process:
   cd-end-to-end-tests:
     runs-on: ubuntu-latest
     environment:
-      name: "ESS Production"
+      name: "ESS PodSpaces Next"
     strategy:
       matrix:
         node-version: [16.x]
@@ -248,7 +248,7 @@ jobs:
         run: |
           cd e2e/node
           # For all files (`-type f`) in this directory,
-          # replace `../../src/index` (i.e. in the import statement) with `@inrupt/solid-client`:
+          # replace `../../src/index` (i.e. in the import statement) with `@inrupt/solid-client-notifications`:
           find ./ -type f -exec sed --in-place --expression='s/\.\.\/\.\.\/src\/index/@inrupt\/solid-client-notifications/g' {} \;
       - name: Run the Node-based end-to-end tests
         run: npm run test:e2e:node
