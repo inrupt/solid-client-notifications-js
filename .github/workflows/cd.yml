@@ -149,7 +149,8 @@ jobs:
         if: github.actor != 'dependabot[bot]'
         run: |
           cd .github/workflows/cd-packaging-tests/node
-          npm install @inrupt/solid-client-notifications@$VERSION_NR
+          npm install --save @inrupt/solid-client-notifications@$VERSION_NR
+          npm install
         env:
           VERSION_NR: ${{ needs.publish-npm.outputs.version-nr }}
       - name: Verify that the package can be imported in Node from a CommonJS module
@@ -258,4 +259,4 @@ jobs:
           E2E_TEST_IDP: ${{ secrets.E2E_TEST_IDP }}
           E2E_TEST_CLIENT_ID: ${{ secrets.E2E_TEST_CLIENT_ID }}
           E2E_TEST_CLIENT_SECRET: ${{ secrets.E2E_TEST_CLIENT_SECRET }}
-          E2E_TEST_ENVIRONMENT: "ESS Production"
+          E2E_TEST_ENVIRONMENT: ${{ environment.name }}
