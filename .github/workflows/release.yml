@@ -169,6 +169,7 @@ jobs:
     strategy:
       matrix:
         node-version: [16.x]
+        environment-name: ["ESS PodSpaces Next"]
     needs: [prepare-deployment, publish-npm]
     steps:
       - uses: actions/checkout@v3
@@ -186,13 +187,14 @@ jobs:
         run: |
           cd e2e/node
           # For all files (`-type f`) in this directory,
-          # replace `../index` (i.e. in the import statement) with `@inrupt/solid-client-notifications`:
-          find ./ -type f -exec sed --in-place --expression='s/\.\.\/index/@inrupt\/solid-client-notifications/g' {} \;
+          # replace `../../src/index` (i.e. in the import statement) with `@inrupt/solid-client-notifications`:
+          find ./ -type f -exec sed --in-place --expression='s/\.\.\/\.\.\/src\/index/@inrupt\/solid-client-notifications/g' {} \;
       - name: Run the Node-based end-to-end tests
         run: npm run test:e2e:node
         env:
-          E2E_TEST_ESS_NOTIFICATION_GATEWAY: ${{secrets.E2E_TEST_ESS_PROD_NOTIFICATION_GATEWAY}}
-          E2E_TEST_ESS_POD: ${{ secrets.E2E_TEST_ESS_PROD_POD }}
-          E2E_TEST_ESS_IDP_URL: ${{ secrets.E2E_TEST_ESS_PROD_IDP_URL }}
-          E2E_TEST_ESS_CLIENT_ID: ${{ secrets.E2E_TEST_ESS_PROD_CLIENT_ID }}
-          E2E_TEST_ESS_CLIENT_SECRET: ${{ secrets.E2E_TEST_ESS_PROD_CLIENT_SECRET }}
+          E2E_TEST_NOTIFICATION_GATEWAY: ${{ secrets.E2E_TEST_NOTIFICATION_GATEWAY }}
+          E2E_TEST_NOTIFICATION_PROTOCOL: ${{ secrets.E2E_TEST_NOTIFICATION_PROTOCOL }}
+          E2E_TEST_IDP: ${{ secrets.E2E_TEST_IDP }}
+          E2E_TEST_CLIENT_ID: ${{ secrets.E2E_TEST_CLIENT_ID }}
+          E2E_TEST_CLIENT_SECRET: ${{ secrets.E2E_TEST_CLIENT_SECRET }}
+          E2E_TEST_ENVIRONMENT: ${{ matrix.environment-name }}
