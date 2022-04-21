@@ -104,5 +104,8 @@
   },
   "peerDependencies": {
     "@inrupt/solid-client": "^1.21.0"
+  },
+  "engines": {
+    "node": "^14.17.0 || >=16.0.0"
   }
 }

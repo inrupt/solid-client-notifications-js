@@ -6,6 +6,10 @@ The following changes have been implemented but not released yet:
 
 ## [Unreleased]
 
+### Breaking Changes
+
+- Support for Node.js v12.x has been dropped as that version has reached end-of-life.
+
 ### New Features
 
 - WebsocketNotification `message` events are now parsed as JSON, this is technically a breaking change but we're allowing it due to the alpha nature of this library.
