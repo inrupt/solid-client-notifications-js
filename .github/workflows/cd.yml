@@ -219,44 +219,42 @@ jobs:
 
   # Run our Node-based end-to-end tests against the published package at least once,
   # to detect issues introduced by the build process:
-  cd-end-to-end-tests:
-    runs-on: ubuntu-latest
-    environment:
-      name: "ESS PodSpaces Next"
-    strategy:
-      matrix:
-        node-version: [16.x]
-    needs: [prepare-deployment, publish-npm]
-    # Dependabot does not have access to our secrets,
-    # so publishing packages for Dependabot PRs can only be manually started.
-    # https://github.blog/changelog/2021-02-19-github-actions-workflows-triggered-by-dependabot-prs-will-run-with-read-only-permissions/
-    if: github.actor != 'dependabot[bot]'
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-          registry-url: "https://registry.npmjs.org"
-      - run: npm ci
-      - name: Install the preview release of solid-client
-        # The `--force` allows us to install it even though our own package has the same name.
-        # See https://docs.npmjs.com/cli/v6/commands/npm-install#limitations-of-npms-install-algorithm
-        run: |
-          npm install --force @inrupt/solid-client-notifications@$VERSION_NR
-        env:
-          VERSION_NR: ${{ needs.publish-npm.outputs.version-nr }}
-      - name: Make sure that the end-to-end tests run against the just-published package
-        run: |
-          cd e2e/node
-          # For all files (`-type f`) in this directory,
-          # replace `../../src/index` (i.e. in the import statement) with `@inrupt/solid-client-notifications`:
-          find ./ -type f -exec sed --in-place --expression='s/\.\.\/\.\.\/src\/index/@inrupt\/solid-client-notifications/g' {} \;
-      - name: Run the Node-based end-to-end tests
-        run: npm run test:e2e:node
-        env:
-          E2E_TEST_NOTIFICATION_GATEWAY: ${{ secrets.E2E_TEST_NOTIFICATION_GATEWAY }}
-          E2E_TEST_NOTIFICATION_PROTOCOL: ${{ secrets.E2E_TEST_NOTIFICATION_PROTOCOL }}
-          E2E_TEST_IDP: ${{ secrets.E2E_TEST_IDP }}
-          E2E_TEST_CLIENT_ID: ${{ secrets.E2E_TEST_CLIENT_ID }}
-          E2E_TEST_CLIENT_SECRET: ${{ secrets.E2E_TEST_CLIENT_SECRET }}
-          E2E_TEST_ENVIRONMENT: ${{ environment.name }}
+  # cd-end-to-end-tests:
+  #   runs-on: ubuntu-latest
+  #   strategy:
+  #     matrix:
+  #       node-version: [16.x]
+  #   needs: [prepare-deployment, publish-npm]
+  #   # Dependabot does not have access to our secrets,
+  #   # so publishing packages for Dependabot PRs can only be manually started.
+  #   # https://github.blog/changelog/2021-02-19-github-actions-workflows-triggered-by-dependabot-prs-will-run-with-read-only-permissions/
+  #   if: github.actor != 'dependabot[bot]'
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - uses: actions/setup-node@v3
+  #       with:
+  #         node-version: ${{ matrix.node-version }}
+  #         registry-url: "https://registry.npmjs.org"
+  #     - run: npm ci
+  #     - name: Install the preview release of solid-client
+  #       # The `--force` allows us to install it even though our own package has the same name.
+  #       # See https://docs.npmjs.com/cli/v6/commands/npm-install#limitations-of-npms-install-algorithm
+  #       run: |
+  #         npm install --force @inrupt/solid-client-notifications@$VERSION_NR
+  #       env:
+  #         VERSION_NR: ${{ needs.publish-npm.outputs.version-nr }}
+  #     - name: Make sure that the end-to-end tests run against the just-published package
+  #       run: |
+  #         cd e2e/node
+  #         # For all files (`-type f`) in this directory,
+  #         # replace `../../src/index` (i.e. in the import statement) with `@inrupt/solid-client-notifications`:
+  #         find ./ -type f -exec sed --in-place --expression='s/\.\.\/\.\.\/src\/index/@inrupt\/solid-client-notifications/g' {} \;
+  #     - name: Run the Node-based end-to-end tests
+  #       run: npm run test:e2e:node
+  #       env:
+  #         E2E_TEST_NOTIFICATION_GATEWAY: ${{ secrets.E2E_TEST_NOTIFICATION_GATEWAY }}
+  #         E2E_TEST_NOTIFICATION_PROTOCOL: ${{ secrets.E2E_TEST_NOTIFICATION_PROTOCOL }}
+  #         E2E_TEST_IDP: ${{ secrets.E2E_TEST_IDP }}
+  #         E2E_TEST_CLIENT_ID: ${{ secrets.E2E_TEST_CLIENT_ID }}
+  #         E2E_TEST_CLIENT_SECRET: ${{ secrets.E2E_TEST_CLIENT_SECRET }}
+  #         E2E_TEST_ENVIRONMENT: "ESS PodSpaces Next"
