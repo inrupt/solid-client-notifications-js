@@ -19,7 +19,7 @@ jobs:
         # NSS does not support static client registration, which we rely on for testing.
         # Dev-next partially implements the latest notifications protocol, while
         # this library still implements the legacy one.
-        environment-name: ["ESS Production"]
+        environment-name: ["ESS Production", "ESS PodSpaces Next"]
     steps:
       - uses: actions/checkout@v3
       - name: Use Node.js 16.x
