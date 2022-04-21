@@ -21,8 +21,9 @@
 import { setupEnv } from "./setupEnv";
 
 const availableEnvironment = [
-  "ESS Dev-Next" as const,
+  // "ESS Dev-Next" as const,
   "ESS Production" as const,
+  "ESS PodSpaces Next" as const,
 ];
 
 export type AvailableEnvironment = typeof availableEnvironment extends Array<
@@ -31,10 +32,7 @@ export type AvailableEnvironment = typeof availableEnvironment extends Array<
   ? E
   : never;
 
-const availableProtocol = [
-  "Solid Notifications Protocol" as const,
-  "ESS Notifications Protocol" as const,
-];
+const availableProtocol = ["ESS Notifications Protocol" as const];
 
 export type AvailableProtocol = typeof availableProtocol extends Array<infer E>
   ? E
