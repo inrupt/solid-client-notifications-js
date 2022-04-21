@@ -18,11 +18,12 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
+
 import { setupEnv } from "./setupEnv";
 
 const availableEnvironment = [
   // "ESS Dev-Next" as const,
-  "ESS Production" as const,
+  "ESS PodSpaces" as const,
   "ESS PodSpaces Next" as const,
 ];
 
@@ -61,8 +62,8 @@ export interface EnvVariables {
   E2E_TEST_NOTIFICATION_GATEWAY: string;
   E2E_TEST_CLIENT_ID: string | undefined;
   E2E_TEST_CLIENT_SECRET: string | undefined;
-  E2E_TEST_UI_LOGIN: string | undefined;
-  E2E_TEST_UI_PASSWORD: string | undefined;
+  E2E_TEST_USER: string | undefined;
+  E2E_TEST_PASSWORD: string | undefined;
 }
 
 function getTestingEnvironment(
@@ -137,18 +138,16 @@ export function getTestingEnvironmentNode(): TestingEnvironmentNode {
 export function getTestingEnvironmentBrowser(): TestingEnvironmentBrowser {
   getTestingEnvironment(process.env);
 
-  if (process.env.E2E_TEST_UI_LOGIN === undefined) {
-    throw new Error("The environment variable E2E_TEST_UI_LOGIN is undefined.");
+  if (process.env.E2E_TEST_USER === undefined) {
+    throw new Error("The environment variable E2E_TEST_USER is undefined.");
   }
-  if (process.env.E2E_TEST_UI_PASSWORD === undefined) {
-    throw new Error(
-      "The environment variable E2E_TEST_UI_PASSWORD is undefined."
-    );
+  if (process.env.E2E_TEST_PASSWORD === undefined) {
+    throw new Error("The environment variable E2E_TEST_PASSWORD is undefined.");
   }
 
   return {
-    login: process.env.E2E_TEST_UI_LOGIN,
-    password: process.env.E2E_TEST_UI_PASSWORD,
+    login: process.env.E2E_TEST_USER,
+    password: process.env.E2E_TEST_PASSWORD,
     idp: process.env.E2E_TEST_IDP,
     notificationGateway: process.env.E2E_TEST_NOTIFICATION_GATEWAY,
   };
