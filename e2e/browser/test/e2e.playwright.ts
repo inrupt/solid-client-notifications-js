@@ -34,9 +34,6 @@ import { getTestingEnvironmentBrowser } from "../../utils/getTestingEnvironment"
 
 const { login, password, notificationGateway } = getTestingEnvironmentBrowser();
 
-// FIXME: There is currently a bug where the websocket is created, but no events
-// are coming through. There is no clear reproduction steps. The tests will be
-// re-enabled once this is fixed and they are no longer flaky.
 test("connecting a websocket and disconnecting it", async ({ page }) => {
   let websocket: PlayWrightWebSocket;
   // Navigate to the test page and log in.
@@ -87,9 +84,6 @@ test("connecting a websocket and disconnecting it", async ({ page }) => {
   ).resolves.toMatch("closed");
 });
 
-// FIXME: There is currently a bug where the websocket is created, but no events
-// are coming through. There is no clear reproduction steps. The tests will be
-// re-enabled once this is fixed and they are no longer flaky.
 test("connecting a websocket, getting messages, and disconnecting it", async ({
   page,
 }) => {
