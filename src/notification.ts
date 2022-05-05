@@ -20,7 +20,9 @@
 //
 
 import { fetch as crossFetch } from "cross-fetch";
-import { FetchError } from "./errors";
+import { getIri, getThingAll, getWellKnownSolid } from "@inrupt/solid-client";
+
+import { FetchError, NotSupported } from "./errors";
 import {
   protocols,
   FeatureOptions,
@@ -35,10 +37,13 @@ import {
  */
 export class BaseNotification {
   /** @internal */
-  topic: string;
+  fetchLoaded = false;
 
   /** @internal */
-  host: string;
+  fetchLoader: Promise<void>;
+
+  /** @internal */
+  topic: string;
 
   /** @internal */
   gateway?: string;
@@ -55,17 +60,6 @@ export class BaseNotification {
   /** @internal */
   status: statuses = "closed";
 
-  /** @internal */
-  static getRootDomain(topic: string): string {
-    const parsedUrl = new URL(topic);
-    return `${parsedUrl.protocol}//${parsedUrl.hostname}`;
-  }
-
-  /** @internal */
-  static getSolidWellKnownUrl(host: string): string {
-    return new URL("/.well-known/solid", host).href;
-  }
-
   // Dynamically import solid-client-authn-browser so that Notification doesn't have a hard
   // dependency.
   /* eslint consistent-return: 0 */
@@ -79,8 +73,9 @@ export class BaseNotification {
       );
 
       return fetchFn;
-      /* eslint no-empty: 0 */
-    } catch (e) {}
+    } catch (e) {
+      /* empty */
+    }
   }
 
   constructor(
@@ -88,22 +83,37 @@ export class BaseNotification {
     protocolList: protocols[],
     options: NotificationOptions = {}
   ) {
-    const { gateway, host, features = {}, fetch: fetchFn } = options;
+    const { gateway, features = {}, fetch: fetchFn } = options;
 
     this.topic = topic;
     this.protocols = protocolList;
     this.features = features;
     this.gateway = gateway;
-    this.fetch = fetchFn || crossFetch;
 
-    // Attempt to load the fetch function from the default session if no fetchFn was passed in.
-    if (!fetchFn) {
-      // We don't care if this errors.
-      /* eslint @typescript-eslint/no-floating-promises: 0 */
-      BaseNotification.getDefaultSessionFetch().then(this.setSessionFetch);
-    }
+    // Load fetch:
+    this.fetch = crossFetch;
+    this.setSessionFetch();
 
-    this.host = host || BaseNotification.getRootDomain(topic);
+    this.fetchLoaded = false;
+    this.fetchLoader = new Promise<void>((resolve) => {
+      if (fetchFn) {
+        this.setSessionFetch(fetchFn);
+        resolve();
+      } else {
+        // Attempt to load the fetch function from the default session if no fetchFn was passed in.
+        BaseNotification.getDefaultSessionFetch()
+          .then((defaultFetchFn) => {
+            if (defaultFetchFn) {
+              this.setSessionFetch(defaultFetchFn);
+            }
+          })
+          .finally(() => {
+            resolve();
+          });
+      }
+    }).then(() => {
+      this.fetchLoaded = true;
+    });
   }
 
   /**
@@ -128,26 +138,35 @@ export class BaseNotification {
       return this.gateway;
     }
 
-    const response = await this.fetch(
-      BaseNotification.getSolidWellKnownUrl(this.host),
-      {
-        headers: {
-          Accept: "application/ld+json",
-        },
-      }
+    const wellKnown = await getWellKnownSolid(this.topic).catch(() => {
+      // The storage server for the topic resource didn't respond well to
+      // getWellKnownSolid requests:
+      throw new NotSupported();
+    });
+
+    const wellKnownSubjects = getThingAll(wellKnown, {
+      acceptBlankNodes: true,
+    });
+    const wellKnownSubject = wellKnownSubjects[0];
+
+    // First try reading the 2.0 predicate:
+    let notificationGateway = getIri(
+      wellKnownSubject,
+      "http://www.w3.org/ns/solid/terms#notificationGateway"
     );
 
-    if (response.status !== 200) {
-      throw new FetchError(
-        response.url,
-        response.status,
-        response.statusText,
-        "negotiation gateway url",
-        response
+    // Then try the earlier 1.1 predicate:
+    if (!notificationGateway) {
+      notificationGateway = getIri(
+        wellKnownSubject,
+        "http://inrupt.com/ns/ess#notificationGatewayEndpoint"
       );
     }
 
-    const { notificationGateway } = await response.json();
+    // If we don't get either, then error out:
+    if (!notificationGateway) {
+      throw new NotSupported();
+    }
 
     this.gateway = notificationGateway;
     return notificationGateway;
@@ -155,8 +174,12 @@ export class BaseNotification {
 
   /** @internal */
   async fetchProtocolNegotiationInfo(): Promise<NegotiationInfo> {
+    if (!this.fetchLoaded) {
+      await this.fetchLoader;
+    }
+
     if (!this.gateway) {
-      await this.fetchNegotiationGatewayUrl();
+      this.gateway = await this.fetchNegotiationGatewayUrl();
     }
 
     // Typescript doesn't notice that this.gateway was changed in fetchNegotiationGatewayUrl,
@@ -189,6 +212,10 @@ export class BaseNotification {
 
   /** @internal */
   async fetchNotificationConnectionInfo(): Promise<NotificationConnectionInfo> {
+    if (!this.fetchLoaded) {
+      await this.fetchLoader;
+    }
+
     const { endpoint } = await this.fetchProtocolNegotiationInfo();
 
     const response = await this.fetch(endpoint, {

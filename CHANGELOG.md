@@ -6,6 +6,20 @@ The following changes have been implemented but not released yet:
 
 ## [Unreleased]
 
+### Breaking Changes
+
+- Support for Node.js v12.x has been dropped as that version has reached end-of-life.
+
+### New Features
+
+- WebsocketNotification `message` events are now parsed as JSON, this is technically a breaking change but we're allowing it due to the alpha nature of this library.
+
+### Fixes
+
+- use `getWellKnownSolid` from `@inrupt/solid-client` to be more compatible/reliable
+- improve documentation of entire package to be clearer and document only APIs that should be used by end-users of the SDK.
+- rework all tests to run successfully
+
 ## [0.2.0] - 2021-12-15
 
 ### Changes

@@ -15,7 +15,7 @@
     "lint:check": "npm run lint:eslint && npm run lint:prettier -- --check",
     "lint:eslint": "eslint --config .eslintrc.js \"src/\" \"e2e/\"",
     "lint:prettier": "prettier \"{src,e2e}/**/*.{ts,tsx,js,jsx,css}\" \"**/*.{md,mdx,yml}\"",
-    "test": "jest src",
+    "test": "jest",
     "test:e2e:node": "jest --config=jest.e2e.config.js e2e/node",
     "test:e2e:browser": "cd e2e/browser/test && playwright test",
     "test:e2e:browser:setup": "cd e2e/browser/testApp && npm ci",
@@ -65,7 +65,7 @@
     "@inrupt/solid-client": "^1.21.0",
     "@inrupt/solid-client-authn-browser": "^1.11.2",
     "@inrupt/solid-client-authn-node": "^1.11.2",
-    "@playwright/test": "^1.20.1",
+    "@playwright/test": "^1.21.1",
     "@skypack/package-check": "^0.2.2",
     "@types/dotenv-flow": "^3.2.0",
     "@types/jest": "^27.0.2",
@@ -81,7 +81,6 @@
     "eslint-plugin-jest": "^23.13.2",
     "eslint-plugin-prettier": "^4.0.0",
     "jest": "^27.3.1",
-    "jest-fetch-mock": "^3.0.3",
     "jest-websocket-mock": "^2.2.1",
     "nlfurniss-typedoc-plugin-sourcefile-url": "^2.0.0",
     "node-fetch": "^2.6.6",
@@ -102,5 +101,14 @@
     "events": "^3.3.0",
     "isomorphic-ws": "^4.0.1",
     "ws": "^7.5.5"
+  },
+  "peerDependencies": {
+    "@inrupt/solid-client": "^1.21.0"
+  },
+  "engines": {
+    "node": "^14.17.0 || >=16.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

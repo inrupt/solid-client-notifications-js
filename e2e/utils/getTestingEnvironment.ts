@@ -18,18 +18,13 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-import { config } from "dotenv-flow";
-import { join } from "path";
 
-config({
-  path: join(__dirname, "env"),
-  // Disable warning messages in CI
-  silent: process.env.CI === "true",
-});
+import { setupEnv } from "./setupEnv";
 
 const availableEnvironment = [
-  "ESS Dev-Next" as const,
-  "ESS Production" as const,
+  // "ESS Dev-Next" as const,
+  "ESS PodSpaces" as const,
+  "ESS PodSpaces Next" as const,
 ];
 
 export type AvailableEnvironment = typeof availableEnvironment extends Array<
@@ -38,10 +33,7 @@ export type AvailableEnvironment = typeof availableEnvironment extends Array<
   ? E
   : never;
 
-const availableProtocol = [
-  "Solid Notifications Protocol" as const,
-  "ESS Notifications Protocol" as const,
-];
+const availableProtocol = ["ESS Notifications Protocol" as const];
 
 export type AvailableProtocol = typeof availableProtocol extends Array<infer E>
   ? E
@@ -70,13 +62,15 @@ export interface EnvVariables {
   E2E_TEST_NOTIFICATION_GATEWAY: string;
   E2E_TEST_CLIENT_ID: string | undefined;
   E2E_TEST_CLIENT_SECRET: string | undefined;
-  E2E_TEST_UI_LOGIN: string | undefined;
-  E2E_TEST_UI_PASSWORD: string | undefined;
+  E2E_TEST_USER: string | undefined;
+  E2E_TEST_PASSWORD: string | undefined;
 }
 
-function isTestingEnvironment(
+function getTestingEnvironment(
   environment: unknown
 ): asserts environment is EnvVariables {
+  setupEnv();
+
   if (
     !availableEnvironment.includes(
       (environment as EnvVariables).E2E_TEST_ENVIRONMENT as AvailableEnvironment
@@ -117,7 +111,7 @@ function isTestingEnvironment(
 }
 
 export function getTestingEnvironmentNode(): TestingEnvironmentNode {
-  isTestingEnvironment(process.env);
+  getTestingEnvironment(process.env);
 
   if (typeof process.env.E2E_TEST_CLIENT_ID !== "string") {
     throw new Error(
@@ -142,18 +136,18 @@ export function getTestingEnvironmentNode(): TestingEnvironmentNode {
 }
 
 export function getTestingEnvironmentBrowser(): TestingEnvironmentBrowser {
-  isTestingEnvironment(process.env);
+  getTestingEnvironment(process.env);
 
-  if (process.env.E2E_TEST_UI_LOGIN === undefined) {
-    throw new Error("The environment variable E2E_TEST_UI_LOGIN is undefined.");
+  if (process.env.E2E_TEST_USER === undefined) {
+    throw new Error("The environment variable E2E_TEST_USER is undefined.");
   }
-  if (process.env.E2E_TEST_UI_PASSWORD === undefined) {
-    throw new Error("The environment variable E2E_TEST_UI_LOGIN is undefined.");
+  if (process.env.E2E_TEST_PASSWORD === undefined) {
+    throw new Error("The environment variable E2E_TEST_PASSWORD is undefined.");
   }
 
   return {
-    login: process.env.E2E_TEST_UI_LOGIN,
-    password: process.env.E2E_TEST_UI_PASSWORD,
+    login: process.env.E2E_TEST_USER,
+    password: process.env.E2E_TEST_PASSWORD,
     idp: process.env.E2E_TEST_IDP,
     notificationGateway: process.env.E2E_TEST_NOTIFICATION_GATEWAY,
   };

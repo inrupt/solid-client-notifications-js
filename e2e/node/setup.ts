@@ -19,47 +19,7 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-import { fetch as crossFetch } from "cross-fetch";
+import { setupEnv } from "../utils/setupEnv";
 
-export type protocols = "ws" | string;
-export type statuses = "connecting" | "connected" | "closing" | "closed";
-
-/** @hidden */
-export interface NegotiationInfo {
-  endpoint: string;
-  protocol: protocols;
-  features: FeatureOptions;
-}
-
-/** @hidden */
-export interface NotificationConnectionInfo {
-  endpoint: string;
-  protocol: protocols;
-  subprotocol: string;
-}
-
-export interface NotificationOptions {
-  features?: FeatureOptions;
-  /**
-   * Automatically discovered based on the topic passed
-   */
-  gateway?: string;
-  /**
-   * Automatically discovered based on the topic passed
-   */
-  host?: string;
-
-  /**
-   * A WHATWG Fetch API compatible function used when making requests for
-   * discovering metadata for notifications. See the documentation for
-   * `setSessionFetch` in the `WebsocketNotification` class.
-   */
-  fetch?: typeof crossFetch;
-}
-
-export interface FeatureOptions {
-  state?: string;
-  ttl?: number;
-  rate?: number;
-  filter?: string;
-}
+// Fail fast on dotenv:
+setupEnv();

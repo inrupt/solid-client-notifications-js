@@ -29,6 +29,11 @@ export class BrokerPage {
   }
 
   async authoriseOnce() {
-    await this.page.click("text=Allow");
+    await Promise.all([
+      // It is important to call waitForNavigation before click to set up waiting.
+      this.page.waitForNavigation(),
+      // Clicking the link will indirectly cause a navigation.
+      this.page.click("text=Allow"),
+    ]);
   }
 }

@@ -19,8 +19,9 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         node-version: [16.x]
-        # NSS does not support static client registration, which we rely on for testing.
-        environment-name: ["ESS Production", "ESS Dev-Next"]
+        # disable PodSpaces, as ESS 1.1 doesn't work with getWellKnownSolid yet:
+        # environment-name: ["ESS PodSpaces", "ESS PodSpaces Next"]
+        environment-name: ["ESS PodSpaces Next"]
     steps:
       - uses: actions/checkout@v3
       - name: Use Node.js ${{ matrix.node-version }}
@@ -38,34 +39,3 @@ jobs:
           E2E_TEST_CLIENT_ID: ${{ secrets.E2E_TEST_CLIENT_ID }}
           E2E_TEST_CLIENT_SECRET: ${{ secrets.E2E_TEST_CLIENT_SECRET }}
           E2E_TEST_ENVIRONMENT: ${{ matrix.environment-name }}
-      - name: Add status check with successful test result
-        id: set-status-check-success
-        uses: octokit/request-action@v2.x
-        with:
-          route: POST /repos/:repository/statuses/:ref
-          repository: ${{ github.repository }}
-          ref: ${{ github.sha }}
-          state: success
-          context: "End-to-end tests (node)"
-          description: "Node.js notification end-to-end tests"
-          target_url: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}?check_suite_focus=true
-          # The deployment runs in parallel with CI, so status checks will never have succeeded yet:
-          required_contexts: "[]"
-        env:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-      - name: Add status check with failed test result
-        id: set-status-check-failure
-        if: failure()
-        uses: octokit/request-action@v2.x
-        with:
-          route: POST /repos/:repository/statuses/:ref
-          repoitory: ${{ github.repository }}
-          ref: ${{ github.sha }}
-          state: failure
-          context: "End-to-end tests (node)"
-          description: "Node.js notification end-to-end tests"
-          target_url: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}?check_suite_focus=true
-          # The deployment runs in parallel with CI, so status checks will never have succeeded yet:
-          required_contexts: "[]"
-        env:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"

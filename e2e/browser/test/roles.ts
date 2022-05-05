@@ -33,10 +33,10 @@ export const essUserLogin = async (
   const cognitoPage = new CognitoPage(page);
   const authorisePage = new BrokerPage(page);
 
-  await Promise.all([
-    indexPage.startLogin(),
-    cognitoPage.login(login, password),
-    authorisePage.authoriseOnce(),
-    indexPage.handleRedirect(),
-  ]);
+  // Note: these steps must execute in series, not parallel, which is what
+  // Promise.all would do:
+  await indexPage.startLogin();
+  await cognitoPage.login(login, password);
+  await authorisePage.authoriseOnce();
+  await indexPage.handleRedirect();
 };

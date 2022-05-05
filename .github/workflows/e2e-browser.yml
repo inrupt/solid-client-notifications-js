@@ -16,10 +16,9 @@ jobs:
       name: ${{ matrix.environment-name }}
     strategy:
       matrix:
-        # NSS does not support static client registration, which we rely on for testing.
-        # Dev-next partially implements the latest notifications protocol, while
-        # this library still implements the legacy one.
-        environment-name: ["ESS Production"]
+        # disable PodSpaces, as ESS 1.1 doesn't work with getWellKnownSolid yet:
+        # environment-name: ["ESS PodSpaces", "ESS PodSpaces Next"]
+        environment-name: ["ESS PodSpaces Next"]
     steps:
       - uses: actions/checkout@v3
       - name: Use Node.js 16.x
@@ -34,8 +33,8 @@ jobs:
       - run: npm run test:e2e:browser
         env:
           E2E_TEST_ENVIRONMENT: ${{ matrix.environment-name }}
-          E2E_TEST_UI_LOGIN: ${{ secrets.E2E_TEST_UI_LOGIN }}
-          E2E_TEST_UI_PASSWORD: ${{ secrets.E2E_TEST_UI_PASSWORD }}
+          E2E_TEST_USER: ${{ secrets.E2E_TEST_USER }}
+          E2E_TEST_PASSWORD: ${{ secrets.E2E_TEST_PASSWORD }}
           E2E_TEST_NOTIFICATION_PROTOCOL: ${{ secrets.E2E_TEST_NOTIFICATION_PROTOCOL }}
           E2E_TEST_NOTIFICATION_GATEWAY: ${{ secrets.E2E_TEST_NOTIFICATION_GATEWAY }}
           E2E_TEST_IDP: ${{ secrets.E2E_TEST_IDP }}
@@ -46,9 +45,3 @@ jobs:
         with:
           name: playwright-output
           path: e2e/browser/test/test-results/
-      - name: Archive production artifacts
-        uses: actions/upload-artifact@v3
-        continue-on-error: true
-        with:
-          name: dist
-          path: dist

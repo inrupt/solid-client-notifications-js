@@ -2,7 +2,8 @@
   "name": "cd-packaging-test-webpack",
   "private": true,
   "dependencies": {
-    "@inrupt/solid-client-authn-browser": "^1.7.2",
+    "@inrupt/solid-client": "^1.21.0",
+    "@inrupt/solid-client-authn-browser": "^1.11.2",
     "assert": "^2.0.0",
     "browserify-zlib": "^0.2.0",
     "buffer": "^6.0.3",

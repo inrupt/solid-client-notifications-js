@@ -30,14 +30,11 @@ import {
 } from "@playwright/test";
 import { essUserLogin } from "./roles";
 
-import { getTestingEnvironmentBrowser } from "../../e2e-setup";
+import { getTestingEnvironmentBrowser } from "../../utils/getTestingEnvironment";
 
 const { login, password, notificationGateway } = getTestingEnvironmentBrowser();
 
-// FIXME: There is currently a bug where the websocket is created, but no events
-// are coming through. There is no clear reproduction steps. The tests will be
-// re-enabled once this is fixed and they are no longer flaky.
-test.skip("connecting a websocket and disconnecting it", async ({ page }) => {
+test("connecting a websocket and disconnecting it", async ({ page }) => {
   let websocket: PlayWrightWebSocket;
   // Navigate to the test page and log in.
   await page.goto("/");
@@ -70,12 +67,15 @@ test.skip("connecting a websocket and disconnecting it", async ({ page }) => {
   // Allow React to re-render the status after state update
   await page.waitForSelector("span[data-testid=webSocketStatus]");
 
+  // Wait for the disconnect button to appear, as then we're really connected:
+  await page.waitForSelector("button[data-testid=disconnectSocket]");
+
   await expect(
     page.innerText("span[data-testid=webSocketStatus]")
   ).resolves.toBe("connected");
 
   // Disconnect
-  await Promise.all([page.click("button[data-testid=disconnectSocket]")]);
+  await page.click("button[data-testid=disconnectSocket]");
 
   await websocket.waitForEvent("close");
 
@@ -84,10 +84,7 @@ test.skip("connecting a websocket and disconnecting it", async ({ page }) => {
   ).resolves.toMatch("closed");
 });
 
-// FIXME: There is currently a bug where the websocket is created, but no events
-// are coming through. There is no clear reproduction steps. The tests will be
-// re-enabled once this is fixed and they are no longer flaky.
-test.skip("connecting a websocket, getting messages, and disconnecting it", async ({
+test("connecting a websocket, getting messages, and disconnecting it", async ({
   page,
 }) => {
   let websocket: PlayWrightWebSocket;
@@ -123,29 +120,58 @@ test.skip("connecting a websocket, getting messages, and disconnecting it", asyn
     page.click("button[data-testid=connectSocket]"),
   ]);
 
+  // Allow React to re-render the status after state update
+  await page.waitForSelector("span[data-testid=webSocketStatus]");
+
   // Make sure the container can be created.
   await page.waitForSelector("button[data-testid=createContainer]");
   await Promise.all([
     // Wait for the resource creation
     page.waitForResponse((response) => response.status() === 201),
     // The resource creation should trigger a websocket frame
+    websocket.waitForEvent("framereceived"),
+    // Click the button to create the container:
     page.click("button[data-testid=createContainer]"),
   ]);
 
   expect(framesReceived).toHaveLength(1);
+  expect(framesReceived[0]).toHaveProperty("id");
   expect(framesReceived[0].type).toContain("Update");
+
+  // Wait for react to update the message list:
+  await page.waitForSelector(
+    `[data-testid=eventList] li:has-text("${framesReceived[0].id}")`
+  );
+
+  await expect(
+    page.locator("[data-testid=eventList] li").count()
+  ).resolves.toBe(1);
 
   // Make sure the container can be removed.
   await page.waitForSelector("button[data-testid=deleteContainer]");
 
   // Delete the created resource
   await Promise.all([
-    page.click("button[data-testid=deleteContainer]"),
+    // Wait for the resource deletion
+    page.waitForResponse((response) => response.status() === 204),
+    // The resource deletion should trigger a websocket frame
     websocket.waitForEvent("framereceived"),
+    // Now wait for the delete click:
+    page.click("button[data-testid=deleteContainer]"),
   ]);
 
   expect(framesReceived).toHaveLength(2);
+  expect(framesReceived[1]).toHaveProperty("id");
   expect(framesReceived[1].type).toContain("Update");
+
+  // Wait for react to update the message list:
+  await page.waitForSelector(
+    `[data-testid=eventList] li:has-text("${framesReceived[1].id}")`
+  );
+
+  await expect(
+    page.locator("[data-testid=eventList] li").count()
+  ).resolves.toBe(2);
 
   await page.click("button[data-testid=disconnectSocket]");
 });

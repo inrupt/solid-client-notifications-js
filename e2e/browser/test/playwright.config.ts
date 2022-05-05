@@ -20,9 +20,11 @@
 //
 
 import { PlaywrightTestConfig } from "@playwright/test";
+import path from "path";
 
 const config: PlaywrightTestConfig = {
   testMatch: "*.playwright.ts",
+  outputDir: path.resolve("./test-results"),
   retries: 1,
   // Extends from the default 30s
   timeout: 60000,

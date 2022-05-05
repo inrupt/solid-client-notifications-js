@@ -40,3 +40,9 @@ export class NotImplementedError extends Error {
     super(message);
   }
 }
+
+export class NotSupported extends Error {
+  constructor(message = "The server appears to not support notifications") {
+    super(message);
+  }
+}

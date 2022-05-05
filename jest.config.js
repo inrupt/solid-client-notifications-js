@@ -22,10 +22,10 @@
 module.exports = {
   preset: "ts-jest",
   testEnvironment: "jsdom",
+  testRegex: "src/.*\\.test\\.ts$",
+  testEnvironment: "<rootDir>/tests/environment/customEnvironment.js",
   clearMocks: true,
   collectCoverage: true,
-  automock: false,
-  setupFiles: ["./jest.setup.js"],
   coverageThreshold: {
     global: {
       branches: 100,
@@ -34,12 +34,6 @@ module.exports = {
       statements: 100,
     },
   },
-  coveragePathIgnorePatterns: ["/node_modules/", "<rootDir>/dist"],
-  testPathIgnorePatterns: [
-    "/node_modules/",
-    // By default we only run unit tests:
-    "/src/e2e-node/",
-    "/src/e2e-browser/",
-  ],
-  testEnvironment: "<rootDir>/tests/environment/customEnvironment.js",
+  modulePathIgnorePatterns: ["node_modules/"],
+  injectGlobals: false,
 };

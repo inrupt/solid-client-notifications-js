@@ -28,6 +28,6 @@ export {
   FeatureOptions,
 } from "./interfaces";
 
-export { WebsocketNotification } from "./websocketNotification";
+export { WebsocketNotification, ErrorEvent } from "./websocketNotification";
 
 export { FetchError, NotImplementedError } from "./errors";
