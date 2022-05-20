@@ -62,9 +62,9 @@
   "devDependencies": {
     "@inrupt/eslint-config-base": "^0.4.0",
     "@inrupt/eslint-config-lib": "^0.4.1",
-    "@inrupt/solid-client": "^1.21.0",
-    "@inrupt/solid-client-authn-browser": "^1.11.2",
-    "@inrupt/solid-client-authn-node": "^1.11.2",
+    "@inrupt/solid-client": "^1.23.1",
+    "@inrupt/solid-client-authn-browser": "^1.11.8",
+    "@inrupt/solid-client-authn-node": "^1.11.8",
     "@playwright/test": "^1.21.1",
     "@skypack/package-check": "^0.2.2",
     "@types/dotenv-flow": "^3.2.0",
@@ -103,7 +103,7 @@
     "ws": "^7.5.5"
   },
   "peerDependencies": {
-    "@inrupt/solid-client": "^1.21.0"
+    "@inrupt/solid-client": "^1.23.1"
   },
   "engines": {
     "node": "^14.17.0 || >=16.0.0"
