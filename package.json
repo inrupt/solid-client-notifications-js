@@ -81,7 +81,7 @@
     "eslint-plugin-jest": "^23.13.2",
     "eslint-plugin-prettier": "^4.0.0",
     "jest": "^27.3.1",
-    "jest-websocket-mock": "^2.2.1",
+    "jest-websocket-mock": "^2.3.0",
     "nlfurniss-typedoc-plugin-sourcefile-url": "^2.0.0",
     "node-fetch": "^3.2.5",
     "openid-client": "^4.9.1",
