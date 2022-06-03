@@ -126,6 +126,8 @@ export class WebsocketNotification extends LiveNotification {
       this.emitter.emit("connected");
     };
 
+    // We must use onmessage here instead of event listeners, as the `ws`
+    // module's events are non-standard:
     this.websocket.onmessage = (e: MessageEvent) => {
       // The protocol only transmits JSON as strings, and does not use binary messages
       if (typeof e.data !== "string") {
