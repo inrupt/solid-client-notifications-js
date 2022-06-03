@@ -138,11 +138,13 @@ export class BaseNotification {
       return this.gateway;
     }
 
-    const wellKnown = await getWellKnownSolid(this.topic).catch(() => {
-      // The storage server for the topic resource didn't respond well to
-      // getWellKnownSolid requests:
-      throw new NotSupported();
-    });
+    const wellKnown = await getWellKnownSolid(this.topic).catch(
+      (err: Error) => {
+        // The storage server for the topic resource didn't respond well to
+        // getWellKnownSolid requests:
+        throw new NotSupported(err);
+      }
+    );
 
     const wellKnownSubjects = getThingAll(wellKnown, {
       acceptBlankNodes: true,
