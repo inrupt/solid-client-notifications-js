@@ -45,7 +45,7 @@ export declare interface WebsocketNotification {
    * Activity](https://www.w3.org/TR/activitystreams-vocabulary/#dfn-activity).
    */
   // TODO: use more specific type than object in the future
-  on(event: "message", listener: (payload: object) => void): this;
+  on(event: "message", listener: (notification: object) => void): this;
 
   /**
    * Emitted when an error is encountered on the WebSocket
@@ -75,8 +75,7 @@ export declare interface WebsocketNotification {
  *   fetch: session.fetch,
  * });
  *
- * socket.on("message", (message) => {
- *   const notification = JSON.parse(message);
+ * socket.on("message", (notification) => {
  *   console.log("Change:", notification);
  * });
  *
