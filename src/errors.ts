@@ -42,7 +42,13 @@ export class NotImplementedError extends Error {
 }
 
 export class NotSupported extends Error {
-  constructor(message = "The server appears to not support notifications") {
-    super(message);
+  cause?: Error;
+
+  constructor(cause?: Error) {
+    super("The server appears to not support notifications");
+    if (cause) {
+      this.message = `The server appears to not support notifications: ${cause.toString()}`;
+      this.cause = cause;
+    }
   }
 }
