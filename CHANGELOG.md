@@ -2,9 +2,11 @@
 
 This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
 The following changes have been implemented but not released yet:
 
-## [Unreleased]
+## [1.0.0] - 2022-06-06
 
 ### Breaking Changes
 
