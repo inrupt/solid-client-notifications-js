@@ -3,6 +3,6 @@
   "private": true,
   "dependencies": {
     "@inrupt/solid-client": "^1.23.1",
-    "@inrupt/solid-client-authn-browser": "^1.11.8"
+    "@inrupt/solid-client-authn-browser": "^1.12.0"
   }
 }
