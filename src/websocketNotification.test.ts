@@ -19,9 +19,11 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+
 import { it, describe, expect, jest } from "@jest/globals";
 
-import { MessageEvent, OpenEvent, CloseEvent, ErrorEvent } from "isomorphic-ws";
+import { MessageEvent, CloseEvent, ErrorEvent } from "isomorphic-ws";
 import { NotificationConnectionInfo } from "./interfaces";
 
 import { WebsocketNotification } from "./websocketNotification";
@@ -85,7 +87,8 @@ describe("WebsocketNotification", () => {
       const ws = new WebsocketNotification(topic);
 
       await ws.connect(wssEndpoint);
-      ws.websocket?.onopen({} as OpenEvent);
+
+      ws.websocket!.onopen!({ type: "open", target: ws.websocket! });
 
       expect(ws.status).toEqual("connected");
     });
@@ -100,7 +103,7 @@ describe("WebsocketNotification", () => {
 
       await ws.connect(wssEndpoint);
 
-      ws.websocket?.onerror({} as ErrorEvent);
+      ws.websocket!.onerror!({} as ErrorEvent);
 
       expect(errorSpy).toHaveBeenCalled();
     });
@@ -110,11 +113,11 @@ describe("WebsocketNotification", () => {
       const ws = new WebsocketNotification(topic);
 
       await ws.connect(wssEndpoint);
-      ws.websocket?.onopen({} as OpenEvent);
+      ws.websocket!.onopen!({ type: "open", target: ws.websocket! });
 
       expect(ws.status).toEqual("connected");
 
-      ws.websocket?.onclose({} as CloseEvent);
+      ws.websocket!.onclose!({} as CloseEvent);
 
       expect(ws.status).toEqual("closed");
     });
@@ -127,7 +130,7 @@ describe("WebsocketNotification", () => {
       ws.on("closed", closedSpy);
 
       await ws.connect(wssEndpoint);
-      ws.websocket?.onclose({} as CloseEvent);
+      ws.websocket!.onclose!({} as CloseEvent);
 
       expect(closedSpy).toHaveBeenCalled();
     });
@@ -164,8 +167,8 @@ describe("WebsocketNotification", () => {
       ws.on("message", messageSpy);
 
       await ws.connect(wssEndpoint);
-      ws.websocket?.onopen({} as OpenEvent);
-      ws.websocket?.onmessage({ data: message } as MessageEvent);
+      ws.websocket!.onopen!({ type: "open", target: ws.websocket! });
+      ws.websocket!.onmessage!({ data: message } as MessageEvent);
 
       expect(messageSpy).toHaveBeenCalledWith(parsedMessage);
     });
@@ -181,8 +184,8 @@ describe("WebsocketNotification", () => {
       ws.on("message", messageSpy);
 
       await ws.connect(wssEndpoint);
-      ws.websocket?.onopen({} as OpenEvent);
-      ws.websocket?.onmessage({ data: message } as MessageEvent);
+      ws.websocket!.onopen!({ type: "open", target: ws.websocket! });
+      ws.websocket!.onmessage!({ data: message } as MessageEvent);
 
       expect(messageSpy).not.toHaveBeenCalled();
     });
@@ -204,8 +207,8 @@ describe("WebsocketNotification", () => {
       ws.on("message", messageSpy);
 
       await ws.connect(wssEndpoint);
-      ws.websocket?.onopen({} as OpenEvent);
-      ws.websocket?.onmessage({ data: message } as MessageEvent);
+      ws.websocket!.onopen!({ type: "open", target: ws.websocket! });
+      ws.websocket!.onmessage!({ data: message } as MessageEvent);
 
       expect(messageSpy).not.toHaveBeenCalled();
     });
@@ -220,8 +223,8 @@ describe("WebsocketNotification", () => {
       ws.on("closed", closedSpy);
 
       await ws.connect(wssEndpoint);
+      ws.websocket!.onclose!({} as CloseEvent);
       ws.disconnect();
-      ws.websocket?.onclose({} as CloseEvent);
 
       expect(ws.websocket).toBeUndefined();
     });
