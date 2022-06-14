@@ -51,7 +51,7 @@ describe("LiveNotification", () => {
     expect(notification.status).toEqual("closed");
   });
 
-  test("on forwards events from the eventemitter", () => {
+  test("on forwards events from the eventemitter until off is called", () => {
     const topic = "https://fake.url/some-resource";
     const protocol = ["ws"] as Array<protocols>;
     const notification = new LiveNotification(topic, protocol);
@@ -65,5 +65,32 @@ describe("LiveNotification", () => {
     notification.emitter.emit(channel, message);
 
     expect(onFn).toHaveBeenCalledWith(message);
+    expect(onFn).toHaveBeenCalledTimes(1);
+
+    notification.emitter.emit(channel, message);
+    expect(onFn).toHaveBeenCalledTimes(2);
+
+    notification.off(channel, onFn);
+    notification.emitter.emit(channel, message);
+    expect(onFn).toHaveBeenCalledTimes(2);
+  });
+  test("once forwards events from the eventemitter once", () => {
+    const topic = "https://fake.url/some-resource";
+    const protocol = ["ws"] as Array<protocols>;
+    const notification = new LiveNotification(topic, protocol);
+
+    const channel = "message";
+    const message = "hello";
+    const onFn = jest.fn();
+
+    notification.once(channel, onFn);
+
+    notification.emitter.emit(channel, message);
+
+    expect(onFn).toHaveBeenCalledWith(message);
+    expect(onFn).toHaveBeenCalledTimes(1);
+
+    notification.emitter.emit(channel, message);
+    expect(onFn).toHaveBeenCalledTimes(1);
   });
 });

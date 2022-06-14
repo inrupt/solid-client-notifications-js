@@ -27,6 +27,8 @@ import { NotificationOptions, protocols } from "./interfaces";
 
 export declare interface LiveNotification {
   on(eventName: string, listener: (...args: any[]) => void): this;
+  once(eventName: string, listener: (...args: any[]) => void): this;
+  off(eventName: string, listener: (...args: any[]) => void): this;
 }
 
 /**
@@ -62,6 +64,18 @@ export class LiveNotification extends BaseNotification {
   /* eslint @typescript-eslint/no-explicit-any: 0 */
   on(eventName: string, listener: (...args: any[]) => void): this {
     this.emitter.on(eventName, listener);
+    return this;
+  }
+
+  /* eslint @typescript-eslint/no-explicit-any: 0 */
+  once(eventName: string | symbol, listener: (...args: any[]) => void): this {
+    this.emitter.once(eventName, listener);
+    return this;
+  }
+
+  /* eslint @typescript-eslint/no-explicit-any: 0 */
+  off(eventName: string, listener: (...args: any[]) => void): this {
+    this.emitter.off(eventName, listener);
     return this;
   }
 }
