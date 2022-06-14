@@ -37,12 +37,6 @@ import {
  */
 export class BaseNotification {
   /** @internal */
-  fetchLoaded = false;
-
-  /** @internal */
-  fetchLoader: Promise<void>;
-
-  /** @internal */
   topic: string;
 
   /** @internal */
@@ -91,29 +85,10 @@ export class BaseNotification {
     this.gateway = gateway;
 
     // Load fetch:
-    this.fetch = crossFetch;
-    this.setSessionFetch();
-
-    this.fetchLoaded = false;
-    this.fetchLoader = new Promise<void>((resolve) => {
-      if (fetchFn) {
-        this.setSessionFetch(fetchFn);
-        resolve();
-      } else {
-        // Attempt to load the fetch function from the default session if no fetchFn was passed in.
-        BaseNotification.getDefaultSessionFetch()
-          .then((defaultFetchFn) => {
-            if (defaultFetchFn) {
-              this.setSessionFetch(defaultFetchFn);
-            }
-          })
-          .finally(() => {
-            resolve();
-          });
-      }
-    }).then(() => {
-      this.fetchLoaded = true;
-    });
+    this.fetch = fetchFn || crossFetch;
+    if (!fetchFn) {
+      this.setSessionFetch(BaseNotification.getDefaultSessionFetch())
+    }
   }
 
   /**
@@ -128,8 +103,10 @@ export class BaseNotification {
    *
    * @param sessionFetch
    */
-  setSessionFetch = (sessionFetch: typeof crossFetch = crossFetch): void => {
-    this.fetch = sessionFetch;
+  setSessionFetch = (sessionFetch: typeof crossFetch | Promise<typeof crossFetch | undefined> = crossFetch): void => {
+    this.fetch = sessionFetch instanceof Promise
+      ? async (input: RequestInfo, init?: RequestInit | undefined) => (await sessionFetch || crossFetch)(input, init)
+      : sessionFetch;
   };
 
   /** @internal */
@@ -176,10 +153,6 @@ export class BaseNotification {
 
   /** @internal */
   async fetchProtocolNegotiationInfo(): Promise<NegotiationInfo> {
-    if (!this.fetchLoaded) {
-      await this.fetchLoader;
-    }
-
     if (!this.gateway) {
       this.gateway = await this.fetchNegotiationGatewayUrl();
     }
@@ -214,10 +187,6 @@ export class BaseNotification {
 
   /** @internal */
   async fetchNotificationConnectionInfo(): Promise<NotificationConnectionInfo> {
-    if (!this.fetchLoaded) {
-      await this.fetchLoader;
-    }
-
     const { endpoint } = await this.fetchProtocolNegotiationInfo();
 
     const response = await this.fetch(endpoint, {

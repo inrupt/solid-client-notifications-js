@@ -500,12 +500,69 @@ describe("BaseNotification", () => {
       const topic = "https://fake.url/some-resource";
       const protocol = ["ws"] as Array<protocols>;
       const notification = new BaseNotification(topic, protocol);
+      
+      // Test to make sure that the authenticated fetch function is used
+      expect(authnFetch).toHaveBeenCalledTimes(0);
+      await notification.fetch(topic)
+      expect(authnFetch).toHaveBeenCalledTimes(1);
+    });
+  });
 
-      // Loading the default session fetch is asynchronous, so we keep track of
-      // that operation and block all calls until it's loaded:
-      await notification.fetchLoader;
+  describe("setSessionFetch", () => {
+    it("attempts to import the default session and uses its fetch function", async () => {
+      async function myFetch(input: RequestInfo, init?: RequestInit | undefined): Promise<Response> {
+        throw new Error('Not implemented');
+      }
 
-      expect(notification.fetch).toBe(authnFetch);
+      const topic = "https://fake.url/some-resource";
+      const protocol = ["ws"] as Array<protocols>;
+      const notification = new BaseNotification(topic, protocol);
+      notification.setSessionFetch(myFetch);
+      
+      // Test to make sure that the authenticated fetch function is used
+      expect(notification.fetch).toEqual(myFetch);
+    });
+
+    it("defaults to crossFetch if the input promise resolves to be undefined", async () => {
+      const crossFetch = jest.spyOn(require('cross-fetch'), 'default')
+
+      const topic = "https://fake.url/some-resource";
+      const protocol = ["ws"] as Array<protocols>;
+      const notification = new BaseNotification(topic, protocol);
+      notification.setSessionFetch(Promise.resolve(undefined));
+      
+      // Test to make sure that the cross fetch function is used
+      expect(crossFetch).toHaveBeenCalledTimes(0);
+      try {
+        await notification.fetch(topic)
+      } catch (e) {
+        // Ignore any errors - we just want to test
+        // if the function is called
+        // TODO: Mock the function in the future so we don't
+        // need to make network
+      }
+      expect(crossFetch).toHaveBeenCalledTimes(1);
+    });
+
+    it("defaults to crossFetch if the input is undefined", async () => {
+      const crossFetch = jest.spyOn(require('cross-fetch'), 'default')
+
+      const topic = "https://fake.url/some-resource";
+      const protocol = ["ws"] as Array<protocols>;
+      const notification = new BaseNotification(topic, protocol);
+      notification.setSessionFetch(undefined);
+      
+      // Test to make sure that the cross fetch function is used
+      expect(crossFetch).toHaveBeenCalledTimes(0);
+      try {
+        await notification.fetch(topic)
+      } catch (e) {
+        // Ignore any errors - we just want to test
+        // if the function is called
+        // TODO: Mock the function in the future so we don't
+        // need to make network
+      }
+      expect(crossFetch).toHaveBeenCalledTimes(1);
     });
   });
 
