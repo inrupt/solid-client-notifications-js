@@ -184,10 +184,6 @@ export class BaseNotification {
       this.gateway = await this.fetchNegotiationGatewayUrl();
     }
 
-    // Typescript doesn't notice that this.gateway was changed in fetchNegotiationGatewayUrl,
-    // so we'll have to ignore it.
-    /* eslint @typescript-eslint/ban-ts-comment: 0 */
-    // @ts-ignore
     const response = await this.fetch(this.gateway, {
       method: "POST",
       headers: {
