@@ -26,7 +26,7 @@ module.exports = {
   testEnvironment: "<rootDir>/tests/environment/customEnvironment.js",
   clearMocks: true,
   collectCoverage: true,
-  coverageReporters: ["text"],
+  coverageReporters: process.env.CI ? ["text", "lcov"] : ["text"],
   coverageThreshold: {
     global: {
       branches: 100,
