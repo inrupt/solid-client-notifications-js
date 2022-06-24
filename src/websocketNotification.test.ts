@@ -51,7 +51,7 @@ describe("WebsocketNotification", () => {
 
       await ws.connect(wssEndpoint);
 
-      expect(ws.status).toEqual("connecting");
+      expect(ws.status).toBe("connecting");
     });
 
     it("does not fetch notification connection info if given", async () => {
@@ -90,7 +90,7 @@ describe("WebsocketNotification", () => {
 
       ws.websocket!.onopen!({ type: "open", target: ws.websocket! });
 
-      expect(ws.status).toEqual("connected");
+      expect(ws.status).toBe("connected");
     });
 
     it("emits an error when the websocket emits an error", async () => {
@@ -115,11 +115,11 @@ describe("WebsocketNotification", () => {
       await ws.connect(wssEndpoint);
       ws.websocket!.onopen!({ type: "open", target: ws.websocket! });
 
-      expect(ws.status).toEqual("connected");
+      expect(ws.status).toBe("connected");
 
       ws.websocket!.onclose!({} as CloseEvent);
 
-      expect(ws.status).toEqual("closed");
+      expect(ws.status).toBe("closed");
     });
 
     it("emits a closed event when the websocket is closed", async () => {
@@ -180,6 +180,7 @@ describe("WebsocketNotification", () => {
       const messageSpy = jest.fn();
       const message = `invalid JSON`;
 
+      // eslint-disable-next-line no-console
       console.info("Note: we expect a console.warn to come next");
       ws.on("message", messageSpy);
 
@@ -203,6 +204,7 @@ describe("WebsocketNotification", () => {
       // https://websockets.spec.whatwg.org/#dom-binarytype-arraybuffer
       const message = new TextEncoder().encode("test");
 
+      // eslint-disable-next-line no-console
       console.info("Note: we expect a console.warn to come next");
       ws.on("message", messageSpy);
 
