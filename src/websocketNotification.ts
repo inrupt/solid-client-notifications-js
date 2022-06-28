@@ -63,6 +63,11 @@ export declare interface WebsocketNotification {
    */
   // TODO: use more specific type than object in the future
   once(event: "message", listener: (notification: object) => void): this;
+  /**
+   * Emitted when a valid notification is received, the payload is a
+   * [activitystreams
+   * Activity](https://www.w3.org/TR/activitystreams-vocabulary/#dfn-activity).
+   */
   // TODO: use more specific type than object in the future
   off(event: "message", listener: (notification: object) => void): this;
 
@@ -74,6 +79,9 @@ export declare interface WebsocketNotification {
    * Emitted when an error is encountered on the WebSocket
    */
   once(event: "error", listener: (error: ErrorEvent) => void): this;
+  /**
+   * Emitted when an error is encountered on the WebSocket
+   */
   off(event: "error", listener: (error: ErrorEvent) => void): this;
 }
 
