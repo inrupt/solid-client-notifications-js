@@ -25,6 +25,7 @@ module.exports = {
     "max-classes-per-file": 0,
     "jest/no-disabled-tests": 1,
     "no-shadow": [1, { allow: ["NotificationOptions"] }],
+    "@typescript-eslint/adjacent-overload-signatures": 0
   },
   parserOptions: {
     project: "./tsconfig.eslint.json",
