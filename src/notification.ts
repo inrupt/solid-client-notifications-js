@@ -91,12 +91,14 @@ export class BaseNotification {
     if (fetchFn) {
       this.fetch = fetchFn;
     } else {
-      // Attempt to load the fetch function from the default session if no fetchFn was passed in.
-      this.fetchLoader = BaseNotification.getDefaultSessionFetch().then(defaultFetchFn => {
-        this.fetch = defaultFetchFn || crossFetch;
-      }).catch(() => {
-        this.fetch = crossFetch;
-      });
+      // Attempt to load the fetch function from the default session if no fetchFn was passed in
+      this.fetchLoader = BaseNotification.getDefaultSessionFetch()
+        .then((defaultFetchFn) => {
+          this.fetch = defaultFetchFn || crossFetch;
+        })
+        .catch(() => {
+          this.fetch = crossFetch;
+        });
     }
   }
 

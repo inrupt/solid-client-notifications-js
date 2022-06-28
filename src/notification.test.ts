@@ -554,7 +554,8 @@ describe("BaseNotification", () => {
 
   describe("uses crossFetch if fetch is not passed in and getDefaultSession resolves to undefined", () => {
     beforeEach(() => {
-      BaseNotification.getDefaultSessionFetch = () => Promise.resolve(undefined);
+      BaseNotification.getDefaultSessionFetch = () =>
+        Promise.resolve(undefined);
     });
 
     it("sets fetch after awaiting fetchLoader", async () => {
@@ -572,9 +573,12 @@ describe("BaseNotification", () => {
   describe("uses crossFetch if fetch is not passed in and getDefaultSession rejects after delay", () => {
     const topic = "https://fake.url/some-resource";
     const protocol = ["ws"] as Array<protocols>;
-  
+
     beforeEach(() => {
-      BaseNotification.getDefaultSessionFetch = () => new Promise((res, rej) => { rej() });
+      BaseNotification.getDefaultSessionFetch = () =>
+        new Promise((res, rej) => {
+          rej();
+        });
     });
 
     it("sets fetch to crossFetch after fetchNotificationConnectionInfo is called", async () => {
@@ -590,7 +594,7 @@ describe("BaseNotification", () => {
       expect(notification.fetch).toBe(crossFetch);
     });
 
-    it("sets fetch to crossFetch after fetchProtocolNegotiationInfo is called", async () => { 
+    it("sets fetch to crossFetch after fetchProtocolNegotiationInfo is called", async () => {
       /* eslint no-new: 0 */
       const notification = new BaseNotification(topic, protocol);
 
