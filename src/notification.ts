@@ -37,10 +37,7 @@ import {
  */
 export class BaseNotification {
   /** @internal */
-  fetchLoaded = false;
-
-  /** @internal */
-  fetchLoader: Promise<void>;
+  fetchLoader?: Promise<void>;
 
   /** @internal */
   topic: string;
@@ -49,7 +46,7 @@ export class BaseNotification {
   gateway?: string;
 
   /** @internal */
-  fetch: typeof crossFetch;
+  fetch?: typeof crossFetch;
 
   /** @internal */
   protocols: Array<protocols>;
@@ -91,31 +88,19 @@ export class BaseNotification {
     this.gateway = gateway;
 
     // Load fetch:
-    this.fetch = crossFetch;
-    this.setSessionFetch();
-
-    this.fetchLoaded = false;
-    this.fetchLoader = new Promise<void>((resolve) => {
-      if (fetchFn) {
-        this.setSessionFetch(fetchFn);
-        resolve();
-      } else {
-        // Attempt to load the fetch function from the default session if no fetchFn was passed in.
-        BaseNotification.getDefaultSessionFetch()
-          .then((defaultFetchFn) => {
-            if (defaultFetchFn) {
-              this.setSessionFetch(defaultFetchFn);
-            }
-          })
-          .finally(() => {
-            resolve();
-          });
-      }
-    }).then(() => {
-      this.fetchLoaded = true;
-    });
+    if (fetchFn) {
+      this.fetch = fetchFn;
+    } else {
+      // Attempt to load the fetch function from the default session if no fetchFn was passed in.
+      this.fetchLoader = BaseNotification.getDefaultSessionFetch().then(defaultFetchFn => {
+        this.fetch = defaultFetchFn || crossFetch;
+      }).catch(() => {
+        this.fetch = crossFetch;
+      });
+    }
   }
 
+  /* istanbul ignore next */
   /**
    * Allows setting a [WHATWG Fetch API][fetch] compatible function
    * for making HTTP requests. When [@inrupt/solid-client-authn-browser][scab]
@@ -127,6 +112,7 @@ export class BaseNotification {
    * [scab]: https://npmjs.com/package/@inrupt/solid-client-authn-browser
    *
    * @param sessionFetch
+   * @deprecated If a custom fetch function is required then it can be set in the constructor
    */
   setSessionFetch = (sessionFetch: typeof crossFetch = crossFetch): void => {
     this.fetch = sessionFetch;
@@ -176,7 +162,7 @@ export class BaseNotification {
 
   /** @internal */
   async fetchProtocolNegotiationInfo(): Promise<NegotiationInfo> {
-    if (!this.fetchLoaded) {
+    if (!this.fetch) {
       await this.fetchLoader;
     }
 
@@ -214,13 +200,13 @@ export class BaseNotification {
 
   /** @internal */
   async fetchNotificationConnectionInfo(): Promise<NotificationConnectionInfo> {
-    if (!this.fetchLoaded) {
+    if (!this.fetch) {
       await this.fetchLoader;
     }
 
     const { endpoint } = await this.fetchProtocolNegotiationInfo();
 
-    const response = await this.fetch(endpoint, {
+    const response = await this.fetch!(endpoint, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

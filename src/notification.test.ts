@@ -534,4 +534,73 @@ describe("BaseNotification", () => {
       expect(BaseNotification.getDefaultSessionFetch).toHaveBeenCalled();
     });
   });
+
+  describe("uses crossFetch if fetch is not passed in and getDefaultSession rejects", () => {
+    beforeEach(() => {
+      BaseNotification.getDefaultSessionFetch = () => Promise.reject();
+    });
+
+    it("calls BaseNotification.getDefaultSessionFetch", async () => {
+      const topic = "https://fake.url/some-resource";
+      const protocol = ["ws"] as Array<protocols>;
+
+      /* eslint no-new: 0 */
+      const notification = new BaseNotification(topic, protocol);
+      await notification.fetchLoader;
+
+      expect(notification.fetch).toBe(crossFetch);
+    });
+  });
+
+  describe("uses crossFetch if fetch is not passed in and getDefaultSession resolves to undefined", () => {
+    beforeEach(() => {
+      BaseNotification.getDefaultSessionFetch = () => Promise.resolve(undefined);
+    });
+
+    it("sets fetch after awaiting fetchLoader", async () => {
+      const topic = "https://fake.url/some-resource";
+      const protocol = ["ws"] as Array<protocols>;
+
+      /* eslint no-new: 0 */
+      const notification = new BaseNotification(topic, protocol);
+      await notification.fetchLoader;
+
+      expect(notification.fetch).toBe(crossFetch);
+    });
+  });
+
+  describe("uses crossFetch if fetch is not passed in and getDefaultSession rejects after delay", () => {
+    const topic = "https://fake.url/some-resource";
+    const protocol = ["ws"] as Array<protocols>;
+  
+    beforeEach(() => {
+      BaseNotification.getDefaultSessionFetch = () => new Promise((res, rej) => { rej() });
+    });
+
+    it("sets fetch to crossFetch after fetchNotificationConnectionInfo is called", async () => {
+      /* eslint no-new: 0 */
+      const notification = new BaseNotification(topic, protocol);
+
+      try {
+        await notification.fetchNotificationConnectionInfo();
+      } catch (e) {
+        // We expect an error
+      }
+
+      expect(notification.fetch).toBe(crossFetch);
+    });
+
+    it("sets fetch to crossFetch after fetchProtocolNegotiationInfo is called", async () => { 
+      /* eslint no-new: 0 */
+      const notification = new BaseNotification(topic, protocol);
+
+      try {
+        await notification.fetchProtocolNegotiationInfo();
+      } catch (e) {
+        // We expect an error
+      }
+
+      expect(notification.fetch).toBe(crossFetch);
+    });
+  });
 });
