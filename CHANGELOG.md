@@ -7,7 +7,8 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 The following changes have been implemented but not released yet:
 
 ### New Features
- - LiveNotification now supports `once` and `off` events.
+
+- LiveNotification now supports `once` and `off` events.
 
 ## [1.0.0] - 2022-06-06
 
