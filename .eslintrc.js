@@ -25,6 +25,9 @@ module.exports = {
     "max-classes-per-file": 0,
     "jest/no-disabled-tests": 1,
     "no-shadow": [1, { allow: ["NotificationOptions"] }],
+    // This is required to group methods by event type
+    // rather than method name in WebsocketNotification
+    "@typescript-eslint/adjacent-overload-signatures": 0
   },
   parserOptions: {
     project: "./tsconfig.eslint.json",

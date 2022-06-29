@@ -33,11 +33,27 @@ export declare interface WebsocketNotification {
    * Emitted when the connection is established
    */
   on(event: "connected", listener: () => void): this;
+  /**
+   * Emitted when the next connection is established
+   */
+  once(event: "connected", listener: () => void): this;
+  /**
+   * Removes a listener for the "connected" event
+   */
+  off(event: "connected", listener: () => void): this;
 
   /**
    * Emitted when the connection is closed
    */
   on(event: "closed", listener: () => void): this;
+  /**
+   * Emitted when the next connection is closed
+   */
+  once(event: "closed", listener: () => void): this;
+  /**
+   * Removes a listener for the "closed" event
+   */
+  off(event: "closed", listener: () => void): this;
 
   /**
    * Emitted when a valid notification is received, the payload is a
@@ -46,11 +62,31 @@ export declare interface WebsocketNotification {
    */
   // TODO: use more specific type than object in the future
   on(event: "message", listener: (notification: object) => void): this;
+  /**
+   * Emitted when the next valid notification is received, the payload is a
+   * [activitystreams
+   * Activity](https://www.w3.org/TR/activitystreams-vocabulary/#dfn-activity).
+   */
+  // TODO: use more specific type than object in the future
+  once(event: "message", listener: (notification: object) => void): this;
+  /**
+   * Removes a listener for the "message" event
+   */
+  // TODO: use more specific type than object in the future
+  off(event: "message", listener: (notification: object) => void): this;
 
   /**
    * Emitted when an error is encountered on the WebSocket
    */
   on(event: "error", listener: (error: ErrorEvent) => void): this;
+  /**
+   * Emitted when the next error is encountered on the WebSocket
+   */
+  once(event: "error", listener: (error: ErrorEvent) => void): this;
+  /**
+   * Removes a listener for the "error" event
+   */
+  off(event: "error", listener: (error: ErrorEvent) => void): this;
 }
 
 /**
