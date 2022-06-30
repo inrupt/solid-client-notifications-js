@@ -37,6 +37,9 @@ import {
  */
 export class BaseNotification {
   /** @internal */
+  fetchLoaded = true;
+
+  /** @internal */
   fetchLoader?: Promise<void>;
 
   /** @internal */
@@ -46,7 +49,7 @@ export class BaseNotification {
   gateway?: string;
 
   /** @internal */
-  fetch?: typeof crossFetch;
+  fetch: typeof crossFetch;
 
   /** @internal */
   protocols: Array<protocols>;
@@ -88,17 +91,17 @@ export class BaseNotification {
     this.gateway = gateway;
 
     // Load fetch:
-    if (fetchFn) {
-      this.fetch = fetchFn;
-    } else {
-      // Attempt to load the fetch function from the default session if no fetchFn was passed in
-      this.fetchLoader = BaseNotification.getDefaultSessionFetch()
-        .then((defaultFetchFn) => {
-          this.fetch = defaultFetchFn || crossFetch;
-        })
-        .catch(() => {
-          this.fetch = crossFetch;
-        });
+    this.fetch = fetchFn || crossFetch;
+    if (!fetchFn) {
+      this.fetchLoaded = false;
+      this.fetchLoader = BaseNotification.getDefaultSessionFetch().then(defaultFetchFn => {
+        if (defaultFetchFn)
+          this.fetch = defaultFetchFn;
+      }).catch(() => {
+
+      }).finally(() => {
+        this.fetchLoaded = true;
+      })
     }
   }
 
@@ -164,7 +167,7 @@ export class BaseNotification {
 
   /** @internal */
   async fetchProtocolNegotiationInfo(): Promise<NegotiationInfo> {
-    if (!this.fetch) {
+    if (!this.fetchLoaded) {
       await this.fetchLoader;
     }
 
@@ -202,13 +205,13 @@ export class BaseNotification {
 
   /** @internal */
   async fetchNotificationConnectionInfo(): Promise<NotificationConnectionInfo> {
-    if (!this.fetch) {
+    if (!this.fetchLoaded) {
       await this.fetchLoader;
     }
 
     const { endpoint } = await this.fetchProtocolNegotiationInfo();
 
-    const response = await this.fetch!(endpoint, {
+    const response = await this.fetch(endpoint, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
