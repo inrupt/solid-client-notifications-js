@@ -1,7 +1,7 @@
 {
   "name": "@inrupt/solid-client-notifications",
   "description": "Receive notifications linked to Solid resources.",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "license": "MIT",
   "scripts": {
     "clean": "rimraf dist umd",

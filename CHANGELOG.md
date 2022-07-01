@@ -8,6 +8,8 @@ The following changes have been implemented but not released yet:
 
 ### New Features
 
+## [1.1.0] - 2022-07-01
+
 - LiveNotification now supports `once` and `off` events.
 
 ## [1.0.0] - 2022-06-06
