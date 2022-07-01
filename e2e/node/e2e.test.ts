@@ -19,20 +19,7 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-import {
-  // eslint-disable-next-line no-shadow
-  jest,
-  // eslint-disable-next-line no-shadow
-  describe,
-  // eslint-disable-next-line no-shadow
-  it,
-  // eslint-disable-next-line no-shadow
-  expect,
-  // eslint-disable-next-line no-shadow
-  afterEach,
-  // eslint-disable-next-line no-shadow
-  beforeEach,
-} from "@jest/globals";
+import { describe, it, expect, afterEach, beforeEach } from "@jest/globals";
 
 import { Session } from "@inrupt/solid-client-authn-node";
 import {

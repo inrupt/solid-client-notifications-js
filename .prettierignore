@@ -2,3 +2,10 @@ resources/
 *.snap
 *.env
 *.env.*
+
+# e2e browser testApp has it's own separate eslint configuration:
+e2e/browser/testApp
+
+# Documentation is automatically generated:
+docs/api/build
+docs/api/source/api

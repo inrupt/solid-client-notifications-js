@@ -49,7 +49,7 @@ export class BaseNotification {
   gateway?: string;
 
   /** @internal */
-  fetch: typeof crossFetch;
+  fetch: typeof fetch;
 
   /** @internal */
   protocols: Array<protocols>;
@@ -64,9 +64,7 @@ export class BaseNotification {
   // dependency.
   /* eslint consistent-return: 0 */
   /** @internal */
-  static async getDefaultSessionFetch(): Promise<
-    typeof crossFetch | undefined
-  > {
+  static async getDefaultSessionFetch(): Promise<typeof fetch | undefined> {
     try {
       const { fetch: fetchFn } = await import(
         "@inrupt/solid-client-authn-browser"
