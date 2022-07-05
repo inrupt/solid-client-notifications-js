@@ -60,36 +60,28 @@
     "url": "https://github.com/inrupt/solid-client-notifications-js.git"
   },
   "devDependencies": {
-    "@inrupt/eslint-config-base": "^0.4.0",
-    "@inrupt/eslint-config-lib": "^0.4.1",
+    "@inrupt/eslint-config-lib": "^1.0.0",
     "@inrupt/solid-client": "^1.23.1",
-    "@inrupt/solid-client-authn-browser": "^1.12.0",
-    "@inrupt/solid-client-authn-node": "^1.12.0",
-    "@playwright/test": "^1.21.1",
+    "@inrupt/solid-client-authn-browser": "^1.12.1",
+    "@inrupt/solid-client-authn-node": "^1.12.1",
+    "@playwright/test": "^1.22.2",
+    "@rushstack/eslint-patch": "^1.1.4",
     "@skypack/package-check": "^0.2.2",
     "@types/dotenv-flow": "^3.2.0",
     "@types/jest": "^27.0.2",
     "@types/node": "^14.17.33",
-    "@typescript-eslint/eslint-plugin": "^5.20.0",
-    "@typescript-eslint/parser": "^5.6.0",
     "dotenv-flow": "^3.2.0",
-    "eslint": "^7.32.0",
-    "eslint-config-airbnb-base": "^14.2.1",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-header": "^3.1.1",
-    "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-jest": "^23.13.2",
-    "eslint-plugin-prettier": "^4.0.0",
+    "eslint": "^8.18.0",
     "jest": "^27.3.1",
     "nlfurniss-typedoc-plugin-sourcefile-url": "^2.0.0",
-    "prettier": "^2.5.1",
+    "prettier": "^2.7.1",
     "rimraf": "^3.0.2",
-    "rollup": "^2.60.0",
-    "rollup-plugin-typescript2": "^0.31.0",
+    "rollup": "^2.75.7",
+    "rollup-plugin-typescript2": "^0.32.1",
     "ts-jest": "^27.0.7",
-    "typedoc": "^0.22.12",
-    "typedoc-plugin-markdown": "^3.11.14",
-    "typescript": "^4.6.2"
+    "typedoc": "^0.22.17",
+    "typedoc-plugin-markdown": "^3.12.1",
+    "typescript": "^4.7.4"
   },
   "dependencies": {
     "@types/events": "^3.0.0",
@@ -103,7 +95,7 @@
     "@inrupt/solid-client": "^1.23.1"
   },
   "engines": {
-    "node": "^14.17.0 || >=16.0.0"
+    "node": "^14.17.0 || ^16.0.0"
   },
   "publishConfig": {
     "access": "public"
