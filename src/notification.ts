@@ -94,14 +94,14 @@ export class BaseNotification {
     this.fetch = fetchFn || crossFetch;
     if (!fetchFn) {
       this.fetchLoaded = false;
-      this.fetchLoader = BaseNotification.getDefaultSessionFetch().then(defaultFetchFn => {
-        if (defaultFetchFn)
-          this.fetch = defaultFetchFn;
-      }).catch(() => {
-
-      }).finally(() => {
-        this.fetchLoaded = true;
-      })
+      this.fetchLoader = BaseNotification.getDefaultSessionFetch()
+        .then((defaultFetchFn) => {
+          if (defaultFetchFn) this.fetch = defaultFetchFn;
+        })
+        .catch(() => {})
+        .finally(() => {
+          this.fetchLoaded = true;
+        });
     }
   }
 

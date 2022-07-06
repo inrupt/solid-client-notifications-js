@@ -19,8 +19,6 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-/* eslint-disable jest/no-test-callback */
-
 import {
   // eslint-disable-next-line no-shadow
   test,

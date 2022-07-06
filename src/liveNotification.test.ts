@@ -39,7 +39,7 @@ describe("LiveNotification", () => {
     const notification = new LiveNotification(topic, protocol);
 
     expect(notification.connect).toThrow("Not implemented");
-    expect(notification.status).toEqual("closed");
+    expect(notification.status).toBe("closed");
   });
 
   test("throws an error on unimplemented disconnect", () => {
@@ -48,7 +48,7 @@ describe("LiveNotification", () => {
     const notification = new LiveNotification(topic, protocol);
 
     expect(notification.disconnect).toThrow("Not implemented");
-    expect(notification.status).toEqual("closed");
+    expect(notification.status).toBe("closed");
   });
 
   test("on forwards events from the eventemitter until off is called", () => {
