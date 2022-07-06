@@ -21,8 +21,6 @@
 
 import {
   // eslint-disable-next-line no-shadow
-  jest,
-  // eslint-disable-next-line no-shadow
   describe,
   // eslint-disable-next-line no-shadow
   it,
