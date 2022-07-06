@@ -51,8 +51,15 @@ export interface NotificationOptions {
 
   /**
    * A WHATWG Fetch API compatible function used when making requests for
-   * discovering metadata for notifications. See the documentation for
-   * `setSessionFetch` in the `WebsocketNotification` class.
+   * discovering metadata for notifications. 
+   * 
+   * When left undefined, if [@inrupt/solid-client-authn-browser][scab]
+   * is available and this property is not set, `fetch` will be imported from
+   * there. Otherwise, the HTTP requests will be unauthenticated.
+   *
+   * [fetch]: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
+   *
+   * [scab]: https://npmjs.com/package/@inrupt/solid-client-authn-browser
    */
   fetch?: typeof crossFetch;
 }

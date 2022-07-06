@@ -105,24 +105,6 @@ export class BaseNotification {
     }
   }
 
-  /* istanbul ignore next */
-  /**
-   * Allows setting a [WHATWG Fetch API][fetch] compatible function
-   * for making HTTP requests. When [@inrupt/solid-client-authn-browser][scab]
-   * is available and this property is not set, `fetch` will be imported from
-   * there. Otherwise, the HTTP requests will be unauthenticated.
-   *
-   * [fetch]: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
-   *
-   * [scab]: https://npmjs.com/package/@inrupt/solid-client-authn-browser
-   *
-   * @param sessionFetch
-   * @deprecated If a custom fetch function is required then it can be set in the constructor
-   */
-  setSessionFetch = (sessionFetch: typeof crossFetch = crossFetch): void => {
-    this.fetch = sessionFetch;
-  };
-
   /** @internal */
   async fetchNegotiationGatewayUrl(): Promise<string> {
     if (this.gateway) {
