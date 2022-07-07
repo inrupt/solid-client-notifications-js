@@ -37,10 +37,7 @@ import {
  */
 export class BaseNotification {
   /** @internal */
-  fetchLoaded = true;
-
-  /** @internal */
-  fetchLoader?: Promise<void>;
+  fetchLoader?: Promise<typeof fetch>;
 
   /** @internal */
   topic: string;
@@ -49,7 +46,30 @@ export class BaseNotification {
   gateway?: string;
 
   /** @internal */
-  fetch: typeof crossFetch;
+  internal_fetch?: typeof fetch;
+
+  /** @internal */
+  get fetch(): typeof fetch {
+    if (this.internal_fetch) return this.internal_fetch;
+
+    const fetchLoader = (this.fetchLoader ||= import(
+      "@inrupt/solid-client-authn-browser"
+    )
+      .then((pkg) => pkg.fetch)
+      .catch(() => crossFetch as typeof fetch)
+      .then((fn: typeof fetch) => {
+        this.internal_fetch = fn;
+        this.fetchLoader = undefined;
+        return fn;
+      }));
+
+    return (input: RequestInfo | URL, init?: RequestInit) =>
+      fetchLoader.then((fn) => fn(input, init));
+  }
+
+  set fetch(fetchFn: typeof fetch | undefined) {
+    if (fetchFn) this.internal_fetch = fetchFn;
+  }
 
   /** @internal */
   protocols: Array<protocols>;
@@ -59,24 +79,6 @@ export class BaseNotification {
 
   /** @internal */
   status: statuses = "closed";
-
-  // Dynamically import solid-client-authn-browser so that Notification doesn't have a hard
-  // dependency.
-  /* eslint consistent-return: 0 */
-  /** @internal */
-  static async getDefaultSessionFetch(): Promise<
-    typeof crossFetch | undefined
-  > {
-    try {
-      const { fetch: fetchFn } = await import(
-        "@inrupt/solid-client-authn-browser"
-      );
-
-      return fetchFn;
-    } catch (e) {
-      /* empty */
-    }
-  }
 
   constructor(
     topic: string,
@@ -89,20 +91,7 @@ export class BaseNotification {
     this.protocols = protocolList;
     this.features = features;
     this.gateway = gateway;
-
-    // Load fetch:
-    this.fetch = fetchFn || crossFetch;
-    if (!fetchFn) {
-      this.fetchLoaded = false;
-      this.fetchLoader = BaseNotification.getDefaultSessionFetch()
-        .then((defaultFetchFn) => {
-          if (defaultFetchFn) this.fetch = defaultFetchFn;
-        })
-        .catch(() => {})
-        .finally(() => {
-          this.fetchLoaded = true;
-        });
-    }
+    this.fetch = fetchFn;
   }
 
   /** @internal */
@@ -149,10 +138,6 @@ export class BaseNotification {
 
   /** @internal */
   async fetchProtocolNegotiationInfo(): Promise<NegotiationInfo> {
-    if (!this.fetchLoaded) {
-      await this.fetchLoader;
-    }
-
     if (!this.gateway) {
       this.gateway = await this.fetchNegotiationGatewayUrl();
     }
@@ -187,10 +172,6 @@ export class BaseNotification {
 
   /** @internal */
   async fetchNotificationConnectionInfo(): Promise<NotificationConnectionInfo> {
-    if (!this.fetchLoaded) {
-      await this.fetchLoader;
-    }
-
     const { endpoint } = await this.fetchProtocolNegotiationInfo();
 
     const response = await this.fetch(endpoint, {
