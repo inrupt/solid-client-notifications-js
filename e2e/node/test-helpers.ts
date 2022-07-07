@@ -68,7 +68,7 @@ export async function setupTestResources(
   podRoot: string
 ) {
   // Set the user agent to something distinctive to make debug easier
-  const fetchWithAgent = (url: RequestInfo, options?: RequestInit) => {
+  const fetchWithAgent: typeof fetch = (url, options?) => {
     return session.fetch(url, {
       ...options,
       headers: {

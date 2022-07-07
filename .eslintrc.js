@@ -18,12 +18,14 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+
+require("@rushstack/eslint-patch/modern-module-resolution");
+
 module.exports = {
   extends: ["@inrupt/eslint-config-lib"],
   rules: {
     "import/prefer-default-export": 0,
     "max-classes-per-file": 0,
-    "jest/no-disabled-tests": 1,
     "no-shadow": [1, { allow: ["NotificationOptions"] }],
     // This is required to group methods by event type
     // rather than method name in WebsocketNotification

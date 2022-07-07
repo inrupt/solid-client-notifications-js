@@ -180,6 +180,7 @@ describe("WebsocketNotification", () => {
       const messageSpy = jest.fn();
       const message = `invalid JSON`;
 
+      // eslint-disable-next-line no-console
       console.info("Note: we expect a console.warn to come next");
       ws.on("message", messageSpy);
 
@@ -203,6 +204,7 @@ describe("WebsocketNotification", () => {
       // https://websockets.spec.whatwg.org/#dom-binarytype-arraybuffer
       const message = new TextEncoder().encode("test");
 
+      // eslint-disable-next-line no-console
       console.info("Note: we expect a console.warn to come next");
       ws.on("message", messageSpy);
 
