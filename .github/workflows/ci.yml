@@ -24,7 +24,7 @@ jobs:
       - run: npm test
       # Upload coverage for sonarcube (only matching OS and one node version required)
       - uses: actions/upload-artifact@v3
-        if: ${{ matrix.os == ubuntu-latest && matrix.node-version == 16.x }}
+        if: ${{ matrix.os == 'ubuntu-latest' && matrix.node-version == '16.x' }}
         with:
           name: code-coverage
           path: coverage/
