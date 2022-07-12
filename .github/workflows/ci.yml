@@ -23,19 +23,15 @@ jobs:
       - run: npm test
       # Upload coverage for sonarcube
       - uses: actions/upload-artifact@v3
+        if: ${{ matrix.os == ubuntu-latest && matrix.node-version == 16.x }}
         with:
           name: code-coverage
           path: coverage/
 
   sonar-scan:
     needs: [unit-tests]
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     if: ${{ github.actor != 'dependabot[bot]' }}
-    strategy:
-      matrix:
-        # Available OS's: https://help.github.com/en/actions/reference/virtual-environments-for-github-hosted-runners
-        os: [ubuntu-latest]
-        node-version: [16.x]
     steps:
       - uses: actions/checkout@v3
       - uses: actions/download-artifact@v3
