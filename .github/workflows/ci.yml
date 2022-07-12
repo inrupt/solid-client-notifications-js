@@ -28,14 +28,31 @@ jobs:
       - run: npm ci
       - run: npm run build
       - run: npm test
-
+      # Upload coverage for sonarcube
+      - uses: actions/upload-artifact@v3
+        with:
+          name: code-coverage
+          path: coverage/
+    
+  sonar-scan:
+    needs: [unit-tests]
+    runs-on: ${{ matrix.os }}
+    if: ${{ github.actor != 'dependabot[bot]' }}
+    strategy:
+      matrix:
+        # Available OS's: https://help.github.com/en/actions/reference/virtual-environments-for-github-hosted-runners
+        os: [ubuntu-latest]
+        node-version: [16.x]
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: code-coverage
+          path: coverage/
       # Sonar analysis needs the full history for features like automatic assignment of bugs. If the following step
       # is not included the project will show a warning about incomplete information.
       - run: git fetch --unshallow
-        if: ${{ matrix.node-version == '16.x' && matrix.os == 'ubuntu-latest' }}
       # Run Sonar analysis on just the latest ubuntu/node runner.
       - uses: SonarSource/sonarcloud-github-action@v1.6
-        if: ${{ matrix.node-version == '16.x' && matrix.os == 'ubuntu-latest' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
