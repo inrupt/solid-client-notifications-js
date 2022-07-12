@@ -33,7 +33,7 @@ jobs:
         with:
           name: code-coverage
           path: coverage/
-    
+
   sonar-scan:
     needs: [unit-tests]
     runs-on: ${{ matrix.os }}
