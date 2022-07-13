@@ -26,7 +26,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         if: ${{ matrix.os == 'ubuntu-latest' && matrix.node-version == '16.x' }}
         with:
-          name: code-coverage
+          name: code-coverage-${matrix.os}-${matrix.node-version}
           path: coverage/
 
   sonar-scan:
@@ -41,7 +41,7 @@ jobs:
           fetch-depth: 0
       - uses: actions/download-artifact@v3
         with:
-          name: code-coverage
+          name: code-coverage-ubuntu-latest-16.x
           path: coverage/
       - uses: SonarSource/sonarcloud-github-action@v1.6
         env:
