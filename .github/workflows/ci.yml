@@ -18,24 +18,32 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Cache node modules
-        uses: actions/cache@v3
-        env:
-          cache-name: cache-node-modules
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-node${{ runner.node-version }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          cache: "npm"
       - run: npm ci
       - run: npm run build
       - run: npm test
+      # Upload coverage for sonarcube (only matching OS and one node version required)
+      - uses: actions/upload-artifact@v3
+        if: ${{ matrix.os == 'ubuntu-latest' && matrix.node-version == '16.x' }}
+        with:
+          name: code-coverage-${{matrix.os}}-${{matrix.node-version}}
+          path: coverage/
 
-      # Sonar analysis needs the full history for features like automatic assignment of bugs. If the following step
-      # is not included the project will show a warning about incomplete information.
-      - run: git fetch --unshallow
-        if: ${{ matrix.node-version == '16.x' && matrix.os == 'ubuntu-latest' }}
-      # Run Sonar analysis on just the latest ubuntu/node runner.
+  sonar-scan:
+    needs: [unit-tests]
+    runs-on: ubuntu-latest
+    if: ${{ github.actor != 'dependabot[bot]' }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          # Sonar analysis needs the full history for features like automatic assignment of bugs. If the following step
+          # is not included the project will show a warning about incomplete information.
+          fetch-depth: 0
+      - uses: actions/download-artifact@v3
+        with:
+          name: code-coverage-ubuntu-latest-16.x
+          path: coverage/
       - uses: SonarSource/sonarcloud-github-action@v1.6
-        if: ${{ matrix.node-version == '16.x' && matrix.os == 'ubuntu-latest' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
