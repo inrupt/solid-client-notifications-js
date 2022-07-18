@@ -19,7 +19,9 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         node-version: [16.x]
-        environment-name: ["ESS PodSpaces", "ESS PodSpaces Next"]
+        # Note: "ESS PodSpaces" has been disabled due to the migration
+        # "ESS PodSpaces Next" is the new 2.0 URLs for production.
+        environment-name: ["ESS PodSpaces Next"]
     steps:
       - uses: actions/checkout@v3
       - name: Use Node.js ${{ matrix.node-version }}
