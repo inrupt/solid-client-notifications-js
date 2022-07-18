@@ -37,10 +37,10 @@ import {
  */
 export class BaseNotification {
   /** @internal */
-  fetchLoaded = false;
+  fetchLoaded = true;
 
   /** @internal */
-  fetchLoader: Promise<void>;
+  fetchLoader?: Promise<void>;
 
   /** @internal */
   topic: string;
@@ -89,46 +89,19 @@ export class BaseNotification {
     this.gateway = gateway;
 
     // Load fetch:
-    this.fetch = crossFetch;
-    this.setSessionFetch();
-
-    this.fetchLoaded = false;
-    this.fetchLoader = new Promise<void>((resolve) => {
-      if (fetchFn) {
-        this.setSessionFetch(fetchFn);
-        resolve();
-      } else {
-        // Attempt to load the fetch function from the default session if no fetchFn was passed in.
-        BaseNotification.getDefaultSessionFetch()
-          .then((defaultFetchFn) => {
-            if (defaultFetchFn) {
-              this.setSessionFetch(defaultFetchFn);
-            }
-          })
-          .finally(() => {
-            resolve();
-          });
-      }
-    }).then(() => {
-      this.fetchLoaded = true;
-    });
+    this.fetch = fetchFn || crossFetch;
+    if (!fetchFn) {
+      this.fetchLoaded = false;
+      this.fetchLoader = BaseNotification.getDefaultSessionFetch()
+        .then((defaultFetchFn) => {
+          if (defaultFetchFn) this.fetch = defaultFetchFn;
+        })
+        .catch(() => {})
+        .finally(() => {
+          this.fetchLoaded = true;
+        });
+    }
   }
-
-  /**
-   * Allows setting a [WHATWG Fetch API][fetch] compatible function
-   * for making HTTP requests. When [@inrupt/solid-client-authn-browser][scab]
-   * is available and this property is not set, `fetch` will be imported from
-   * there. Otherwise, the HTTP requests will be unauthenticated.
-   *
-   * [fetch]: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
-   *
-   * [scab]: https://npmjs.com/package/@inrupt/solid-client-authn-browser
-   *
-   * @param sessionFetch
-   */
-  setSessionFetch = (sessionFetch: typeof crossFetch = crossFetch): void => {
-    this.fetch = sessionFetch;
-  };
 
   /** @internal */
   async fetchNegotiationGatewayUrl(): Promise<string> {
