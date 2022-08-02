@@ -1,8 +1,0 @@
-{
-  "name": "cd-packaging-test-node",
-  "private": true,
-  "dependencies": {
-    "@inrupt/solid-client": "^1.23.1",
-    "@inrupt/solid-client-authn-node": "^1.12.0"
-  }
-}
