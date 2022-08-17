@@ -6,6 +6,11 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 
 The following changes have been implemented but not released yet:
 
+### Bugfixes
+
+- Always pass through fetch from BaseNotification to `getWellKnownSolid`, such
+  that `@inrupt/solid-client` doesn't have to load its own fetch implementation.
+
 ## [1.1.0] - 2022-07-01
 
 ### New Features
