@@ -37,10 +37,7 @@
     ],
     "theme": "markdown",
     "readme": "none",
-    "entryDocument": "index.md",
-    // This is used to get source URLs working on Vercel, where the git remote
-    // isn't automatically detected. See the nlfurniss-typedoc-plugin-sourcefile-url plugin
-    "sourcefile-url-prefix": "https://github.com/inrupt/solid-client-notifications-js/blob/main/"
+    "entryDocument": "index.md"
   },
   "include": ["src/**/*.ts", ".eslintrc.js"],
   "exclude": ["**/node_modules", "tests/**/*.js"]

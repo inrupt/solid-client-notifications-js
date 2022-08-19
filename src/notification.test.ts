@@ -203,6 +203,10 @@ describe("BaseNotification", () => {
 
       expect(fetchFn).not.toHaveBeenCalled();
       expect(getWellKnownSolidMock).toHaveBeenCalledTimes(1);
+      // Ensure we actually pass the fetchFn from `BaseNotification#fetch`
+      expect(getWellKnownSolidMock).toHaveBeenCalledWith(topic, {
+        fetch: fetchFn,
+      });
       expect(notificationGateway).toEqual(gateway);
     });
 
