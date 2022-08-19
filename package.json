@@ -61,7 +61,7 @@
   },
   "devDependencies": {
     "@inrupt/eslint-config-lib": "^1.0.0",
-    "@inrupt/solid-client": "^1.23.1",
+    "@inrupt/solid-client": "^1.23.2",
     "@inrupt/solid-client-authn-browser": "^1.12.1",
     "@inrupt/solid-client-authn-node": "^1.12.1",
     "@playwright/test": "^1.22.2",
@@ -92,7 +92,7 @@
     "ws": "^8.7.0"
   },
   "peerDependencies": {
-    "@inrupt/solid-client": "^1.23.1"
+    "@inrupt/solid-client": "^1.23.2"
   },
   "engines": {
     "node": "^14.17.0 || ^16.0.0"
