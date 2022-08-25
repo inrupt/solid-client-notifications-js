@@ -497,10 +497,6 @@ describe("BaseNotification", () => {
         "@inrupt/solid-client-authn-browser"
       ) as jest.Mocked<typeof SolidClientAuthnBrowser>;
 
-      expect(await BaseNotification.getDefaultSessionFetch()).toEqual(
-        authnFetch
-      );
-
       const topic = "https://fake.url/some-resource";
       const protocol = ["ws"] as Array<protocols>;
       const notification = new BaseNotification(topic, protocol);
@@ -510,32 +506,6 @@ describe("BaseNotification", () => {
       await notification.fetchLoader;
 
       expect(notification.fetch).toBe(authnFetch);
-    });
-  });
-
-  describe("uses defaultSession if fetch is not passed in", () => {
-    let originalGetDefaultSessionFetch: typeof BaseNotification.getDefaultSessionFetch;
-
-    beforeEach(() => {
-      originalGetDefaultSessionFetch = BaseNotification.getDefaultSessionFetch;
-    });
-
-    afterEach(() => {
-      BaseNotification.getDefaultSessionFetch = originalGetDefaultSessionFetch;
-    });
-
-    it("calls BaseNotification.getDefaultSessionFetch", async () => {
-      const topic = "https://fake.url/some-resource";
-      const protocol = ["ws"] as Array<protocols>;
-
-      BaseNotification.getDefaultSessionFetch = jest.fn(
-        BaseNotification.getDefaultSessionFetch
-      );
-
-      /* eslint no-new: 0 */
-      new BaseNotification(topic, protocol);
-
-      expect(BaseNotification.getDefaultSessionFetch).toHaveBeenCalled();
     });
   });
 });

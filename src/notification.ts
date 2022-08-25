@@ -37,10 +37,7 @@ import {
  */
 export class BaseNotification {
   /** @internal */
-  fetchLoaded = false;
-
-  /** @internal */
-  fetchLoader: Promise<void>;
+  fetchLoader?: Promise<void>;
 
   /** @internal */
   topic: string;
@@ -49,7 +46,23 @@ export class BaseNotification {
   gateway?: string;
 
   /** @internal */
-  fetch: typeof fetch;
+  _fetch?: typeof fetch;
+
+  /** @internal */
+  _tempFetch?: typeof fetch;
+
+
+  /** @internal */
+  get fetch(): typeof fetch {
+    if (this._fetch)
+      return this._fetch;
+
+    if (this._tempFetch)
+      return this._tempFetch;
+
+    return this._tempFetch = async (input: RequestInfo | URL, init?: RequestInit | undefined) =>
+      this.fetchLoader!.then(() => this._fetch!(input, init));
+  }
 
   /** @internal */
   protocols: Array<protocols>;
@@ -59,22 +72,6 @@ export class BaseNotification {
 
   /** @internal */
   status: statuses = "closed";
-
-  // Dynamically import solid-client-authn-browser so that Notification doesn't have a hard
-  // dependency.
-  /* eslint consistent-return: 0 */
-  /** @internal */
-  static async getDefaultSessionFetch(): Promise<typeof fetch | undefined> {
-    try {
-      const { fetch: fetchFn } = await import(
-        "@inrupt/solid-client-authn-browser"
-      );
-
-      return fetchFn;
-    } catch (e) {
-      /* empty */
-    }
-  }
 
   constructor(
     topic: string,
@@ -89,29 +86,14 @@ export class BaseNotification {
     this.gateway = gateway;
 
     // Load fetch:
-    this.fetch = crossFetch;
-    this.setSessionFetch();
-
-    this.fetchLoaded = false;
-    this.fetchLoader = new Promise<void>((resolve) => {
-      if (fetchFn) {
-        this.setSessionFetch(fetchFn);
-        resolve();
-      } else {
-        // Attempt to load the fetch function from the default session if no fetchFn was passed in.
-        BaseNotification.getDefaultSessionFetch()
-          .then((defaultFetchFn) => {
-            if (defaultFetchFn) {
-              this.setSessionFetch(defaultFetchFn);
-            }
-          })
-          .finally(() => {
-            resolve();
-          });
-      }
-    }).then(() => {
-      this.fetchLoaded = true;
-    });
+    if (fetchFn)
+      this._fetch = fetchFn;
+    else
+      // Dynamically import solid-client-authn-browser so that Notification doesn't have a hard
+      // dependency.
+      this.fetchLoader = import("@inrupt/solid-client-authn-browser")
+        .catch(() => ({ fetch: crossFetch }))
+        .then(fn => { this._fetch = fn.fetch })
   }
 
   /**
@@ -125,9 +107,10 @@ export class BaseNotification {
    * [scab]: https://npmjs.com/package/@inrupt/solid-client-authn-browser
    *
    * @param sessionFetch
+   * @depreciated
    */
   setSessionFetch = (sessionFetch: typeof crossFetch = crossFetch): void => {
-    this.fetch = sessionFetch;
+    this._fetch = sessionFetch;
   };
 
   /** @internal */
@@ -174,10 +157,6 @@ export class BaseNotification {
 
   /** @internal */
   async fetchProtocolNegotiationInfo(): Promise<NegotiationInfo> {
-    if (!this.fetchLoaded) {
-      await this.fetchLoader;
-    }
-
     if (!this.gateway) {
       this.gateway = await this.fetchNegotiationGatewayUrl();
     }
@@ -212,10 +191,6 @@ export class BaseNotification {
 
   /** @internal */
   async fetchNotificationConnectionInfo(): Promise<NotificationConnectionInfo> {
-    if (!this.fetchLoaded) {
-      await this.fetchLoader;
-    }
-
     const { endpoint } = await this.fetchProtocolNegotiationInfo();
 
     const response = await this.fetch(endpoint, {
