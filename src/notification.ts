@@ -46,22 +46,25 @@ export class BaseNotification {
   gateway?: string;
 
   /** @internal */
-  _fetch?: typeof fetch;
+  loadedFetch?: typeof fetch;
 
   /** @internal */
-  _tempFetch?: typeof fetch;
-
+  tempFetch?: typeof fetch;
 
   /** @internal */
   get fetch(): typeof fetch {
-    if (this._fetch)
-      return this._fetch;
+    if (this.loadedFetch) {
+      return this.loadedFetch;
+    }
 
-    if (this._tempFetch)
-      return this._tempFetch;
+    if (!this.tempFetch) {
+      this.tempFetch = async (
+        input: RequestInfo | URL,
+        init?: RequestInit | undefined
+      ) => this.fetchLoader!.then(() => this.loadedFetch!(input, init));
+    }
 
-    return this._tempFetch = async (input: RequestInfo | URL, init?: RequestInit | undefined) =>
-      this.fetchLoader!.then(() => this._fetch!(input, init));
+    return this.tempFetch;
   }
 
   /** @internal */
@@ -86,14 +89,17 @@ export class BaseNotification {
     this.gateway = gateway;
 
     // Load fetch:
-    if (fetchFn)
-      this._fetch = fetchFn;
-    else
+    if (fetchFn) {
+      this.loadedFetch = fetchFn;
+    } else {
       // Dynamically import solid-client-authn-browser so that Notification doesn't have a hard
       // dependency.
       this.fetchLoader = import("@inrupt/solid-client-authn-browser")
         .catch(() => ({ fetch: crossFetch }))
-        .then(fn => { this._fetch = fn.fetch })
+        .then((fn) => {
+          this.loadedFetch = fn.fetch;
+        });
+    }
   }
 
   /**
@@ -110,7 +116,7 @@ export class BaseNotification {
    * @depreciated
    */
   setSessionFetch = (sessionFetch: typeof crossFetch = crossFetch): void => {
-    this._fetch = sessionFetch;
+    this.loadedFetch = sessionFetch;
   };
 
   /** @internal */
