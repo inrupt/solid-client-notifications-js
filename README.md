@@ -1,5 +1,11 @@
 # Solid Notifications - solid-client-notifications
 
+[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](CODE-OF-CONDUCT.md)
+
+This project adheres to the Contributor Covenant [code of conduct](CODE-OF-CONDUCT.md). 
+By participating, you are expected to uphold this code. Please report unacceptable
+behavior to [engineering@inrupt.com](mailto:engineering@inrupt.com).
+
 @inrupt/solid-client-notifications is a Javascript library for subscribing to
 notifications. It allows your application to subscribe to resources, receiving
 events as resources change. You can use these in Node.js using either
