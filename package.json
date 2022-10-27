@@ -64,6 +64,7 @@
     "@inrupt/solid-client": "^1.23.2",
     "@inrupt/solid-client-authn-browser": "^1.12.2",
     "@inrupt/solid-client-authn-node": "^1.12.2",
+    "@inrupt/test-env-helpers": "file:../javascript-style-configs/packages/test-env-helpers",
     "@playwright/test": "^1.25.0",
     "@rushstack/eslint-patch": "^1.1.4",
     "@skypack/package-check": "^0.2.2",

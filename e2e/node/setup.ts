@@ -19,7 +19,7 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-import { setupEnv } from "../utils/setupEnv";
+import { setupEnv } from "@inrupt/test-env-helpers";
 
 // Fail fast on dotenv:
 setupEnv();

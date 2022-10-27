@@ -26,7 +26,7 @@ import {
 } from "@playwright/test";
 import { essUserLogin } from "./roles";
 
-import { getTestingEnvironmentBrowser } from "../../utils/getTestingEnvironment";
+import { getTestingEnvironmentBrowser } from "@inrupt/test-env-helpers";
 
 const { login, password, notificationGateway } = getTestingEnvironmentBrowser();
 

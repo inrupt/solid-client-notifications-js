@@ -29,7 +29,7 @@ import {
   saveSolidDatasetInContainer,
 } from "@inrupt/solid-client";
 
-import { TestingEnvironmentNode } from "../utils/getTestingEnvironment";
+import { TestingEnvironmentNode } from "@inrupt/test-env-helpers";
 
 export async function getAuthenticatedSession(
   authDetails: TestingEnvironmentNode

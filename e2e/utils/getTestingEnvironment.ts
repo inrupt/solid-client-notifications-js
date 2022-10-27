@@ -19,7 +19,7 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-import { setupEnv } from "./setupEnv";
+import { setupEnv } from "@inrupt/test-env-helpers";
 
 const availableEnvironment = [
   // "ESS Dev-Next" as const,

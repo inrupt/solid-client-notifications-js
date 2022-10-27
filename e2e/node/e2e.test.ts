@@ -29,7 +29,7 @@ import {
 } from "@inrupt/solid-client";
 import { WebsocketNotification, ErrorEvent } from "../../src/index";
 
-import { getTestingEnvironmentNode } from "../utils/getTestingEnvironment";
+import { getTestingEnvironmentNode } from "@inrupt/test-env-helpers";
 import {
   getAuthenticatedSession,
   getPodRoot,

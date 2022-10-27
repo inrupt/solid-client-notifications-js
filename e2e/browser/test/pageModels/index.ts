@@ -20,7 +20,8 @@
 //
 
 import { Page } from "@playwright/test";
-import { getTestingEnvironmentBrowser } from "../../../utils/getTestingEnvironment";
+
+import { getTestingEnvironmentBrowser } from "@inrupt/test-env-helpers";
 
 export class IndexPage {
   page: Page;
