@@ -27,9 +27,9 @@ import {
   deleteContainer,
   getSourceIri,
 } from "@inrupt/solid-client";
+import { getTestingEnvironmentNode } from "@inrupt/test-env-helpers";
 import { WebsocketNotification, ErrorEvent } from "../../src/index";
 
-import { getTestingEnvironmentNode } from "@inrupt/test-env-helpers";
 import {
   getAuthenticatedSession,
   getPodRoot,
