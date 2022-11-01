@@ -26,9 +26,9 @@ import {
 } from "@playwright/test";
 import { essUserLogin } from "./roles";
 
-import { getTestingEnvironmentBrowser } from "@inrupt/test-env-helpers";
+import { getBrowserTestingEnvironment } from "@inrupt/test-env-helpers";
 
-const { login, password, notificationGateway } = getTestingEnvironmentBrowser();
+const { login, password, notificationGateway } = getBrowserTestingEnvironment();
 
 test("connecting a websocket and disconnecting it", async ({ page }) => {
   let websocket: PlayWrightWebSocket;

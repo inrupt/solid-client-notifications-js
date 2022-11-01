@@ -21,7 +21,7 @@
 
 import { Page } from "@playwright/test";
 
-import { getTestingEnvironmentBrowser } from "@inrupt/test-env-helpers";
+import { getBrowserTestingEnvironment } from "@inrupt/test-env-helpers";
 
 export class IndexPage {
   page: Page;
@@ -31,7 +31,7 @@ export class IndexPage {
   }
 
   async startLogin() {
-    const { idp } = getTestingEnvironmentBrowser();
+    const { idp } = getBrowserTestingEnvironment();
     await this.page.fill("[data-testid=identityProviderInput]", idp);
     await Promise.all([
       // It is important to call waitForNavigation before click to set up waiting.

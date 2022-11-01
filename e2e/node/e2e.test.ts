@@ -27,7 +27,7 @@ import {
   deleteContainer,
   getSourceIri,
 } from "@inrupt/solid-client";
-import { getTestingEnvironmentNode } from "@inrupt/test-env-helpers";
+import { getNodeTestingEnvironment } from "@inrupt/test-env-helpers";
 import { WebsocketNotification, ErrorEvent } from "../../src/index";
 
 import {
@@ -37,7 +37,7 @@ import {
   teardownTestResources,
 } from "./test-helpers";
 
-const env = getTestingEnvironmentNode();
+const env = getNodeTestingEnvironment();
 
 const TEST_SLUG = "solid-client-notifications-test-e2e-resource";
 
