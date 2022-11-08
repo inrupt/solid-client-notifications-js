@@ -33,7 +33,7 @@ import {
   getPodRoot,
   setupTestResources,
   teardownTestResources,
-} from "@inrupt/test-env-helpers";
+} from "@inrupt/internal-test-env";
 import { WebsocketNotification, ErrorEvent } from "../../src/index";
 
 const env = getNodeTestingEnvironment();
