@@ -20,13 +20,11 @@
 //
 
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-
 import { setupEnv } from "@inrupt/test-env-helpers";
 
 async function globalSetup() {
   // Fail fast with dotenv:
   setupEnv();
-
   // Return the teardown function.
   return async () => {};
 }

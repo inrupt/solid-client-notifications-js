@@ -27,15 +27,14 @@ import {
   deleteContainer,
   getSourceIri,
 } from "@inrupt/solid-client";
-import { getNodeTestingEnvironment } from "@inrupt/test-env-helpers";
-import { WebsocketNotification, ErrorEvent } from "../../src/index";
-
 import {
+  getNodeTestingEnvironment,
   getAuthenticatedSession,
   getPodRoot,
   setupTestResources,
   teardownTestResources,
-} from "./test-helpers";
+} from "@inrupt/test-env-helpers";
+import { WebsocketNotification, ErrorEvent } from "../../src/index";
 
 const env = getNodeTestingEnvironment();
 

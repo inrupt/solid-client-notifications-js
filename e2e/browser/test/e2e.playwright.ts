@@ -24,11 +24,12 @@ import {
   expect,
   WebSocket as PlayWrightWebSocket,
 } from "@playwright/test";
+import { getBrowserTestingEnvironment } from "@inrupt/test-env-helpers";
 import { essUserLogin } from "./roles";
 
-import { getBrowserTestingEnvironment } from "@inrupt/test-env-helpers";
-
-const { login, password, notificationGateway } = getBrowserTestingEnvironment();
+const { login, password, notificationGateway } = getBrowserTestingEnvironment(
+  {}
+);
 
 test("connecting a websocket and disconnecting it", async ({ page }) => {
   let websocket: PlayWrightWebSocket;
