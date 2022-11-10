@@ -33,6 +33,7 @@ import {
   getPodRoot,
   setupTestResources,
   teardownTestResources,
+  createFetch,
 } from "@inrupt/internal-test-env";
 import { WebsocketNotification, ErrorEvent } from "../../src/index";
 
@@ -63,12 +64,12 @@ describe(`Authenticated end-to-end notifications tests for environment [${env.en
 
   beforeEach(async () => {
     session = await getAuthenticatedSession(env);
+    fetchOptions = { fetch: createFetch(session, TEST_SLUG) };
     pod = await getPodRoot(session);
-    const testsetup = await setupTestResources(session, TEST_SLUG, pod);
+    const testsetup = await setupTestResources(pod, fetchOptions);
 
     sessionResource = testsetup.resourceUrl;
     sessionContainer = testsetup.containerUrl;
-    fetchOptions = { fetch: testsetup.fetchWithAgent };
   });
 
   afterEach(async () => {
@@ -79,7 +80,7 @@ describe(`Authenticated end-to-end notifications tests for environment [${env.en
       session,
       sessionContainer,
       sessionResource,
-      fetchOptions.fetch
+      fetchOptions
     );
   });
 
