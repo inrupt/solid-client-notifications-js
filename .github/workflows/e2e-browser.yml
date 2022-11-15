@@ -16,9 +16,7 @@ jobs:
       name: ${{ matrix.environment-name }}
     strategy:
       matrix:
-        # Note: "ESS PodSpaces" has been disabled due to the migration
-        # "ESS PodSpaces Next" is the new 2.0 URLs for production.
-        environment-name: ["ESS PodSpaces Next"]
+        environment-name: ["ESS PodSpaces"]
     steps:
       - uses: actions/checkout@v3
       - name: Use Node.js 16.x
