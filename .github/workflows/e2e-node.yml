@@ -19,9 +19,7 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         node-version: [16.x]
-        # Note: "ESS PodSpaces" has been disabled due to the migration
-        # "ESS PodSpaces Next" is the new 2.0 URLs for production.
-        environment-name: ["ESS PodSpaces Next"]
+        environment-name: ["ESS PodSpaces"]
     steps:
       - uses: actions/checkout@v3
       - name: Use Node.js ${{ matrix.node-version }}
@@ -36,6 +34,6 @@ jobs:
           E2E_TEST_NOTIFICATION_GATEWAY: ${{ secrets.E2E_TEST_NOTIFICATION_GATEWAY }}
           E2E_TEST_NOTIFICATION_PROTOCOL: ${{ secrets.E2E_TEST_NOTIFICATION_PROTOCOL }}
           E2E_TEST_IDP: ${{ secrets.E2E_TEST_IDP }}
-          E2E_TEST_CLIENT_ID: ${{ secrets.E2E_TEST_CLIENT_ID }}
-          E2E_TEST_CLIENT_SECRET: ${{ secrets.E2E_TEST_CLIENT_SECRET }}
+          E2E_TEST_OWNER_CLIENT_ID: ${{ secrets.E2E_TEST_CLIENT_ID }}
+          E2E_TEST_OWNER_CLIENT_SECRET: ${{ secrets.E2E_TEST_CLIENT_SECRET }}
           E2E_TEST_ENVIRONMENT: ${{ matrix.environment-name }}

@@ -28,7 +28,7 @@ const config: PlaywrightTestConfig = {
   retries: 1,
   // Extends from the default 30s
   timeout: 60000,
-  globalSetup: require.resolve("./globalSetup.ts"),
+  globalSetup: require.resolve("./e2e/browser/test/globalSetup.ts"),
   use: {
     baseURL: "http://localhost:3000",
     headless: true,
@@ -37,7 +37,7 @@ const config: PlaywrightTestConfig = {
     video: "on-first-retry",
   },
   webServer: {
-    command: "cd ../testApp/ ; npm run dev",
+    command: "cd ./e2e/browser/testApp/ && npm run dev",
     port: 3000,
     timeout: 120 * 1000,
     reuseExistingServer: !process.env.CI,

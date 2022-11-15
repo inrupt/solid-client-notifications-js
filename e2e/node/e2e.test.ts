@@ -27,17 +27,17 @@ import {
   deleteContainer,
   getSourceIri,
 } from "@inrupt/solid-client";
-import { WebsocketNotification, ErrorEvent } from "../../src/index";
-
-import { getTestingEnvironmentNode } from "../utils/getTestingEnvironment";
 import {
+  getNodeTestingEnvironment,
   getAuthenticatedSession,
   getPodRoot,
   setupTestResources,
   teardownTestResources,
-} from "./test-helpers";
+  createFetch,
+} from "@inrupt/internal-test-env";
+import { WebsocketNotification, ErrorEvent } from "../../src/index";
 
-const env = getTestingEnvironmentNode();
+const env = getNodeTestingEnvironment();
 
 const TEST_SLUG = "solid-client-notifications-test-e2e-resource";
 
@@ -64,12 +64,12 @@ describe(`Authenticated end-to-end notifications tests for environment [${env.en
 
   beforeEach(async () => {
     session = await getAuthenticatedSession(env);
+    fetchOptions = { fetch: createFetch(session, TEST_SLUG) };
     pod = await getPodRoot(session);
-    const testsetup = await setupTestResources(session, TEST_SLUG, pod);
+    const testsetup = await setupTestResources(pod, fetchOptions);
 
     sessionResource = testsetup.resourceUrl;
     sessionContainer = testsetup.containerUrl;
-    fetchOptions = { fetch: testsetup.fetchWithAgent };
   });
 
   afterEach(async () => {
@@ -80,7 +80,7 @@ describe(`Authenticated end-to-end notifications tests for environment [${env.en
       session,
       sessionContainer,
       sessionResource,
-      fetchOptions.fetch
+      fetchOptions
     );
   });
 
