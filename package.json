@@ -99,5 +99,8 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "optionalDependencies": {
+    "fsevents": "^2.3.2"
   }
 }
