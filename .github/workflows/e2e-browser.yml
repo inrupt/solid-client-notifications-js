@@ -2,7 +2,7 @@ name: End-to-end browser-based tests
 
 on:
   push:
-concurrency: 
+concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 env:
@@ -21,7 +21,7 @@ jobs:
       matrix:
         environment-name: ["ESS PodSpaces"]
         experimental: [false]
-        include: 
+        include:
           - environment-name: ["ESS Dev-Next"]
           - experimental: [true]
     steps:

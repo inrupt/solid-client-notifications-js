@@ -3,7 +3,7 @@ name: End-to-end Tests (Node)
 on:
   push:
   workflow_dispatch:
-concurrency: 
+concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 env:
@@ -24,7 +24,7 @@ jobs:
         node-version: [16.x]
         environment-name: ["ESS PodSpaces"]
         experimental: [false]
-        include: 
+        include:
           - environment-name: ["ESS Dev-Next"]
           - experimental: [true]
     steps:
