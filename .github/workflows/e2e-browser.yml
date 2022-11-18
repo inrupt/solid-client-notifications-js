@@ -19,7 +19,7 @@ jobs:
     continue-on-error: ${{ matrix.experimental }}
     strategy:
       matrix:
-        environment-name: ["ESS PodSpaces", "ESS Dev-Next"]
+        environment-name: ["ESS PodSpaces"]
         experimental: [false]
         include:
           - environment-name: "ESS Dev-Next"

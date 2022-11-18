@@ -22,7 +22,7 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         node-version: [16.x]
-        environment-name: ["ESS PodSpaces", "ESS Dev-Next"]
+        environment-name: ["ESS PodSpaces"]
         experimental: [false]
         include:
           - environment-name: "ESS Dev-Next"
