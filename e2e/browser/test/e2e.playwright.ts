@@ -25,17 +25,17 @@ import {
   WebSocket as PlayWrightWebSocket,
 } from "@playwright/test";
 import { getBrowserTestingEnvironment } from "@inrupt/internal-test-env";
-import { essUserLogin } from "./roles";
+import { loginAndAllow } from "@inrupt/internal-playwright-helpers";
 
 const {
+  notificationGateway,
   clientCredentials: {
     owner: { login, password },
   },
-  notificationGateway,
 } = getBrowserTestingEnvironment({
   notificationGateway: "",
   clientCredentials: {
-    owner: { login: "", password: "", id: "", secret: "" },
+    owner: { login: "", password: "" },
   },
 });
 
@@ -43,7 +43,7 @@ test("connecting a websocket and disconnecting it", async ({ page }) => {
   let websocket: PlayWrightWebSocket;
   // Navigate to the test page and log in.
   await page.goto("/");
-  await essUserLogin(page, login, password);
+  await loginAndAllow(page, login, password);
 
   // Make sure we have a reference to the websocket that gets created.
   page.on("websocket", (ws) => {
@@ -96,7 +96,7 @@ test("connecting a websocket, getting messages, and disconnecting it", async ({
   const framesReceived = [];
   // Navigate to the test page and log in.
   await page.goto("/");
-  await essUserLogin(page, login, password);
+  await loginAndAllow(page, login, password);
 
   // Make sure we have a reference to the websocket that gets created.
   page.on("websocket", (ws) => {
