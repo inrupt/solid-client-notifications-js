@@ -33,9 +33,9 @@ const {
     owner: { login, password },
   },
 } = getBrowserTestingEnvironment({
-  notificationGateway: "",
+  notificationGateway: true,
   clientCredentials: {
-    owner: { login: "", password: "" },
+    owner: { login: true, password: true },
   },
 });
 
