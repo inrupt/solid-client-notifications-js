@@ -1,7 +1,9 @@
 name: CI
 
 on: [push]
-
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 env:
   CI: true
 jobs:
@@ -49,5 +51,4 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   lint:
-    # FIXME: use a fixed version after it has been released
-    uses: inrupt/javascript-style-configs/.github/workflows/reusable-lint.yml@main
+    uses: inrupt/typescript-sdk-tools/.github/workflows/reusable-lint.yml@v1.4.2

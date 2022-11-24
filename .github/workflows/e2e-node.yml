@@ -3,7 +3,9 @@ name: End-to-end Tests (Node)
 on:
   push:
   workflow_dispatch:
-
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 env:
   CI: true
 jobs:
@@ -15,15 +17,22 @@ jobs:
     runs-on: ${{ matrix.os }}
     environment:
       name: ${{ matrix.environment-name }}
+    continue-on-error: ${{ matrix.experimental }}
     strategy:
       matrix:
         os: [ubuntu-latest]
-        node-version: [16.x]
+        node-version: [16.x, 14.x]
         environment-name: ["ESS PodSpaces"]
+        experimental: [false]
+        # Dev-Next implements a different notification protocol, currently unsupported.
+        # include:
+        #   - environment-name: "ESS Dev-Next"
+        #     experimental: true
+        #     node-version: 16.x
+        #     os: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
           cache: npm
@@ -34,6 +43,6 @@ jobs:
           E2E_TEST_NOTIFICATION_GATEWAY: ${{ secrets.E2E_TEST_NOTIFICATION_GATEWAY }}
           E2E_TEST_NOTIFICATION_PROTOCOL: ${{ secrets.E2E_TEST_NOTIFICATION_PROTOCOL }}
           E2E_TEST_IDP: ${{ secrets.E2E_TEST_IDP }}
-          E2E_TEST_OWNER_CLIENT_ID: ${{ secrets.E2E_TEST_CLIENT_ID }}
-          E2E_TEST_OWNER_CLIENT_SECRET: ${{ secrets.E2E_TEST_CLIENT_SECRET }}
+          E2E_TEST_OWNER_CLIENT_ID: ${{ secrets.E2E_TEST_OWNER_CLIENT_ID }}
+          E2E_TEST_OWNER_CLIENT_SECRET: ${{ secrets.E2E_TEST_OWNER_CLIENT_SECRET }}
           E2E_TEST_ENVIRONMENT: ${{ matrix.environment-name }}

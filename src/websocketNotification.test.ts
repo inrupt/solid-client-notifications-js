@@ -58,7 +58,8 @@ describe("WebsocketNotification", () => {
       const topic = "https://fake.url/some-resource";
 
       const ws = new WebsocketNotification(topic);
-      ws.fetchNotificationConnectionInfo = jest.fn();
+      ws.fetchNotificationConnectionInfo =
+        jest.fn<typeof ws.fetchNotificationConnectionInfo>();
 
       await ws.connect(wssEndpoint);
 
@@ -70,7 +71,7 @@ describe("WebsocketNotification", () => {
       const ws = new WebsocketNotification(topic);
 
       ws.fetchNotificationConnectionInfo = jest
-        .fn<Promise<NotificationConnectionInfo>, never>()
+        .fn<typeof ws.fetchNotificationConnectionInfo>()
         .mockResolvedValue({
           endpoint: wssEndpoint,
           protocol: "ws",

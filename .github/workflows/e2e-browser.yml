@@ -2,7 +2,9 @@ name: End-to-end browser-based tests
 
 on:
   push:
-
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 env:
   CI: true
 jobs:
@@ -14,13 +16,18 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: ${{ matrix.environment-name }}
+    continue-on-error: ${{ matrix.experimental }}
     strategy:
       matrix:
         environment-name: ["ESS PodSpaces"]
+        experimental: [false]
+        # Dev-Next implements a different notification protocol, currently unsupported.
+        # include:
+        #   - environment-name: "ESS Dev-Next"
+        #     experimental: true
     steps:
       - uses: actions/checkout@v3
-      - name: Use Node.js 16.x
-        uses: actions/setup-node@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: 16.x
           cache: npm
@@ -42,4 +49,4 @@ jobs:
         continue-on-error: true
         with:
           name: playwright-output
-          path: e2e/browser/test/test-results/
+          path: test-results/

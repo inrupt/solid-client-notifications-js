@@ -94,6 +94,9 @@ export class BaseNotification {
 
     this.fetchLoaded = false;
     this.fetchLoader = new Promise<void>((resolve) => {
+      // The following breaks JSDom tests, so it isn't tested for and excluded from
+      // test coverage.
+      /* istanbul ignore next */
       if (fetchFn) {
         this.setSessionFetch(fetchFn);
         resolve();
