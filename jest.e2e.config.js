@@ -29,5 +29,5 @@ module.exports = {
   // Increase timeout to accommodate variable network latency
   testTimeout: 30000,
   injectGlobals: false,
-  setupFiles: ["<rootDir>/e2e/node/setup.ts"],
+  setupFiles: ["<rootDir>/e2e/node/jest.setup.ts"],
 };

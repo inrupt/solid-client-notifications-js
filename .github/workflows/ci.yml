@@ -51,5 +51,4 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   lint:
-    # FIXME: use a fixed version after it has been released
     uses: inrupt/typescript-sdk-tools/.github/workflows/reusable-lint.yml@v1.4.2
