@@ -18,13 +18,20 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+import type { Config } from "jest";
 
-module.exports = {
+type ArrayElement<MyArray> = MyArray extends Array<infer T> ? T : never;
+
+const baseConfig: ArrayElement<NonNullable<Config["projects"]>> = {
   preset: "ts-jest",
-  testEnvironment: "jsdom",
   testRegex: "src/.*\\.test\\.ts$",
-  testEnvironment: "<rootDir>/tests/environment/customEnvironment.js",
+  setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
   clearMocks: true,
+  injectGlobals: false,
+  modulePathIgnorePatterns: ["node_modules/"],
+};
+
+export default {
   collectCoverage: true,
   coverageReporters: process.env.CI ? ["text", "lcov"] : ["text"],
   coverageThreshold: {
@@ -35,6 +42,28 @@ module.exports = {
       statements: 100,
     },
   },
-  modulePathIgnorePatterns: ["node_modules/"],
-  injectGlobals: false,
-};
+  projects: [
+    {
+      ...baseConfig,
+      displayName: "browser",
+      testEnvironment: "jsdom",
+      testPathIgnorePatterns: ["e2e", "node.test.ts"],
+    },
+    {
+      ...baseConfig,
+      displayName: "node",
+      testEnvironment: "node",
+      testPathIgnorePatterns: ["e2e", "browser.test.ts"],
+    },
+    {
+      ...baseConfig,
+      testEnvironment: "node",
+      displayName: "e2e-node",
+      testRegex: "e2e/node/.*.test.ts",
+      setupFiles: ["<rootDir>/e2e/node/jest.setup.ts"],
+      // don't load the polyfills
+      setupFilesAfterEnv: [],
+      slowTestThreshold: 30,
+    },
+  ],
+} as Config;
