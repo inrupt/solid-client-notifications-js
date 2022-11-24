@@ -64,6 +64,7 @@
   "devDependencies": {
     "@inrupt/eslint-config-lib": "^1.4.2",
     "@inrupt/internal-test-env": "^1.4.2",
+    "@inrupt/jest-jsdom-polyfills": "^1.4.2",
     "@inrupt/solid-client": "^1.23.2",
     "@inrupt/solid-client-authn-browser": "^1.12.2",
     "@inrupt/solid-client-authn-node": "^1.12.2",
@@ -76,6 +77,7 @@
     "dotenv-flow": "^3.2.0",
     "eslint": "^8.22.0",
     "jest": "^29.3.1",
+    "jest-environment-jsdom": "^29.3.1",
     "prettier": "^2.7.1",
     "rimraf": "^3.0.2",
     "rollup": "^3.1.0",
