@@ -66,7 +66,6 @@
     "@inrupt/internal-test-env": "^1.4.2",
     "@inrupt/jest-jsdom-polyfills": "^1.4.2",
     "@inrupt/solid-client": "^1.23.2",
-    "@inrupt/solid-client-authn-browser": "^1.12.2",
     "@inrupt/solid-client-authn-node": "^1.12.2",
     "@playwright/test": "^1.25.0",
     "@rushstack/eslint-patch": "^1.1.4",
