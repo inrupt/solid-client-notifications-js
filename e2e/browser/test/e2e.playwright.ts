@@ -19,13 +19,12 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+import { WebSocket as PlayWrightWebSocket } from "@playwright/test";
+import { test, expect } from "@inrupt/internal-playwright-helpers";
 import {
-  test,
-  expect,
-  WebSocket as PlayWrightWebSocket,
-} from "@playwright/test";
-import { getBrowserTestingEnvironment } from "@inrupt/internal-test-env";
-import { loginAndAllow } from "@inrupt/internal-playwright-helpers";
+  getBrowserTestingEnvironment,
+  TestingEnvironmentBrowser,
+} from "@inrupt/internal-test-env";
 
 const {
   notificationGateway,
@@ -37,7 +36,8 @@ const {
   clientCredentials: {
     owner: { login: "", password: "" },
   },
-});
+  // FIXME this is a temporary workaround until https://github.com/inrupt/typescript-sdk-tools/pull/104 is merged.
+}) as TestingEnvironmentBrowser & { notificationGateway: string };
 
 test("connecting a websocket and disconnecting it", async ({ page }) => {
   let websocket: PlayWrightWebSocket;
