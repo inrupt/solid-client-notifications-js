@@ -19,31 +19,21 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+import { WebSocket as PlayWrightWebSocket } from "@playwright/test";
+import { test, expect } from "@inrupt/internal-playwright-helpers";
 import {
-  test,
-  expect,
-  WebSocket as PlayWrightWebSocket,
-} from "@playwright/test";
-import { getBrowserTestingEnvironment } from "@inrupt/internal-test-env";
-import { essUserLogin } from "./roles";
+  getBrowserTestingEnvironment,
+  TestingEnvironmentBrowser,
+} from "@inrupt/internal-test-env";
 
-const {
-  clientCredentials: {
-    owner: { login, password },
-  },
-  notificationGateway,
-} = getBrowserTestingEnvironment({
+const { notificationGateway } = getBrowserTestingEnvironment({
   notificationGateway: "",
-  clientCredentials: {
-    owner: { login: "", password: "", id: "", secret: "" },
-  },
-});
+  // FIXME this is a temporary workaround until https://github.com/inrupt/typescript-sdk-tools/pull/104 is merged.
+}) as TestingEnvironmentBrowser & { notificationGateway: string };
 
-test("connecting a websocket and disconnecting it", async ({ page }) => {
+test("connecting a websocket and disconnecting it", async ({ page, auth }) => {
   let websocket: PlayWrightWebSocket;
-  // Navigate to the test page and log in.
-  await page.goto("/");
-  await essUserLogin(page, login, password);
+  await auth.login({ allow: true });
 
   // Make sure we have a reference to the websocket that gets created.
   page.on("websocket", (ws) => {
@@ -91,12 +81,11 @@ test("connecting a websocket and disconnecting it", async ({ page }) => {
 
 test("connecting a websocket, getting messages, and disconnecting it", async ({
   page,
+  auth,
 }) => {
   let websocket: PlayWrightWebSocket;
   const framesReceived = [];
-  // Navigate to the test page and log in.
-  await page.goto("/");
-  await essUserLogin(page, login, password);
+  await auth.login({ allow: true });
 
   // Make sure we have a reference to the websocket that gets created.
   page.on("websocket", (ws) => {
