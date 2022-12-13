@@ -26,9 +26,7 @@ import {
   TestingEnvironmentBrowser,
 } from "@inrupt/internal-test-env";
 
-const {
-  notificationGateway,
-} = getBrowserTestingEnvironment({
+const { notificationGateway } = getBrowserTestingEnvironment({
   notificationGateway: "",
   // FIXME this is a temporary workaround until https://github.com/inrupt/typescript-sdk-tools/pull/104 is merged.
 }) as TestingEnvironmentBrowser & { notificationGateway: string };
