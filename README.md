@@ -1,28 +1,46 @@
 # Solid Notifications - solid-client-notifications
 
-[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](CODE-OF-CONDUCT.md)
+[![Contributor
+Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](CODE-OF-CONDUCT.md)
 
-This project adheres to the Contributor Covenant [code of conduct](CODE-OF-CONDUCT.md).
-By participating, you are expected to uphold this code. Please report unacceptable
-behavior to [engineering@inrupt.com](mailto:engineering@inrupt.com).
+This project adheres to the Contributor Covenant [code of
+conduct](CODE-OF-CONDUCT.md). By participating, you are expected to uphold this
+code. Please report unacceptable behavior to
+[engineering@inrupt.com](mailto:engineering@inrupt.com).
 
 @inrupt/solid-client-notifications is a Javascript library for subscribing to
 notifications. It allows your application to subscribe to resources, receiving
-events as resources change. You can use these in Node.js using either
-CommonJS or ES modules, and in the browser with a bundler like Webpack, Rollup,
-or Parcel.
+events as resources change. You can use these in Node.js using either CommonJS
+or ES modules, and in the browser with a bundler like Webpack, Rollup, or
+Parcel.
 
 @inrupt/solid-client-notifications is part of a family open source JavaScript
 libraries designed to support developers building Solid applications.
 
+# Supported environment
+
+Our JavaScript Client Libraries use relatively modern JavaScript, aligned with
+the [ES2018](https://262.ecma-international.org/9.0/) Specification features, we
+ship both [ESM](https://nodejs.org/docs/latest-v16.x/api/esm.html) and
+[CommonJS](https://nodejs.org/docs/latest-v16.x/api/modules.html), with type
+definitions for TypeScript alongside.
+
+This mean that we only support environments (browsers or runtimes) that were
+released after mid-2018 out of the box, if you wish to target these
+environments, then you will need to cross-compile our SDKs via the use of
+[Babel](https://babeljs.io), [webpack](https://webpack.js.org/),
+[SWC](https://swc.rs/), or similar.
+
+Additionally, when using this package in an environment other than Node.js, you
+will need [a polyfill for Node's `buffer`
+module](https://www.npmjs.com/package/buffer).
+
 # Browser support
 
-Our JavaScript Client Libraries use relatively modern JavaScript features that
-will work in all commonly-used browsers, except Internet Explorer. If you need
-support for Internet Explorer, it is recommended to pass them through a tool
-like [Babel](https://babeljs.io), and to add polyfills for e.g. `Map`, `Set`,
-`Promise`, `Headers`, `Array.prototype.includes`, `Object.entries` and
-`String.prototype.endsWith`.
+If you need support for Internet Explorer, it is recommended to pass them
+through a tool like [Babel](https://babeljs.io), and to add polyfills for e.g.
+`Map`, `Set`, `Promise`, `Headers`, `Array.prototype.includes`, `Object.entries`
+and `String.prototype.endsWith`.
 
 # Node support
 
@@ -55,18 +73,21 @@ forum is a good place to meet the rest of the community.
 
 - For public feedback, bug reports, and feature requests please file an issue
   via [Github](https://github.com/inrupt/solid-client-notifications-js/issues/).
-- For non-public feedback or support inquiries please use the
-  [Inrupt Service Desk](https://inrupt.atlassian.net/servicedesk).
+- For non-public feedback or support inquiries please use the [Inrupt Service
+  Desk](https://inrupt.atlassian.net/servicedesk).
 
 ## Documentation
 
-- [Subscribe to WebSocket Notifications](https://docs.inrupt.com/developer-tools/javascript/client-libraries/tutorial/subscribe-to-notifications/)
-- [Inrupt Solid Javascript Client Libraries](https://docs.inrupt.com/developer-tools/javascript/client-libraries/)
+- [Subscribe to WebSocket
+  Notifications](https://docs.inrupt.com/developer-tools/javascript/client-libraries/tutorial/subscribe-to-notifications/)
+- [Inrupt Solid Javascript Client
+  Libraries](https://docs.inrupt.com/developer-tools/javascript/client-libraries/)
 - [Homepage](https://docs.inrupt.com/)
 
 # Changelog
 
-See [the release notes](https://github.com/inrupt/solid-client-notifications-js/blob/main/CHANGELOG.md).
+See [the release
+notes](https://github.com/inrupt/solid-client-notifications-js/blob/main/CHANGELOG.md).
 
 # License
 
