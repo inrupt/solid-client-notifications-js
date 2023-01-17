@@ -31,10 +31,6 @@ Please fill in as much of the template below as you're able. Feel free to delete
 
 <!--
 Adding a minimal reproduction of the bug makes it as easy as possible to get it fixed.
-To do so, fork the following CodeSandbox, insert the minimal code that demonstrates the problem,
-and share the resulting link here:
-https://codesandbox.io/s/github/inrupt/solid-client-notifications/tree/main/.codesandbox/sandbox
-
 -->
 
 ### Expected result
