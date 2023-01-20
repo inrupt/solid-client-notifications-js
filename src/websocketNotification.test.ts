@@ -24,8 +24,6 @@
 import { it, describe, expect, jest } from "@jest/globals";
 
 import { MessageEvent, CloseEvent, ErrorEvent } from "isomorphic-ws";
-import { NotificationConnectionInfo } from "./interfaces";
-
 import { WebsocketNotification } from "./websocketNotification";
 
 jest.mock("isomorphic-ws");

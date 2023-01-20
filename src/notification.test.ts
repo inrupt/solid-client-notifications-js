@@ -31,7 +31,7 @@ import {
 
 import crossFetch, { Response } from "cross-fetch";
 import type * as SolidClient from "@inrupt/solid-client";
-import type * as SolidClientAuthnBrowser from "@inrupt/solid-client-authn-browser";
+// import type * as SolidClientAuthnBrowser from "@inrupt/solid-client-authn-browser";
 
 import { protocols } from "./interfaces";
 import { BaseNotification } from "./notification";
