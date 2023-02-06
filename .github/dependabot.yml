@@ -9,6 +9,10 @@ updates:
       interval: "daily"
     allow:
       - dependency-type: production
+    labels:
+      - "dependencies"
+      - "npm"
+      - "production"
   - package-ecosystem: npm
     directory: "/"
     schedule:
@@ -16,6 +20,10 @@ updates:
     open-pull-requests-limit: 10
     allow:
       - dependency-type: development
+    labels:
+      - "dependencies"
+      - "npm"
+      - "development"
   # Enable version updates for the website tooling
   - package-ecosystem: "pip"
     # Look for `package.json` and `lock` files in the `root` directory
