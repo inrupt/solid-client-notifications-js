@@ -31,5 +31,5 @@ if (
   globalThis.Response = Response as any;
   globalThis.Request = Request as any;
   globalThis.Headers = Headers as any;
-  globalThis.fetch = Headers as any;
+  globalThis.fetch = fetch as any;
 }
