@@ -29,7 +29,7 @@ import {
   beforeEach,
 } from "@jest/globals";
 
-import crossFetch, { Response } from "cross-fetch";
+import crossFetch, { Response } from "@inrupt/universal-fetch";
 import type * as SolidClient from "@inrupt/solid-client";
 // import type * as SolidClientAuthnBrowser from "@inrupt/solid-client-authn-browser";
 

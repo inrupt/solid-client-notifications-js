@@ -70,7 +70,7 @@ export default {
     "@inrupt/solid-client",
     "@inrupt/solid-client-authn-browser",
     "events",
-    "cross-fetch",
+    "@inrupt/universal-fetch",
     "isomorphic-ws",
   ],
 };
