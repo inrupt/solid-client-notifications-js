@@ -22,7 +22,7 @@ jobs:
         # Test on different node-versions for now
         # as JSDom global variables can differ across
         # environments
-        node-version: [19.x, 18.x, 16.x, 14.x]
+        node-version: [19.x, 18.x, 16.x]
         environment-name: ["ESS PodSpaces"]
         experimental: [false]
         # Dev-Next implements a different notification protocol, currently unsupported.
