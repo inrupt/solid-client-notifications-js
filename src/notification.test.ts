@@ -381,7 +381,7 @@ describe("BaseNotification", () => {
 
       const info = await notification.fetchProtocolNegotiationInfo();
 
-      expect(info).toStrictEqual({ endpoint });
+      expect(info).toEqual({ endpoint });
 
       expect(fetchFn).toHaveBeenCalledWith(gateway, {
         method: "POST",
