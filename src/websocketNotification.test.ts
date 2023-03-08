@@ -19,7 +19,7 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
+/* eslint-disable @typescript-eslint/no-non-null-assertion, no-console */
 
 import { it, describe, expect, jest } from "@jest/globals";
 
@@ -27,6 +27,7 @@ import { MessageEvent, CloseEvent, ErrorEvent } from "isomorphic-ws";
 import { WebsocketNotification } from "./websocketNotification";
 
 jest.mock("isomorphic-ws");
+const { warn } = console;
 
 describe("WebsocketNotification", () => {
   const wssEndpoint = "wss://fake.url/some-resource";
@@ -179,13 +180,15 @@ describe("WebsocketNotification", () => {
       const messageSpy = jest.fn();
       const message = `invalid JSON`;
 
-      // eslint-disable-next-line no-console
-      console.info("Note: we expect a console.warn to come next");
+      console.warn = jest.fn();
       ws.on("message", messageSpy);
 
       await ws.connect(wssEndpoint);
       ws.websocket!.onopen!({ type: "open", target: ws.websocket! });
       ws.websocket!.onmessage!({ data: message } as MessageEvent);
+
+      expect(console.warn).toHaveBeenCalled();
+      console.warn = warn;
 
       expect(messageSpy).not.toHaveBeenCalled();
     });
@@ -203,13 +206,15 @@ describe("WebsocketNotification", () => {
       // https://websockets.spec.whatwg.org/#dom-binarytype-arraybuffer
       const message = new TextEncoder().encode("test");
 
-      // eslint-disable-next-line no-console
-      console.info("Note: we expect a console.warn to come next");
+      console.warn = jest.fn();
       ws.on("message", messageSpy);
 
       await ws.connect(wssEndpoint);
       ws.websocket!.onopen!({ type: "open", target: ws.websocket! });
       ws.websocket!.onmessage!({ data: message } as MessageEvent);
+
+      expect(console.warn).toHaveBeenCalled();
+      console.warn = warn;
 
       expect(messageSpy).not.toHaveBeenCalled();
     });
