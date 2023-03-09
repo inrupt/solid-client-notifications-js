@@ -90,7 +90,7 @@
     "typescript": "^4.9.4"
   },
   "dependencies": {
-    "@inrupt/universal-fetch": "^1.0.0-alpha.0",
+    "@inrupt/universal-fetch": "^1.0.0",
     "@types/events": "^3.0.0",
     "@types/ws": "^8.5.3",
     "events": "^3.3.0",
