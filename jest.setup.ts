@@ -20,16 +20,3 @@
 //
 
 import "@inrupt/jest-jsdom-polyfills";
-import { Request, Response, Headers, fetch } from "undici";
-
-if (
-  typeof globalThis.Response === "undefined" ||
-  typeof globalThis.Request === "undefined" ||
-  typeof globalThis.Headers === "undefined"
-) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  globalThis.Response = Response as any;
-  globalThis.Request = Request as any;
-  globalThis.Headers = Headers as any;
-  globalThis.fetch = fetch as any;
-}
