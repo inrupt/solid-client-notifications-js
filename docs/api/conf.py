@@ -128,6 +128,10 @@ html_sidebars = {
     '**': [ 'search-field.html',  'docs-sidebar.html'],
 }
 
+html_css_files = [
+    'css/inrupt.css',
+]
+
 locale_dirs = ['locale/']   # path is example but recommended.
 gettext_compact = False     # optional.
 
