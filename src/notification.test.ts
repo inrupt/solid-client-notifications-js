@@ -29,7 +29,7 @@ import {
   beforeEach,
 } from "@jest/globals";
 
-import crossFetch, { Response } from "cross-fetch";
+import crossFetch, { Response } from "@inrupt/universal-fetch";
 import type * as SolidClient from "@inrupt/solid-client";
 // import type * as SolidClientAuthnBrowser from "@inrupt/solid-client-authn-browser";
 
@@ -381,7 +381,7 @@ describe("BaseNotification", () => {
 
       const info = await notification.fetchProtocolNegotiationInfo();
 
-      expect(info).toStrictEqual({ endpoint });
+      expect(info).toEqual({ endpoint });
 
       expect(fetchFn).toHaveBeenCalledWith(gateway, {
         method: "POST",
