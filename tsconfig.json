@@ -36,7 +36,7 @@
     ],
     "theme": "markdown",
     "readme": "none",
-    "entryDocument": "index.md"
+    "entryDocument": "index.rst"
   },
   "include": ["src/**/*.ts", ".eslintrc.js"],
   "exclude": ["**/node_modules", "tests/**/*.js"]
