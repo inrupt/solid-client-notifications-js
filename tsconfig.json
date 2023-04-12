@@ -40,5 +40,5 @@
     "plugin": ["typedoc-plugin-markdown"]
   },
   "include": ["src/**/*.ts", ".eslintrc.js"],
-  "exclude": ["**/node_modules", "tests/**/*.js"]
+  "exclude": ["**/node_modules", "tests/**/*.js", "**/*.test.ts"]
 }
