@@ -6,6 +6,8 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 
 The following changes have been implemented but not released yet:
 
+## [1.2.0] - 2023-04-14
+
 ### New features
 
 - Node 18 is now officially supported
