@@ -51,4 +51,4 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   lint:
-    uses: inrupt/typescript-sdk-tools/.github/workflows/reusable-lint.yml@v1.6.1
+    uses: inrupt/typescript-sdk-tools/.github/workflows/reusable-lint.yml@v1.6.2
