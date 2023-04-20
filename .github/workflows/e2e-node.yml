@@ -17,14 +17,14 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        node-version: [18.x, 16.x, 14.x]
+        node-version: [20.x, 18.x, 16.x, 14.x]
         environment-name: ["ESS PodSpaces"]
         experimental: [false]
         # Dev-Next implements a different notification protocol, currently unsupported.
         # include:
         #   - environment-name: "ESS Dev-Next"
         #     experimental: true
-        #     node-version: 16.x
+        #     node-version: 20.x
         #     os: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
