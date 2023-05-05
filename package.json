@@ -73,7 +73,7 @@
     "@skypack/package-check": "^0.2.2",
     "@types/dotenv-flow": "^3.2.0",
     "@types/jest": "^29.2.3",
-    "@types/node": "^18.7.18",
+    "@types/node": "^20.1.0",
     "@types/rdfjs__dataset": "^1.0.5",
     "dotenv-flow": "^3.2.0",
     "eslint": "^8.22.0",
