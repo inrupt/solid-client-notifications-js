@@ -95,7 +95,7 @@
     "@types/ws": "^8.5.3",
     "events": "^3.3.0",
     "isomorphic-ws": "^5.0.0",
-    "ws": "^8.8.1"
+    "ws": "^8.12.0"
   },
   "peerDependencies": {
     "@inrupt/solid-client": "^1.25.2"
