@@ -1,5 +1,5 @@
 //
-// Copyright 2022 Inrupt Inc.
+// Copyright Inrupt Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal in
@@ -19,12 +19,10 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-import { WebSocket as PlayWrightWebSocket } from "@playwright/test";
+import type { WebSocket as PlayWrightWebSocket } from "@playwright/test";
 import { test, expect } from "@inrupt/internal-playwright-helpers";
-import {
-  getBrowserTestingEnvironment,
-  TestingEnvironmentBrowser,
-} from "@inrupt/internal-test-env";
+import type { TestingEnvironmentBrowser } from "@inrupt/internal-test-env";
+import { getBrowserTestingEnvironment } from "@inrupt/internal-test-env";
 
 const { notificationGateway } = getBrowserTestingEnvironment({
   notificationGateway: "",

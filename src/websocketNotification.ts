@@ -1,5 +1,5 @@
 //
-// Copyright 2022 Inrupt Inc.
+// Copyright Inrupt Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal in
@@ -21,8 +21,9 @@
 
 // Typescript and eslint are fighting over whether these are globals
 /* eslint no-shadow: 0 */
-import IsoWebSocket, { MessageEvent, ErrorEvent } from "isomorphic-ws";
-import { NotificationOptions, statuses } from "./interfaces";
+import type { MessageEvent, ErrorEvent } from "isomorphic-ws";
+import IsoWebSocket from "isomorphic-ws";
+import type { NotificationOptions, statuses } from "./interfaces";
 import { LiveNotification } from "./liveNotification";
 
 // Re-export ErrorEvent for use in tests:

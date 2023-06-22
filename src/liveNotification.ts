@@ -1,5 +1,5 @@
 //
-// Copyright 2022 Inrupt Inc.
+// Copyright Inrupt Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal in
@@ -23,7 +23,7 @@ import { EventEmitter } from "events";
 import { NotImplementedError } from "./errors";
 
 import { BaseNotification } from "./notification";
-import { NotificationOptions, protocols } from "./interfaces";
+import type { NotificationOptions, protocols } from "./interfaces";
 
 export declare interface LiveNotification {
   on(eventName: string, listener: (...args: any[]) => void): this;

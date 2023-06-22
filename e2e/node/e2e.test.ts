@@ -1,5 +1,5 @@
 //
-// Copyright 2022 Inrupt Inc.
+// Copyright Inrupt Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal in
@@ -21,7 +21,7 @@
 
 import { describe, it, expect, afterEach, beforeEach } from "@jest/globals";
 
-import { Session } from "@inrupt/solid-client-authn-node";
+import type { Session } from "@inrupt/solid-client-authn-node";
 import {
   createContainerInContainer,
   deleteContainer,
@@ -35,7 +35,8 @@ import {
   teardownTestResources,
   createFetch,
 } from "@inrupt/internal-test-env";
-import { WebsocketNotification, ErrorEvent } from "../../src/index";
+import type { ErrorEvent } from "../../src/index";
+import { WebsocketNotification } from "../../src/index";
 
 const env = getNodeTestingEnvironment();
 

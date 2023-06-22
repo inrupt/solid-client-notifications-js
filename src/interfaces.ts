@@ -1,5 +1,5 @@
 //
-// Copyright 2022 Inrupt Inc.
+// Copyright Inrupt Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal in
@@ -19,7 +19,7 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-import { fetch as crossFetch } from "@inrupt/universal-fetch";
+import type { fetch as crossFetch } from "@inrupt/universal-fetch";
 
 export type protocols = "ws" | string;
 export type statuses = "connecting" | "connected" | "closing" | "closed";

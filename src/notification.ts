@@ -1,5 +1,5 @@
 //
-// Copyright 2022 Inrupt Inc.
+// Copyright Inrupt Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal in
@@ -23,7 +23,7 @@ import { fetch as crossFetch } from "@inrupt/universal-fetch";
 import { getIri, getThingAll, getWellKnownSolid } from "@inrupt/solid-client";
 
 import { FetchError, NotSupported } from "./errors";
-import {
+import type {
   protocols,
   FeatureOptions,
   statuses,
