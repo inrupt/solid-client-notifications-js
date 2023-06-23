@@ -1,5 +1,5 @@
 //
-// Copyright 2022 Inrupt Inc.
+// Copyright Inrupt Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal in
@@ -22,7 +22,7 @@ import { test, describe, expect, jest } from "@jest/globals";
 
 import EventEmitter from "events";
 import { LiveNotification } from "./liveNotification";
-import { protocols } from "./interfaces";
+import type { protocols } from "./interfaces";
 
 describe("LiveNotification", () => {
   test("has an EventEmitter", () => {

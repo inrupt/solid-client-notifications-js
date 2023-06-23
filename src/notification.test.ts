@@ -1,5 +1,5 @@
 //
-// Copyright 2022 Inrupt Inc.
+// Copyright Inrupt Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal in
@@ -33,7 +33,7 @@ import crossFetch, { Response } from "@inrupt/universal-fetch";
 import type * as SolidClient from "@inrupt/solid-client";
 // import type * as SolidClientAuthnBrowser from "@inrupt/solid-client-authn-browser";
 
-import { protocols } from "./interfaces";
+import type { protocols } from "./interfaces";
 import { BaseNotification } from "./notification";
 
 jest.mock("@inrupt/solid-client", () => ({
