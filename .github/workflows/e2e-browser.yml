@@ -17,10 +17,9 @@ jobs:
       matrix:
         environment-name: ["ESS PodSpaces"]
         experimental: [false]
-        # Dev-Next implements a different notification protocol, currently unsupported.
-        # include:
-        #   - environment-name: "ESS Dev-Next"
-        #     experimental: true
+        include:
+          - environment-name: "ESS Dev-2-2"
+            experimental: true
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
