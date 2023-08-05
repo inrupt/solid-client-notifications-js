@@ -19,7 +19,7 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-import { describe, it, expect, afterEach, beforeEach } from "@jest/globals";
+import { describe, it, expect, afterEach, beforeEach, jest } from "@jest/globals";
 
 import type { Session } from "@inrupt/solid-client-authn-node";
 import {
