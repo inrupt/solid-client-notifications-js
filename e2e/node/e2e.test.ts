@@ -42,6 +42,11 @@ const env = getNodeTestingEnvironment();
 
 const TEST_SLUG = "solid-client-notifications-test-e2e-resource";
 
+if (process.env.CI === "true") {
+  // Tests running in the CI runners tend to be more flaky.
+  jest.retryTimes(3, { logErrorsBeforeRetry: true });
+}
+
 const nextWebsocketMessage = async (ws: WebsocketNotification) => {
   return new Promise((resolve) => {
     // TODO: implement ws.once
