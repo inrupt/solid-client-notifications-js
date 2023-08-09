@@ -36,7 +36,6 @@ import type {
  * @hidden
  */
 export class BaseNotification {
-
   /** @internal */
   topic: string;
 

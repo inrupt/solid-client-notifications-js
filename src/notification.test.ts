@@ -19,19 +19,10 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-import {
-  it,
-  test,
-  describe,
-  expect,
-  jest,
-  afterEach,
-  beforeEach,
-} from "@jest/globals";
+import { it, test, describe, expect, jest, afterEach } from "@jest/globals";
 
 import crossFetch, { Response } from "@inrupt/universal-fetch";
 import type * as SolidClient from "@inrupt/solid-client";
-// import type * as SolidClientAuthnBrowser from "@inrupt/solid-client-authn-browser";
 
 import type { protocols } from "./interfaces";
 import { BaseNotification } from "./notification";
@@ -40,15 +31,6 @@ jest.mock("@inrupt/solid-client", () => ({
   ...(jest.requireActual("@inrupt/solid-client") as typeof SolidClient),
   getWellKnownSolid: jest.fn(),
 }));
-
-// This is commented out because of incompatibilities between Jest and
-// jose shipping as ESM-only in the browser.
-// jest.mock("@inrupt/solid-client-authn-browser", () => ({
-//   ...(jest.requireActual(
-//     "@inrupt/solid-client-authn-browser"
-//   ) as typeof SolidClientAuthnBrowser),
-//   fetch: jest.fn(),
-// }));
 
 const mockedFetch = (fetch: typeof crossFetch = crossFetch) => {
   return jest.fn(fetch);
@@ -491,58 +473,6 @@ describe("BaseNotification", () => {
       const response = await notification.fetchNotificationConnectionInfo();
 
       expect(response).toEqual(jsonResponse);
-    });
-  });
-
-  // This test is commented out because of incompatibilities between Jest and
-  // jose shipping as ESM-only in the browser.
-  // eslint-disable-next-line jest/no-commented-out-tests
-  // describe("defaultSession", () => {
-  // eslint-disable-next-line jest/no-commented-out-tests
-  //   it("attempts to import the default session and uses its fetch function", async () => {
-  //     const { fetch: authnFetch } = jest.requireMock(
-  //       "@inrupt/solid-client-authn-browser"
-  //     ) as jest.Mocked<typeof SolidClientAuthnBrowser>;
-
-  //     expect(await BaseNotification.getDefaultSessionFetch()).toEqual(
-  //       authnFetch
-  //     );
-
-  //     const topic = "https://fake.url/some-resource";
-  //     const protocol = ["ws"] as Array<protocols>;
-  //     const notification = new BaseNotification(topic, protocol);
-
-  //     // Loading the default session fetch is asynchronous, so we keep track of
-  //     // that operation and block all calls until it's loaded:
-  //     await notification.fetchLoader;
-
-  //     expect(notification.fetch).toBe(authnFetch);
-  //   });
-  // });
-
-  describe("uses defaultSession if fetch is not passed in", () => {
-    let originalGetDefaultSessionFetch: typeof BaseNotification.getDefaultSessionFetch;
-
-    beforeEach(() => {
-      originalGetDefaultSessionFetch = BaseNotification.getDefaultSessionFetch;
-    });
-
-    afterEach(() => {
-      BaseNotification.getDefaultSessionFetch = originalGetDefaultSessionFetch;
-    });
-
-    it("calls BaseNotification.getDefaultSessionFetch", async () => {
-      const topic = "https://fake.url/some-resource";
-      const protocol = ["ws"] as Array<protocols>;
-
-      BaseNotification.getDefaultSessionFetch = jest.fn(
-        BaseNotification.getDefaultSessionFetch,
-      );
-
-      /* eslint no-new: 0 */
-      new BaseNotification(topic, protocol);
-
-      expect(BaseNotification.getDefaultSessionFetch).toHaveBeenCalled();
     });
   });
 });
