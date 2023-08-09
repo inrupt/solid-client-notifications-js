@@ -36,11 +36,6 @@ import type {
  * @hidden
  */
 export class BaseNotification {
-  /** @internal */
-  fetchLoaded = false;
-
-  /** @internal */
-  fetchLoader: Promise<void>;
 
   /** @internal */
   topic: string;
@@ -60,22 +55,6 @@ export class BaseNotification {
   /** @internal */
   status: statuses = "closed";
 
-  // Dynamically import solid-client-authn-browser so that Notification doesn't have a hard
-  // dependency.
-  /* eslint consistent-return: 0 */
-  /** @internal */
-  static async getDefaultSessionFetch(): Promise<typeof fetch | undefined> {
-    try {
-      const { fetch: fetchFn } = await import(
-        "@inrupt/solid-client-authn-browser"
-      );
-
-      return fetchFn;
-    } catch (e) {
-      /* empty */
-    }
-  }
-
   constructor(
     topic: string,
     protocolList: protocols[],
@@ -89,55 +68,8 @@ export class BaseNotification {
     this.gateway = gateway;
 
     // Load fetch:
-    this.fetch = crossFetch;
-    this.setSessionFetch();
-
-    this.fetchLoaded = false;
-    this.fetchLoader = new Promise<void>((resolve) => {
-      // The following breaks JSDom tests, so it isn't tested for and excluded from
-      // test coverage.
-      /* istanbul ignore next */
-      if (fetchFn) {
-        this.setSessionFetch(fetchFn);
-        resolve();
-      } else {
-        // Attempt to load the fetch function from the default session if no fetchFn was passed in.
-        // The following eslint rule has been enabled after the floating promise was implemented.
-        // Fixing this is being considered as a task separate to the linting update.
-        // eslint-disable-next-line @typescript-eslint/no-floating-promises
-        BaseNotification.getDefaultSessionFetch()
-          .then((defaultFetchFn) => {
-            if (defaultFetchFn) {
-              this.setSessionFetch(defaultFetchFn);
-            }
-          })
-          .finally(() => {
-            resolve();
-          });
-      }
-    }).then(() => {
-      this.fetchLoaded = true;
-    });
+    this.fetch = fetchFn ?? crossFetch;
   }
-
-  /**
-   * Allows setting a [WHATWG Fetch API][fetch] compatible function
-   * for making HTTP requests. When [@inrupt/solid-client-authn-browser][scab]
-   * is available and this property is not set, `fetch` will be imported from
-   * there. Otherwise, the HTTP requests will be unauthenticated.
-   *
-   * [fetch]: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
-   *
-   * [scab]: https://npmjs.com/package/@inrupt/solid-client-authn-browser
-   *
-   * @param sessionFetch
-   * @deprecated In future versions of this library the fetch function MUST
-   * be set in the constructor, and the fetch function will always be unathenticated
-   * if no fetch function is provided in the constructor.
-   */
-  setSessionFetch = (sessionFetch: typeof crossFetch = crossFetch): void => {
-    this.fetch = sessionFetch;
-  };
 
   /** @internal */
   async fetchNegotiationGatewayUrl(): Promise<string> {
@@ -183,10 +115,6 @@ export class BaseNotification {
 
   /** @internal */
   async fetchProtocolNegotiationInfo(): Promise<NegotiationInfo> {
-    if (!this.fetchLoaded) {
-      await this.fetchLoader;
-    }
-
     if (!this.gateway) {
       this.gateway = await this.fetchNegotiationGatewayUrl();
     }
@@ -221,10 +149,6 @@ export class BaseNotification {
 
   /** @internal */
   async fetchNotificationConnectionInfo(): Promise<NotificationConnectionInfo> {
-    if (!this.fetchLoaded) {
-      await this.fetchLoader;
-    }
-
     const { endpoint } = await this.fetchProtocolNegotiationInfo();
 
     const response = await this.fetch(endpoint, {
