@@ -128,6 +128,9 @@ export class BaseNotification {
    * [scab]: https://npmjs.com/package/@inrupt/solid-client-authn-browser
    *
    * @param sessionFetch
+   * @deprecated In future versions of this library the fetch function MUST
+   * be set in the constructor, and the fetch function will always be unathenticated
+   * if no fetch function is provided in the constructor.
    */
   setSessionFetch = (sessionFetch: typeof crossFetch = crossFetch): void => {
     this.fetch = sessionFetch;
