@@ -102,6 +102,9 @@ export class BaseNotification {
         resolve();
       } else {
         // Attempt to load the fetch function from the default session if no fetchFn was passed in.
+        // The following eslint rule has been enabled after the floating promise was implemented.
+        // Fixing this is being considered as a task separate to the linting update.
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
         BaseNotification.getDefaultSessionFetch()
           .then((defaultFetchFn) => {
             if (defaultFetchFn) {
