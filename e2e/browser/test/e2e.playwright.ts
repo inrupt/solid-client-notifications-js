@@ -46,11 +46,11 @@ test("connecting a websocket and disconnecting it", async ({ page, auth }) => {
   await Promise.all([
     // Negotiate the protocol endpoint at the gateway
     page.waitForResponse(
-      (response) => response.url() === new URL(notificationGateway).href
+      (response) => response.url() === new URL(notificationGateway).href,
     ),
     // Connect to the endpoint
     page.waitForResponse(
-      (response) => response.url() !== new URL(notificationGateway).href
+      (response) => response.url() !== new URL(notificationGateway).href,
     ),
     // The websocket should be created
     page.waitForEvent("websocket"),
@@ -64,7 +64,7 @@ test("connecting a websocket and disconnecting it", async ({ page, auth }) => {
   await page.waitForSelector("button[data-testid=disconnectSocket]");
 
   await expect(
-    page.innerText("span[data-testid=webSocketStatus]")
+    page.innerText("span[data-testid=webSocketStatus]"),
   ).resolves.toBe("connected");
 
   // Disconnect
@@ -73,7 +73,7 @@ test("connecting a websocket and disconnecting it", async ({ page, auth }) => {
   await websocket.waitForEvent("close");
 
   await expect(
-    page.innerText("span[data-testid=webSocketStatus]")
+    page.innerText("span[data-testid=webSocketStatus]"),
   ).resolves.toMatch("closed");
 });
 
@@ -101,11 +101,11 @@ test("connecting a websocket, getting messages, and disconnecting it", async ({
   await Promise.all([
     // Negotiate the protocol endpoint at the gateway
     page.waitForResponse(
-      (response) => response.url() === new URL(notificationGateway).href
+      (response) => response.url() === new URL(notificationGateway).href,
     ),
     // Connect to the endpoint
     page.waitForResponse(
-      (response) => response.url() !== new URL(notificationGateway).href
+      (response) => response.url() !== new URL(notificationGateway).href,
     ),
     // The websocket should be created
     page.waitForEvent("websocket"),
@@ -132,11 +132,11 @@ test("connecting a websocket, getting messages, and disconnecting it", async ({
 
   // Wait for react to update the message list:
   await page.waitForSelector(
-    `[data-testid=eventList] li:has-text("${framesReceived[0].id}")`
+    `[data-testid=eventList] li:has-text("${framesReceived[0].id}")`,
   );
 
   await expect(
-    page.locator("[data-testid=eventList] li").count()
+    page.locator("[data-testid=eventList] li").count(),
   ).resolves.toBe(1);
 
   // Make sure the container can be removed.
@@ -158,11 +158,11 @@ test("connecting a websocket, getting messages, and disconnecting it", async ({
 
   // Wait for react to update the message list:
   await page.waitForSelector(
-    `[data-testid=eventList] li:has-text("${framesReceived[1].id}")`
+    `[data-testid=eventList] li:has-text("${framesReceived[1].id}")`,
   );
 
   await expect(
-    page.locator("[data-testid=eventList] li").count()
+    page.locator("[data-testid=eventList] li").count(),
   ).resolves.toBe(2);
 
   await page.click("button[data-testid=disconnectSocket]");

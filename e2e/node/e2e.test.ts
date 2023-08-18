@@ -93,7 +93,7 @@ describe(`Authenticated end-to-end notifications tests for environment [${env.en
       session,
       sessionContainer,
       sessionResource,
-      fetchOptions
+      fetchOptions,
     );
   });
 
@@ -125,7 +125,7 @@ describe(`Authenticated end-to-end notifications tests for environment [${env.en
     // Wait for the container to be created and for the notification to be received
     const childContainer = await createContainerInContainer(
       sessionContainer,
-      fetchOptions
+      fetchOptions,
     );
 
     await createContainerMessage;
