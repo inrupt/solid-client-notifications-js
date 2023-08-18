@@ -56,24 +56,24 @@ const mockedFetch = (fetch: typeof crossFetch = crossFetch) => {
 
 const mockedFetchWithJsonResponse = (
   json: object,
-  fetch: typeof crossFetch = crossFetch
+  fetch: typeof crossFetch = crossFetch,
 ) => {
   return mockedFetch(fetch).mockResolvedValue(
-    new Response(JSON.stringify(json), { status: 200 })
+    new Response(JSON.stringify(json), { status: 200 }),
   );
 };
 
 const mockedFetchWithError = (
   status: number,
   body = "",
-  fetch: typeof crossFetch = crossFetch
+  fetch: typeof crossFetch = crossFetch,
 ) => {
   return mockedFetch(fetch).mockResolvedValue(new Response(body, { status }));
 };
 
 const mockedGetWellKnownSolid = () => {
   const { getWellKnownSolid } = jest.requireMock(
-    "@inrupt/solid-client"
+    "@inrupt/solid-client",
   ) as jest.Mocked<typeof SolidClient>;
 
   return getWellKnownSolid;
@@ -142,7 +142,7 @@ describe("BaseNotification", () => {
     test("throws an error if the call to getWellKnownSolid fails", async () => {
       const fetchFn = mockedFetch();
       const getWellKnownSolidMock = mockedGetWellKnownSolid().mockRejectedValue(
-        new Error("Some Error")
+        new Error("Some Error"),
       );
 
       const topic = "https://fake.url/some-resource";
@@ -153,7 +153,7 @@ describe("BaseNotification", () => {
       });
 
       await expect(notification.fetchNegotiationGatewayUrl()).rejects.toThrow(
-        NOT_SUPPORTED_ERROR_MATCHER
+        NOT_SUPPORTED_ERROR_MATCHER,
       );
 
       expect(getWellKnownSolidMock).toHaveBeenCalledTimes(1);
@@ -294,7 +294,7 @@ describe("BaseNotification", () => {
       });
 
       await expect(notification.fetchNegotiationGatewayUrl()).rejects.toThrow(
-        NOT_SUPPORTED_ERROR_MATCHER
+        NOT_SUPPORTED_ERROR_MATCHER,
       );
 
       expect(fetchFn).not.toHaveBeenCalled();
@@ -408,7 +408,7 @@ describe("BaseNotification", () => {
       });
 
       await expect(
-        notification.fetchProtocolNegotiationInfo()
+        notification.fetchProtocolNegotiationInfo(),
       ).rejects.toThrow();
     });
   });
@@ -459,7 +459,7 @@ describe("BaseNotification", () => {
         });
 
       await expect(
-        notification.fetchNotificationConnectionInfo()
+        notification.fetchNotificationConnectionInfo(),
       ).rejects.toThrow();
     });
 
@@ -536,7 +536,7 @@ describe("BaseNotification", () => {
       const protocol = ["ws"] as Array<protocols>;
 
       BaseNotification.getDefaultSessionFetch = jest.fn(
-        BaseNotification.getDefaultSessionFetch
+        BaseNotification.getDefaultSessionFetch,
       );
 
       /* eslint no-new: 0 */

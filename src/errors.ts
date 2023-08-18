@@ -27,7 +27,7 @@ export class FetchError extends Error {
     statusCode: number,
     statusText: string,
     fetchDescription: string,
-    response: Response
+    response: Response,
   ) {
     super(statusText);
     this.message = `Unable to fetch ${fetchDescription}: ${url} returned [${statusCode}] ${statusText}`;

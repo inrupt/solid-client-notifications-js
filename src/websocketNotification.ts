@@ -29,7 +29,7 @@ import { LiveNotification } from "./liveNotification";
 // Re-export ErrorEvent for use in tests:
 export { ErrorEvent } from "isomorphic-ws";
 
-export declare interface WebsocketNotification {
+export declare interface IWebsocketNotification {
   /**
    * Emitted when the connection is established
    */
@@ -123,7 +123,10 @@ export declare interface WebsocketNotification {
  * socket.disconnect();
  * ```
  */
-export class WebsocketNotification extends LiveNotification {
+export class WebsocketNotification
+  extends LiveNotification
+  implements IWebsocketNotification
+{
   /** @internal */
   websocket?: IsoWebSocket;
 
@@ -143,7 +146,7 @@ export class WebsocketNotification extends LiveNotification {
    */
   connect = async (
     providedEndpoint?: string,
-    providedSubprotocol?: string
+    providedSubprotocol?: string,
   ): Promise<void> => {
     this.status = "connecting";
 
@@ -171,7 +174,7 @@ export class WebsocketNotification extends LiveNotification {
         // eslint-disable-next-line no-console
         console.warn(
           `Received non-string websocket message, most likely an error:`,
-          e.data
+          e.data,
         );
         return;
       }
@@ -184,7 +187,7 @@ export class WebsocketNotification extends LiveNotification {
         console.warn(
           `Received non-JSON websocket message, most likely an error:`,
           e.data,
-          err
+          err,
         );
         return;
       }

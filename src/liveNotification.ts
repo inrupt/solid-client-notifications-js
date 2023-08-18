@@ -25,7 +25,7 @@ import { NotImplementedError } from "./errors";
 import { BaseNotification } from "./notification";
 import type { NotificationOptions, protocols } from "./interfaces";
 
-export declare interface LiveNotification {
+export declare interface ILiveNotification {
   on(eventName: string, listener: (...args: any[]) => void): this;
   once(eventName: string, listener: (...args: any[]) => void): this;
   off(eventName: string, listener: (...args: any[]) => void): this;
@@ -34,7 +34,10 @@ export declare interface LiveNotification {
 /**
  * @hidden
  */
-export class LiveNotification extends BaseNotification {
+export class LiveNotification
+  extends BaseNotification
+  implements ILiveNotification
+{
   /** @internal */
   protocol?: protocols;
 
@@ -45,7 +48,7 @@ export class LiveNotification extends BaseNotification {
   constructor(
     topic: string,
     protocolList: protocols[],
-    options?: NotificationOptions
+    options?: NotificationOptions,
   ) {
     super(topic, protocolList, options);
     this.emitter = new EventEmitter();

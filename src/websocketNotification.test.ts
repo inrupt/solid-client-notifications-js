@@ -26,7 +26,11 @@ import { it, describe, expect, jest } from "@jest/globals";
 import type { MessageEvent, CloseEvent, ErrorEvent } from "isomorphic-ws";
 import { WebsocketNotification } from "./websocketNotification";
 
-jest.mock("isomorphic-ws");
+jest.mock("isomorphic-ws", () => {
+  return jest.fn().mockImplementation(() => ({
+    close: jest.fn(),
+  }));
+});
 const { warn } = console;
 
 describe("WebsocketNotification", () => {

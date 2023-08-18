@@ -82,8 +82,8 @@ const CreateResourceButton = ({
           getSourceIri(
             await createContainerInContainer(parentContainerUrl, {
               fetch: getDefaultSession().fetch,
-            })
-          )
+            }),
+          ),
         );
       }}
       data-testid="createContainer"
@@ -197,7 +197,7 @@ export default function Notifications() {
       setSocket(
         new WebsocketNotification(parentContainerUrl, {
           fetch: session.fetch,
-        })
+        }),
       );
     }
     if (socket !== undefined) {

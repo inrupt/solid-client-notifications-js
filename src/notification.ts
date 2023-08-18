@@ -79,7 +79,7 @@ export class BaseNotification {
   constructor(
     topic: string,
     protocolList: protocols[],
-    options: NotificationOptions = {}
+    options: NotificationOptions = {},
   ) {
     const { gateway, features = {}, fetch: fetchFn } = options;
 
@@ -102,6 +102,9 @@ export class BaseNotification {
         resolve();
       } else {
         // Attempt to load the fetch function from the default session if no fetchFn was passed in.
+        // The following eslint rule has been enabled after the floating promise was implemented.
+        // Fixing this is being considered as a task separate to the linting update.
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
         BaseNotification.getDefaultSessionFetch()
           .then((defaultFetchFn) => {
             if (defaultFetchFn) {
@@ -158,14 +161,14 @@ export class BaseNotification {
     // First try reading the 2.0 predicate:
     let notificationGateway = getIri(
       wellKnownSubject,
-      "http://www.w3.org/ns/solid/terms#notificationGateway"
+      "http://www.w3.org/ns/solid/terms#notificationGateway",
     );
 
     // Then try the earlier 1.1 predicate:
     if (!notificationGateway) {
       notificationGateway = getIri(
         wellKnownSubject,
-        "http://inrupt.com/ns/ess#notificationGatewayEndpoint"
+        "http://inrupt.com/ns/ess#notificationGatewayEndpoint",
       );
     }
 
@@ -209,7 +212,7 @@ export class BaseNotification {
         response.status,
         response.statusText,
         "protocol negotiation info",
-        response
+        response,
       );
     }
 
@@ -241,7 +244,7 @@ export class BaseNotification {
         response.status,
         response.statusText,
         "connection info",
-        response
+        response,
       );
     }
 
