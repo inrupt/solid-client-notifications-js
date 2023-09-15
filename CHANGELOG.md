@@ -6,6 +6,10 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 
 The following changes have been implemented but not released yet:
 
+## [1.3.1] - 2023-09-15
+
+- Transitive dependency updates
+
 ## [1.3.0] - 2023-05-09
 
 ### New features
