@@ -8,7 +8,7 @@ The following changes have been implemented but not released yet:
 
 ## [1.3.1] - 2023-09-15
 
-- Transitive dependency updates
+- Transitive dependency updates.
 
 ## [1.3.0] - 2023-05-09
 
