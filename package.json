@@ -80,7 +80,7 @@
     "prettier": "^3.0.2",
     "rimraf": "^5.0.0",
     "rollup": "^3.1.0",
-    "rollup-plugin-typescript2": "^0.35.0",
+    "rollup-plugin-typescript2": "^0.36.0",
     "ts-jest": "^29.0.3",
     "ts-node": "^10.9.1",
     "typedoc": "^0.25.0",
