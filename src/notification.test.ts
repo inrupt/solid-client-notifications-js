@@ -21,9 +21,7 @@
 
 import { it, test, describe, expect, jest, afterEach } from "@jest/globals";
 
-import crossFetch, { Response } from "@inrupt/universal-fetch";
 import type * as SolidClient from "@inrupt/solid-client";
-
 import type { protocols } from "./interfaces";
 import { BaseNotification } from "./notification";
 
@@ -32,25 +30,25 @@ jest.mock("@inrupt/solid-client", () => ({
   getWellKnownSolid: jest.fn(),
 }));
 
-const mockedFetch = (fetch: typeof crossFetch = crossFetch) => {
-  return jest.fn(fetch);
+const mockedFetch = (fetchFn: typeof fetch = fetch) => {
+  return jest.fn(fetchFn);
 };
 
 const mockedFetchWithJsonResponse = (
   json: object,
-  fetch: typeof crossFetch = crossFetch,
+  fetchFn: typeof fetch = fetch
 ) => {
-  return mockedFetch(fetch).mockResolvedValue(
-    new Response(JSON.stringify(json), { status: 200 }),
+  return mockedFetch(fetchFn).mockResolvedValue(
+    new Response(JSON.stringify(json), { status: 200 })
   );
 };
 
 const mockedFetchWithError = (
   status: number,
   body = "",
-  fetch: typeof crossFetch = crossFetch,
+  fetchFn: typeof fetch = fetch
 ) => {
-  return mockedFetch(fetch).mockResolvedValue(new Response(body, { status }));
+  return mockedFetch(fetchFn).mockResolvedValue(new Response(body, { status }));
 };
 
 const mockedGetWellKnownSolid = () => {
@@ -88,7 +86,7 @@ describe("BaseNotification", () => {
         features: { ttl: 500 },
         gateway: "https://fake.url/notification-gateway",
         host: "https://fake.url",
-        fetch: fetchFn,
+        fetch: fetchFn as typeof fetch,
       };
 
       const notification = new BaseNotification(topic, protocol, options);
@@ -109,7 +107,7 @@ describe("BaseNotification", () => {
       const protocol = ["ws"] as Array<protocols>;
       const options = {
         gateway,
-        fetch: fetchFn,
+        fetch: fetchFn as typeof fetch,
       };
 
       const notification = new BaseNotification(topic, protocol, options);
@@ -131,7 +129,7 @@ describe("BaseNotification", () => {
       const protocol = ["ws"] as Array<protocols>;
 
       const notification = new BaseNotification(topic, protocol, {
-        fetch: fetchFn,
+        fetch: fetchFn as typeof fetch,
       });
 
       await expect(notification.fetchNegotiationGatewayUrl()).rejects.toThrow(
@@ -179,7 +177,7 @@ describe("BaseNotification", () => {
       });
 
       const notification = new BaseNotification(topic, protocol, {
-        fetch: fetchFn,
+        fetch: fetchFn as typeof fetch,
       });
 
       const notificationGateway =
@@ -189,7 +187,7 @@ describe("BaseNotification", () => {
       expect(getWellKnownSolidMock).toHaveBeenCalledTimes(1);
       // Ensure we actually pass the fetchFn from `BaseNotification#fetch`
       expect(getWellKnownSolidMock).toHaveBeenCalledWith(topic, {
-        fetch: fetchFn,
+        fetch: fetchFn as typeof fetch,
       });
       expect(notificationGateway).toEqual(gateway);
     });
@@ -233,7 +231,7 @@ describe("BaseNotification", () => {
       });
 
       const notification = new BaseNotification(topic, protocol, {
-        fetch: fetchFn,
+        fetch: fetchFn as typeof fetch,
       });
 
       const notificationGateway =
@@ -272,7 +270,7 @@ describe("BaseNotification", () => {
       });
 
       const notification = new BaseNotification(topic, protocol, {
-        fetch: fetchFn,
+        fetch: fetchFn as typeof fetch,
       });
 
       await expect(notification.fetchNegotiationGatewayUrl()).rejects.toThrow(
@@ -298,7 +296,7 @@ describe("BaseNotification", () => {
 
       const notification = new BaseNotification(topic, protocol, {
         gateway,
-        fetch: fetchFn,
+        fetch: fetchFn as typeof fetch,
       });
 
       notification.fetchNegotiationGatewayUrl =
@@ -309,8 +307,19 @@ describe("BaseNotification", () => {
       expect(notification.fetchNegotiationGatewayUrl).not.toHaveBeenCalled();
     });
 
-    test("fetches the gateway if it is not defined", async () => {
-      const fetchFn = mockedFetchWithJsonResponse({
+    test.each([
+      [mockedFetchWithJsonResponse],
+      [
+        (response: any) => {
+          jest
+            .spyOn(globalThis, "fetch")
+            .mockResolvedValue(
+              new Response(JSON.stringify(response), { status: 200 })
+            );
+        },
+      ],
+    ])("fetches the gateway if it is not defined", async (mockerFn) => {
+      const fetchFn = mockerFn({
         endpoint: "https://fake.url/some-endpoint",
         protocol: "ws",
         subprotocol: "solid-0.2",
@@ -320,7 +329,7 @@ describe("BaseNotification", () => {
       const protocol = ["ws"] as Array<protocols>;
 
       const notification = new BaseNotification(topic, protocol, {
-        fetch: fetchFn,
+        fetch: fetchFn as typeof fetch | undefined,
       });
 
       const gateway = "https://fake.url/notifications/";
@@ -334,8 +343,8 @@ describe("BaseNotification", () => {
 
       expect(notification.fetchNegotiationGatewayUrl).toHaveBeenCalledTimes(1);
 
-      expect(fetchFn).toHaveBeenCalledTimes(1);
-      expect(fetchFn).toHaveBeenCalledWith(gateway, expect.anything());
+      expect(fetchFn ?? fetch).toHaveBeenCalledTimes(1);
+      expect(fetchFn ?? fetch).toHaveBeenCalledWith(gateway, expect.anything());
 
       expect(notification.gateway).toEqual(gateway);
     });
@@ -353,7 +362,7 @@ describe("BaseNotification", () => {
       const notification = new BaseNotification(topic, protocol, {
         gateway,
         features: { ttl: 10 },
-        fetch: fetchFn,
+        fetch: fetchFn as typeof fetch,
       });
 
       // Mock gateway fetch
@@ -386,7 +395,7 @@ describe("BaseNotification", () => {
 
       const notification = new BaseNotification(topic, protocol, {
         gateway,
-        fetch: fetchFn,
+        fetch: fetchFn as typeof fetch,
       });
 
       await expect(
@@ -396,17 +405,28 @@ describe("BaseNotification", () => {
   });
 
   describe("fetchNotificationConnectionInfo", () => {
-    test("fetches protocol negotiation info", async () => {
+    test.each([
+      [mockedFetchWithJsonResponse],
+      [
+        (response: any) => {
+          jest
+            .spyOn(globalThis, "fetch")
+            .mockResolvedValue(
+              new Response(JSON.stringify(response), { status: 200 })
+            );
+        },
+      ],
+    ])("fetches protocol negotiation info", async (mockerFn) => {
       const endpoint = "https://fake.url/some-endpoint";
       const topic = "https://fake.url/some-resource";
       const protocol = ["ws"] as Array<protocols>;
 
-      const fetchFn = mockedFetchWithJsonResponse({
+      const fetchFn = mockerFn({
         endpoint,
       });
 
       const notification = new BaseNotification(topic, protocol, {
-        fetch: fetchFn,
+        fetch: fetchFn as typeof fetch | undefined,
       });
 
       notification.fetchProtocolNegotiationInfo = jest
@@ -429,7 +449,7 @@ describe("BaseNotification", () => {
       const topic = "https://fake.url/some-resource";
       const protocol = ["ws"] as Array<protocols>;
       const notification = new BaseNotification(topic, protocol, {
-        fetch: fetchFn,
+        fetch: fetchFn as typeof fetch,
       });
 
       notification.fetchProtocolNegotiationInfo = jest
@@ -459,7 +479,7 @@ describe("BaseNotification", () => {
       const fetchFn = mockedFetchWithJsonResponse(jsonResponse);
 
       const notification = new BaseNotification(topic, protocol, {
-        fetch: fetchFn,
+        fetch: fetchFn as typeof fetch,
       });
 
       notification.fetchProtocolNegotiationInfo = jest

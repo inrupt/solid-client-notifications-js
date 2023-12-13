@@ -19,7 +19,6 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-import { fetch as crossFetch } from "@inrupt/universal-fetch";
 import { getIri, getThingAll, getWellKnownSolid } from "@inrupt/solid-client";
 
 import { FetchError, NotSupported } from "./errors";
@@ -43,7 +42,7 @@ export class BaseNotification {
   gateway?: string;
 
   /** @internal */
-  fetch: typeof fetch;
+  fetch?: typeof fetch;
 
   /** @internal */
   protocols: Array<protocols>;
@@ -67,7 +66,7 @@ export class BaseNotification {
     this.gateway = gateway;
 
     // Load fetch:
-    this.fetch = fetchFn ?? crossFetch;
+    this.fetch = fetchFn;
   }
 
   /** @internal */
@@ -121,8 +120,7 @@ export class BaseNotification {
     // Typescript doesn't notice that this.gateway was changed in fetchNegotiationGatewayUrl,
     // so we'll have to ignore it.
     /* eslint @typescript-eslint/ban-ts-comment: 0 */
-    // @ts-ignore
-    const response = await this.fetch(this.gateway, {
+    const response = await (this.fetch ?? fetch)(this.gateway, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -150,7 +148,7 @@ export class BaseNotification {
   async fetchNotificationConnectionInfo(): Promise<NotificationConnectionInfo> {
     const { endpoint } = await this.fetchProtocolNegotiationInfo();
 
-    const response = await this.fetch(endpoint, {
+    const response = await (this.fetch ?? fetch)(endpoint, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
