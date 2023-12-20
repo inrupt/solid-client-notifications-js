@@ -12,6 +12,8 @@ The following changes have been implemented but not released yet:
   (or child classes) constructor instead.
 - The default session fetch from `@inrupt/solid-client-authn-browser` is no longer loaded lazily.
   The intended fetch should be provided explicitly.
+- Due to changes in the rollup config the `umd` output is now found at `dist/index.umd.js` rather than `umd/index.js`.
+  The UMD module name is now `SolidClientNotifications` instead of `SolidClient`.
 
 ## [1.3.1] - 2023-09-15
 
