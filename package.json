@@ -90,12 +90,10 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
+    "@inrupt/solid-client": "^2.0.0",
     "events": "^3.3.0",
     "isomorphic-ws": "^5.0.0",
     "ws": "^8.12.0"
-  },
-  "peerDependencies": {
-    "@inrupt/solid-client": "^2.0.0"
   },
   "engines": {
     "node": "^18.0.0 || ^20.0.0"
