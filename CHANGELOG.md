@@ -6,6 +6,13 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 
 The following changes have been implemented but not released yet:
 
+### Breaking changes
+
+- `setSessionFetch` is no longer supported. Please provide a `Session` to the `BaseNotification`
+  (or child classes) constructor instead.
+- The default session fetch from `@inrupt/solid-client-authn-browser` is no longer loaded lazily.
+  The intended fetch should be provided explicitly.
+
 ## [1.3.1] - 2023-09-15
 
 - Build system (bundler and TypeScript) updates. This should be transparent to dependants.
