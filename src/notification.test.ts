@@ -36,17 +36,17 @@ const mockedFetch = (fetchFn: typeof fetch = fetch) => {
 
 const mockedFetchWithJsonResponse = (
   json: object,
-  fetchFn: typeof fetch = fetch
+  fetchFn: typeof fetch = fetch,
 ) => {
   return mockedFetch(fetchFn).mockResolvedValue(
-    new Response(JSON.stringify(json), { status: 200 })
+    new Response(JSON.stringify(json), { status: 200 }),
   );
 };
 
 const mockedFetchWithError = (
   status: number,
   body = "",
-  fetchFn: typeof fetch = fetch
+  fetchFn: typeof fetch = fetch,
 ) => {
   return mockedFetch(fetchFn).mockResolvedValue(new Response(body, { status }));
 };
@@ -310,11 +310,11 @@ describe("BaseNotification", () => {
     test.each([
       [mockedFetchWithJsonResponse],
       [
-        (response: any) => {
+        (response: unknown) => {
           jest
             .spyOn(globalThis, "fetch")
             .mockResolvedValue(
-              new Response(JSON.stringify(response), { status: 200 })
+              new Response(JSON.stringify(response), { status: 200 }),
             );
         },
       ],
@@ -408,11 +408,11 @@ describe("BaseNotification", () => {
     test.each([
       [mockedFetchWithJsonResponse],
       [
-        (response: any) => {
+        (response: unknown) => {
           jest
             .spyOn(globalThis, "fetch")
             .mockResolvedValue(
-              new Response(JSON.stringify(response), { status: 200 })
+              new Response(JSON.stringify(response), { status: 200 }),
             );
         },
       ],
