@@ -69,7 +69,6 @@ export default {
   external: [
     "@inrupt/solid-client",
     "@inrupt/solid-client-authn-browser",
-    "@inrupt/universal-fetch",
     "events",
     "isomorphic-ws",
   ],

@@ -19,20 +19,9 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-import {
-  it,
-  test,
-  describe,
-  expect,
-  jest,
-  afterEach,
-  beforeEach,
-} from "@jest/globals";
+import { it, test, describe, expect, jest, afterEach } from "@jest/globals";
 
-import crossFetch, { Response } from "@inrupt/universal-fetch";
 import type * as SolidClient from "@inrupt/solid-client";
-// import type * as SolidClientAuthnBrowser from "@inrupt/solid-client-authn-browser";
-
 import type { protocols } from "./interfaces";
 import { BaseNotification } from "./notification";
 
@@ -41,34 +30,18 @@ jest.mock("@inrupt/solid-client", () => ({
   getWellKnownSolid: jest.fn(),
 }));
 
-// This is commented out because of incompatibilities between Jest and
-// jose shipping as ESM-only in the browser.
-// jest.mock("@inrupt/solid-client-authn-browser", () => ({
-//   ...(jest.requireActual(
-//     "@inrupt/solid-client-authn-browser"
-//   ) as typeof SolidClientAuthnBrowser),
-//   fetch: jest.fn(),
-// }));
-
-const mockedFetch = (fetch: typeof crossFetch = crossFetch) => {
-  return jest.fn(fetch);
+const mockedFetch = () => {
+  return jest.fn<typeof fetch>();
 };
 
-const mockedFetchWithJsonResponse = (
-  json: object,
-  fetch: typeof crossFetch = crossFetch,
-) => {
-  return mockedFetch(fetch).mockResolvedValue(
+const mockedFetchWithJsonResponse = (json: object) => {
+  return mockedFetch().mockResolvedValue(
     new Response(JSON.stringify(json), { status: 200 }),
   );
 };
 
-const mockedFetchWithError = (
-  status: number,
-  body = "",
-  fetch: typeof crossFetch = crossFetch,
-) => {
-  return mockedFetch(fetch).mockResolvedValue(new Response(body, { status }));
+const mockedFetchWithError = (status: number, body = "") => {
+  return mockedFetch().mockResolvedValue(new Response(body, { status }));
 };
 
 const mockedGetWellKnownSolid = () => {
@@ -327,8 +300,20 @@ describe("BaseNotification", () => {
       expect(notification.fetchNegotiationGatewayUrl).not.toHaveBeenCalled();
     });
 
-    test("fetches the gateway if it is not defined", async () => {
-      const fetchFn = mockedFetchWithJsonResponse({
+    test.each([
+      [mockedFetchWithJsonResponse],
+      [
+        // Modify global fetch to test providing no fetch.
+        (response: unknown) => {
+          jest
+            .spyOn(globalThis, "fetch")
+            .mockResolvedValue(
+              new Response(JSON.stringify(response), { status: 200 }),
+            );
+        },
+      ],
+    ])("fetches the gateway if it is not defined", async (mockerFn) => {
+      const fetchFn = mockerFn({
         endpoint: "https://fake.url/some-endpoint",
         protocol: "ws",
         subprotocol: "solid-0.2",
@@ -338,7 +323,7 @@ describe("BaseNotification", () => {
       const protocol = ["ws"] as Array<protocols>;
 
       const notification = new BaseNotification(topic, protocol, {
-        fetch: fetchFn,
+        fetch: fetchFn ?? undefined,
       });
 
       const gateway = "https://fake.url/notifications/";
@@ -352,8 +337,8 @@ describe("BaseNotification", () => {
 
       expect(notification.fetchNegotiationGatewayUrl).toHaveBeenCalledTimes(1);
 
-      expect(fetchFn).toHaveBeenCalledTimes(1);
-      expect(fetchFn).toHaveBeenCalledWith(gateway, expect.anything());
+      expect(fetchFn ?? fetch).toHaveBeenCalledTimes(1);
+      expect(fetchFn ?? fetch).toHaveBeenCalledWith(gateway, expect.anything());
 
       expect(notification.gateway).toEqual(gateway);
     });
@@ -414,17 +399,29 @@ describe("BaseNotification", () => {
   });
 
   describe("fetchNotificationConnectionInfo", () => {
-    test("fetches protocol negotiation info", async () => {
+    test.each([
+      [mockedFetchWithJsonResponse],
+      [
+        // Enforce the global fetch behavior when providing no fetch.
+        (response: unknown) => {
+          jest
+            .spyOn(globalThis, "fetch")
+            .mockResolvedValue(
+              new Response(JSON.stringify(response), { status: 200 }),
+            );
+        },
+      ],
+    ])("fetches protocol negotiation info", async (mockerFn) => {
       const endpoint = "https://fake.url/some-endpoint";
       const topic = "https://fake.url/some-resource";
       const protocol = ["ws"] as Array<protocols>;
 
-      const fetchFn = mockedFetchWithJsonResponse({
+      const fetchFn = mockerFn({
         endpoint,
       });
 
       const notification = new BaseNotification(topic, protocol, {
-        fetch: fetchFn,
+        fetch: fetchFn ?? undefined,
       });
 
       notification.fetchProtocolNegotiationInfo = jest
@@ -491,58 +488,6 @@ describe("BaseNotification", () => {
       const response = await notification.fetchNotificationConnectionInfo();
 
       expect(response).toEqual(jsonResponse);
-    });
-  });
-
-  // This test is commented out because of incompatibilities between Jest and
-  // jose shipping as ESM-only in the browser.
-  // eslint-disable-next-line jest/no-commented-out-tests
-  // describe("defaultSession", () => {
-  // eslint-disable-next-line jest/no-commented-out-tests
-  //   it("attempts to import the default session and uses its fetch function", async () => {
-  //     const { fetch: authnFetch } = jest.requireMock(
-  //       "@inrupt/solid-client-authn-browser"
-  //     ) as jest.Mocked<typeof SolidClientAuthnBrowser>;
-
-  //     expect(await BaseNotification.getDefaultSessionFetch()).toEqual(
-  //       authnFetch
-  //     );
-
-  //     const topic = "https://fake.url/some-resource";
-  //     const protocol = ["ws"] as Array<protocols>;
-  //     const notification = new BaseNotification(topic, protocol);
-
-  //     // Loading the default session fetch is asynchronous, so we keep track of
-  //     // that operation and block all calls until it's loaded:
-  //     await notification.fetchLoader;
-
-  //     expect(notification.fetch).toBe(authnFetch);
-  //   });
-  // });
-
-  describe("uses defaultSession if fetch is not passed in", () => {
-    let originalGetDefaultSessionFetch: typeof BaseNotification.getDefaultSessionFetch;
-
-    beforeEach(() => {
-      originalGetDefaultSessionFetch = BaseNotification.getDefaultSessionFetch;
-    });
-
-    afterEach(() => {
-      BaseNotification.getDefaultSessionFetch = originalGetDefaultSessionFetch;
-    });
-
-    it("calls BaseNotification.getDefaultSessionFetch", async () => {
-      const topic = "https://fake.url/some-resource";
-      const protocol = ["ws"] as Array<protocols>;
-
-      BaseNotification.getDefaultSessionFetch = jest.fn(
-        BaseNotification.getDefaultSessionFetch,
-      );
-
-      /* eslint no-new: 0 */
-      new BaseNotification(topic, protocol);
-
-      expect(BaseNotification.getDefaultSessionFetch).toHaveBeenCalled();
     });
   });
 });

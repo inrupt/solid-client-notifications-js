@@ -88,7 +88,6 @@
     "typescript": "^5.0.4"
   },
   "dependencies": {
-    "@inrupt/universal-fetch": "^1.0.1",
     "@types/events": "^3.0.0",
     "@types/ws": "^8.5.3",
     "events": "^3.3.0",
@@ -99,7 +98,7 @@
     "@inrupt/solid-client": "^1.25.2"
   },
   "engines": {
-    "node": "^16.0.0 || ^18.0.0 || ^20.0.0"
+    "node": "^18.0.0 || ^20.0.0"
   },
   "publishConfig": {
     "access": "public"

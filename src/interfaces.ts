@@ -18,9 +18,6 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-
-import type { fetch as crossFetch } from "@inrupt/universal-fetch";
-
 export type protocols = "ws" | string;
 export type statuses = "connecting" | "connected" | "closing" | "closed";
 
@@ -54,7 +51,7 @@ export interface NotificationOptions {
    * discovering metadata for notifications. See the documentation for
    * `setSessionFetch` in the `WebsocketNotification` class.
    */
-  fetch?: typeof crossFetch;
+  fetch?: typeof fetch;
 }
 
 export interface FeatureOptions {
