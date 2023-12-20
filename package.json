@@ -62,40 +62,40 @@
     "url": "https://github.com/inrupt/solid-client-notifications-js.git"
   },
   "devDependencies": {
-    "@inrupt/eslint-config-lib": "^2.1.3",
+    "@inrupt/base-rollup-config": "^3.0.1",
+    "@inrupt/eslint-config-lib": "^3.0.1",
     "@inrupt/internal-playwright-helpers": "^3.0.1",
-    "@inrupt/internal-test-env": "^2.6.0",
-    "@inrupt/jest-jsdom-polyfills": "^2.6.0",
-    "@inrupt/solid-client": "^1.25.2",
-    "@inrupt/solid-client-authn-node": "^1.12.2",
-    "@playwright/test": "^1.25.0",
+    "@inrupt/internal-test-env": "^3.0.1",
+    "@inrupt/jest-jsdom-polyfills": "^3.0.1",
+    "@inrupt/solid-client": "^2.0.0",
+    "@inrupt/solid-client-authn-node": "^1.17.5",
+    "@playwright/test": "^1.40.1",
     "@rushstack/eslint-patch": "^1.1.4",
     "@skypack/package-check": "^0.2.2",
-    "@types/jest": "^29.2.3",
-    "@types/node": "^20.1.1",
-    "dotenv-flow": "^4.0.0",
+    "@types/events": "^3.0.0",
+    "@types/jest": "^29.5.11",
+    "@types/node": "^20.10.5",
+    "@types/ws": "^8.5.3",
+    "dotenv-flow": "^4.0.1",
     "eslint": "^8.22.0",
-    "jest": "^29.3.1",
+    "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.3.1",
-    "prettier": "^3.0.2",
-    "rimraf": "^5.0.0",
+    "prettier": "^3.1.1",
+    "rimraf": "^5.0.5",
     "rollup": "^4.9.1",
-    "rollup-plugin-typescript2": "^0.35.0",
-    "ts-jest": "^29.0.3",
+    "ts-jest": "^29.1.1",
     "ts-node": "^10.9.1",
-    "typedoc": "^0.25.0",
-    "typedoc-plugin-markdown": "^3.15.1",
-    "typescript": "^5.0.4"
+    "typedoc": "^0.25.4",
+    "typedoc-plugin-markdown": "^3.17.1",
+    "typescript": "^5.3.3"
   },
   "dependencies": {
-    "@types/events": "^3.0.0",
-    "@types/ws": "^8.5.3",
     "events": "^3.3.0",
     "isomorphic-ws": "^5.0.0",
     "ws": "^8.12.0"
   },
   "peerDependencies": {
-    "@inrupt/solid-client": "^1.25.2"
+    "@inrupt/solid-client": "^2.0.0"
   },
   "engines": {
     "node": "^18.0.0 || ^20.0.0"

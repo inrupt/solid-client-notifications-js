@@ -4,7 +4,7 @@
     "module": "commonjs",
     "lib": ["es6", "dom"],
     "declaration": true,
-    "outDir": ".",
+    "outDir": "./dist",
     "rootDir": "src",
     "strict": true,
     // https://github.com/microsoft/TypeScript/wiki/Performance#controlling-types-inclusion:

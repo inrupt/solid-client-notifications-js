@@ -9,19 +9,19 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@inrupt/solid-client": "^1.23.2",
-    "@inrupt/solid-client-authn-browser": "^1.12.1",
+    "@inrupt/solid-client": "^2.0.0",
+    "@inrupt/solid-client-authn-browser": "^1.17.5",
     "@inrupt/solid-client-notifications": "file:../../../",
-    "next": "^13.5.4",
+    "next": "^14.0.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@types/node": "^18.7.6",
-    "@types/react": "^18.0.17",
-    "@types/react-dom": "^18.0.6",
-    "eslint": "^8.22.0",
-    "eslint-config-next": "^12.2.5",
-    "typescript": "^4.7.4"
+    "@types/node": "^20.10.5",
+    "@types/react": "^18.2.45",
+    "@types/react-dom": "^18.2.18",
+    "eslint": "^8.56.0",
+    "eslint-config-next": "^14.0.4",
+    "typescript": "^5.3.3"
   }
 }
