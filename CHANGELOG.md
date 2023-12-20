@@ -6,6 +6,8 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 
 The following changes have been implemented but not released yet:
 
+# [2.0.0](https://github.com/inrupt/solid-client-notifications-js/releases/tag/v2.0.0) - 2023-12-20
+
 ### Breaking changes
 
 - `setSessionFetch` is no longer supported. Please provide a `Session` to the `BaseNotification`
