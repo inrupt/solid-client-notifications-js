@@ -79,7 +79,7 @@
     "jest-environment-jsdom": "^29.3.1",
     "prettier": "^3.0.2",
     "rimraf": "^5.0.0",
-    "rollup": "^3.1.0",
+    "rollup": "^4.9.1",
     "rollup-plugin-typescript2": "^0.35.0",
     "ts-jest": "^29.0.3",
     "ts-node": "^10.9.1",
