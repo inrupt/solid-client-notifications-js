@@ -131,7 +131,7 @@ export class BaseNotification {
       }),
     });
 
-    if (response.status !== 200) {
+    if (response.status !== 200 || response.status !== 201) {
       throw new FetchError(
         response.url,
         response.status,
