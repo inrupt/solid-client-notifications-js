@@ -12,7 +12,7 @@
     "@inrupt/solid-client": "^2.0.0",
     "@inrupt/solid-client-authn-browser": "^2.1.0",
     "@inrupt/solid-client-notifications": "file:../../../",
-    "next": "^14.1.4",
+    "next": "^14.2.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
