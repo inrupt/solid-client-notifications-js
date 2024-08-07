@@ -74,7 +74,7 @@
     "@skypack/package-check": "^0.2.2",
     "@types/events": "^3.0.0",
     "@types/jest": "^29.5.11",
-    "@types/node": "^20.10.5",
+    "@types/node": "^22.1.0",
     "@types/ws": "^8.5.3",
     "dotenv-flow": "^4.0.1",
     "eslint": "^8.22.0",
