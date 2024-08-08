@@ -134,7 +134,11 @@ export class BaseNotification {
 
     if (response.status !== 200) {
       const responseBody = await response.text();
-      throw handleErrorResponse(response, responseBody, "protocol negotiation info");
+      throw handleErrorResponse(
+        response,
+        responseBody,
+        "protocol negotiation info",
+      );
     }
 
     return response.json();

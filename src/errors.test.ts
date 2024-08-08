@@ -19,51 +19,57 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-import { it, test, describe, expect, jest, afterEach } from "@jest/globals";
+import { test, describe, expect } from "@jest/globals";
 
 import { FetchError, NotImplementedError, NotSupported } from "./errors";
 
-
 describe("FetchError", () => {
-    test("bad request error", () => {
-        const response = new Response("400 Bad Request", {
-            status: 400,
-            statusText: "Bad Request",
-            headers: {
-                "Content-Type": "text/plain"
-            }});
-        const err = new FetchError("https://example.test/resource",
-                                   400, "Bad Request", "Sample description", response);
-
-        const msg = "Unable to fetch Sample description: https://example.test/resource returned [400] Bad Request";
-        expect(err.message).toEqual(msg);
-        expect(err.response).toEqual(response);
+  test("bad request error", () => {
+    const response = new Response("400 Bad Request", {
+      status: 400,
+      statusText: "Bad Request",
+      headers: {
+        "Content-Type": "text/plain",
+      },
     });
+    const err = new FetchError(
+      "https://example.test/resource",
+      400,
+      "Bad Request",
+      "Sample description",
+      response,
+    );
+
+    const msg =
+      "Unable to fetch Sample description: https://example.test/resource returned [400] Bad Request";
+
+    expect(err.message).toEqual(msg);
+    expect(err.response).toEqual(response);
+  });
 });
 
 describe("NotImplementedError", () => {
-    test("default constructor", () => {
-        const err = new NotImplementedError();
-        expect(err.message).toEqual("Not implemented by base class");
-    });
+  test("default constructor", () => {
+    const err = new NotImplementedError();
+    expect(err.message).toBe("Not implemented by base class");
+  });
 
-    test("custom message", () => {
-        const err = new NotImplementedError("custom error message");
-        expect(err.message).toEqual("custom error message");
-    });
+  test("custom message", () => {
+    const msg = "custom error message";
+    const err = new NotImplementedError(msg);
+    expect(err.message).toEqual(msg);
+  });
 });
 
 describe("NotSupported", () => {
-    test("default constructor", () => {
-        const err = new NotSupported();
-        expect(err.cause).toBeUndefined();
-    });
+  test("default constructor", () => {
+    const err = new NotSupported();
+    expect(err.cause).toBeUndefined();
+  });
 
-    test("user-defined error", () => {
-        const cause = new NotImplementedError();
-        const err = new NotSupported(cause);
-        expect(err.cause).toEqual(cause);
-    });
+  test("user-defined error", () => {
+    const cause = new NotImplementedError();
+    const err = new NotSupported(cause);
+    expect(err.cause).toEqual(cause);
+  });
 });
-
-
