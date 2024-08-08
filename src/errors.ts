@@ -19,6 +19,9 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+/**
+ * @deprecated This error class should not be used.
+ */
 export class FetchError extends Error {
   response: Response;
 
