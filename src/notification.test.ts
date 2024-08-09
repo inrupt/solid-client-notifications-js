@@ -22,6 +22,7 @@
 import { it, test, describe, expect, jest, afterEach } from "@jest/globals";
 
 import type * as SolidClient from "@inrupt/solid-client";
+import { BadRequestError, ClientHttpError } from "@inrupt/solid-client-errors";
 import type { protocols } from "./interfaces";
 import { BaseNotification } from "./notification";
 
@@ -40,8 +41,10 @@ const mockedFetchWithJsonResponse = (json: object) => {
   );
 };
 
-const mockedFetchWithError = (status: number, body = "") => {
-  return mockedFetch().mockResolvedValue(new Response(body, { status }));
+const mockedFetchWithError = (status: number, body = "", headers = {}) => {
+  return mockedFetch().mockResolvedValue(
+    new Response(body, { status, headers }),
+  );
 };
 
 const mockedGetWellKnownSolid = () => {
@@ -380,7 +383,37 @@ describe("BaseNotification", () => {
       });
     });
 
-    test("throws a FetchError if the negotiation info fetch fails", async () => {
+    test("throws a BadRequestError if the negotiation info fetch fails, using problem details", async () => {
+      const fetchFn = mockedFetchWithError(
+        400,
+        `{"status": 400, "title": "Negotiation error", "detail": "Example detail"}`,
+        { "Content-Type": "application/problem+json" },
+      );
+
+      const gateway = "https://fake.url/notifications/";
+      const topic = "https://fake.url/some-resource";
+      const protocol = ["ws"] as Array<protocols>;
+
+      const notification = new BaseNotification(topic, protocol, {
+        gateway,
+        fetch: fetchFn,
+      });
+
+      const err = () => notification.fetchProtocolNegotiationInfo();
+      await expect(err).rejects.toThrow(BadRequestError);
+
+      let e = new ClientHttpError({ status: 404 });
+      try {
+        await notification.fetchProtocolNegotiationInfo();
+      } catch (error) {
+        e = error as ClientHttpError;
+      }
+      expect(e.problemDetails.status).toBe(400);
+      expect(e.problemDetails.title).toBe("Negotiation error");
+      expect(e.problemDetails.detail).toBe("Example detail");
+    });
+
+    test("throws a BadRequestError if the negotiation info fetch fails, not using problem details", async () => {
       const fetchFn = mockedFetchWithError(400);
 
       const gateway = "https://fake.url/notifications/";
@@ -392,9 +425,18 @@ describe("BaseNotification", () => {
         fetch: fetchFn,
       });
 
-      await expect(
-        notification.fetchProtocolNegotiationInfo(),
-      ).rejects.toThrow();
+      const err = () => notification.fetchProtocolNegotiationInfo();
+      await expect(err).rejects.toThrow(BadRequestError);
+
+      let e = new ClientHttpError({ status: 404 });
+      try {
+        await notification.fetchProtocolNegotiationInfo();
+      } catch (error) {
+        e = error as ClientHttpError;
+      }
+      expect(e.problemDetails.status).toBe(400);
+      expect(e.problemDetails.title).toBeUndefined();
+      expect(e.problemDetails.detail).toBeUndefined();
     });
   });
 
@@ -437,7 +479,44 @@ describe("BaseNotification", () => {
       expect(notification.fetchProtocolNegotiationInfo).toHaveBeenCalled();
     });
 
-    test("throws a FetchError if the negotiation connection info fetch fails", async () => {
+    test("throws a ClientHttpError if the negotiation connection info fetch fails, using problem details", async () => {
+      const fetchFn = mockedFetchWithError(
+        400,
+        `{"status": 400, "title": "Connection info error", "detail": "Connection info error detail"}`,
+        { "Content-Type": "application/problem+json" },
+      );
+
+      const endpoint = "https://fake.url/some-endpoint";
+      const topic = "https://fake.url/some-resource";
+      const protocol = ["ws"] as Array<protocols>;
+      const notification = new BaseNotification(topic, protocol, {
+        fetch: fetchFn,
+      });
+
+      notification.fetchProtocolNegotiationInfo = jest
+        .fn(notification.fetchProtocolNegotiationInfo)
+        .mockResolvedValue({
+          endpoint,
+          protocol: "ws",
+          features: {},
+        });
+
+      await expect(
+        notification.fetchNotificationConnectionInfo(),
+      ).rejects.toThrow(BadRequestError);
+
+      let e = new ClientHttpError({ status: 404 });
+      try {
+        await notification.fetchProtocolNegotiationInfo();
+      } catch (error) {
+        e = error as ClientHttpError;
+      }
+      expect(e.problemDetails.status).toBe(400);
+      expect(e.problemDetails.title).toBe("Connection info error");
+      expect(e.problemDetails.detail).toBe("Connection info error detail");
+    });
+
+    test("throws a ClientHttpError if the negotiation connection info fetch fails, without using problem details", async () => {
       const fetchFn = mockedFetchWithError(400);
 
       const endpoint = "https://fake.url/some-endpoint";
@@ -457,7 +536,17 @@ describe("BaseNotification", () => {
 
       await expect(
         notification.fetchNotificationConnectionInfo(),
-      ).rejects.toThrow();
+      ).rejects.toThrow(BadRequestError);
+
+      let e = new ClientHttpError({ status: 400 });
+      try {
+        await notification.fetchProtocolNegotiationInfo();
+      } catch (error) {
+        e = error as ClientHttpError;
+      }
+      expect(e.problemDetails.status).toBe(400);
+      expect(e.problemDetails.title).toBeUndefined();
+      expect(e.problemDetails.detail).toBeUndefined();
     });
 
     test("fetches negotiation connection info", async () => {
