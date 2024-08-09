@@ -20,8 +20,9 @@
 //
 
 import { getIri, getThingAll, getWellKnownSolid } from "@inrupt/solid-client";
+import { handleErrorResponse } from "@inrupt/solid-client-errors";
 
-import { FetchError, NotSupported } from "./errors";
+import { NotSupported } from "./errors";
 import type {
   protocols,
   FeatureOptions,
@@ -132,12 +133,11 @@ export class BaseNotification {
     });
 
     if (response.status !== 200) {
-      throw new FetchError(
-        response.url,
-        response.status,
-        response.statusText,
-        "protocol negotiation info",
+      const responseBody = await response.text();
+      throw handleErrorResponse(
         response,
+        responseBody,
+        "protocol negotiation info",
       );
     }
 
@@ -160,13 +160,8 @@ export class BaseNotification {
     });
 
     if (response.status !== 200) {
-      throw new FetchError(
-        response.url,
-        response.status,
-        response.statusText,
-        "connection info",
-        response,
-      );
+      const responseBody = await response.text();
+      throw handleErrorResponse(response, responseBody, "connection info");
     }
 
     return response.json();

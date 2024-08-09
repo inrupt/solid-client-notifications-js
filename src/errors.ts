@@ -19,6 +19,10 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+/**
+ * @deprecated This error class should not be used.
+ * Please use `ClientHttpError` from `@inrupt/solid-client-errors` instead.
+ */
 export class FetchError extends Error {
   response: Response;
 
