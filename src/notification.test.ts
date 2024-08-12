@@ -22,7 +22,10 @@
 import { it, test, describe, expect, jest, afterEach } from "@jest/globals";
 
 import type * as SolidClient from "@inrupt/solid-client";
-import type { protocols } from "./interfaces";
+import {
+  BadRequestError,
+  UnauthorizedError,
+} from "@inrupt/solid-client-errors";
 import { BaseNotification } from "./notification";
 
 jest.mock("@inrupt/solid-client", () => ({
@@ -36,12 +39,19 @@ const mockedFetch = () => {
 
 const mockedFetchWithJsonResponse = (json: object) => {
   return mockedFetch().mockResolvedValue(
-    new Response(JSON.stringify(json), { status: 200 }),
+    new Response(JSON.stringify(json), { status: 200, statusText: "OK" }),
   );
 };
 
-const mockedFetchWithError = (status: number, body = "") => {
-  return mockedFetch().mockResolvedValue(new Response(body, { status }));
+const mockedFetchWithError = (
+  status: number,
+  statusText: string,
+  body = "",
+  headers = {},
+) => {
+  return mockedFetch().mockResolvedValue(
+    new Response(body, { status, statusText, headers }),
+  );
 };
 
 const mockedGetWellKnownSolid = () => {
@@ -62,7 +72,7 @@ describe("BaseNotification", () => {
   describe("constructor", () => {
     it("sets required properties topic, fetch, and protocols", () => {
       const topic = "https://fake.url/some-resource";
-      const protocol = ["ws"] as Array<protocols>;
+      const protocol = ["ws"];
 
       const notification = new BaseNotification(topic, protocol);
 
@@ -74,7 +84,6 @@ describe("BaseNotification", () => {
       const fetchFn = mockedFetch();
 
       const topic = "https://fake.url/some-resource";
-      const protocol = ["ws"] as Array<protocols>;
       const options = {
         features: { ttl: 500 },
         gateway: "https://fake.url/notification-gateway",
@@ -82,7 +91,7 @@ describe("BaseNotification", () => {
         fetch: fetchFn,
       };
 
-      const notification = new BaseNotification(topic, protocol, options);
+      const notification = new BaseNotification(topic, ["ws"], options);
 
       expect(notification.features).toEqual(options.features);
       expect(notification.gateway).toEqual(options.gateway);
@@ -97,13 +106,12 @@ describe("BaseNotification", () => {
 
       const gateway = "https://fake.url/notifications/";
       const topic = "https://fake.url/some-resource";
-      const protocol = ["ws"] as Array<protocols>;
       const options = {
         gateway,
         fetch: fetchFn,
       };
 
-      const notification = new BaseNotification(topic, protocol, options);
+      const notification = new BaseNotification(topic, ["ws"], options);
 
       const notificationGateway =
         await notification.fetchNegotiationGatewayUrl();
@@ -119,9 +127,8 @@ describe("BaseNotification", () => {
       );
 
       const topic = "https://fake.url/some-resource";
-      const protocol = ["ws"] as Array<protocols>;
 
-      const notification = new BaseNotification(topic, protocol, {
+      const notification = new BaseNotification(topic, ["ws"], {
         fetch: fetchFn,
       });
 
@@ -139,7 +146,6 @@ describe("BaseNotification", () => {
       const gateway = "https://gateway.test/notifications/";
       const storageServer = "https://storage.test";
       const topic = "https://storage.test/some-resource";
-      const protocol = ["ws"] as Array<protocols>;
 
       getWellKnownSolidMock.mockResolvedValue({
         graphs: {
@@ -169,7 +175,7 @@ describe("BaseNotification", () => {
         },
       });
 
-      const notification = new BaseNotification(topic, protocol, {
+      const notification = new BaseNotification(topic, ["ws"], {
         fetch: fetchFn,
       });
 
@@ -192,7 +198,6 @@ describe("BaseNotification", () => {
       const gateway = "https://gateway.test/notifications/";
       const pod = "https://storage.test/some-pod/";
       const topic = new URL("some-resource", pod).toString();
-      const protocol = ["ws"] as Array<protocols>;
 
       getWellKnownSolidMock.mockResolvedValue({
         graphs: {
@@ -223,7 +228,7 @@ describe("BaseNotification", () => {
         },
       });
 
-      const notification = new BaseNotification(topic, protocol, {
+      const notification = new BaseNotification(topic, ["ws"], {
         fetch: fetchFn,
       });
 
@@ -241,7 +246,6 @@ describe("BaseNotification", () => {
 
       const pod = "https://storage.test/some-pod/";
       const topic = new URL("some-resource", pod).toString();
-      const protocol = ["ws"] as Array<protocols>;
 
       getWellKnownSolidMock.mockResolvedValue({
         graphs: {
@@ -262,7 +266,7 @@ describe("BaseNotification", () => {
         },
       });
 
-      const notification = new BaseNotification(topic, protocol, {
+      const notification = new BaseNotification(topic, ["ws"], {
         fetch: fetchFn,
       });
 
@@ -285,9 +289,8 @@ describe("BaseNotification", () => {
 
       const gateway = "https://fake.url/notifications/";
       const topic = "https://fake.url/some-resource";
-      const protocol = ["ws"] as Array<protocols>;
 
-      const notification = new BaseNotification(topic, protocol, {
+      const notification = new BaseNotification(topic, ["ws"], {
         gateway,
         fetch: fetchFn,
       });
@@ -320,9 +323,8 @@ describe("BaseNotification", () => {
       });
 
       const topic = "https://fake.url/some-resource";
-      const protocol = ["ws"] as Array<protocols>;
 
-      const notification = new BaseNotification(topic, protocol, {
+      const notification = new BaseNotification(topic, ["ws"], {
         fetch: fetchFn ?? undefined,
       });
 
@@ -346,7 +348,7 @@ describe("BaseNotification", () => {
     test("fetches protocol negotiation info", async () => {
       const gateway = "https://fake.url/notifications/";
       const topic = "https://fake.url/some-resource";
-      const protocol = ["ws"] as Array<protocols>;
+      const protocol = ["ws"];
 
       const endpoint = "https://fake.url/some-endpoint";
       const fetchFn = mockedFetchWithJsonResponse({
@@ -380,21 +382,51 @@ describe("BaseNotification", () => {
       });
     });
 
-    test("throws a FetchError if the negotiation info fetch fails", async () => {
-      const fetchFn = mockedFetchWithError(400);
+    test("throws a BadRequestError if the negotiation info fetch fails, using problem details", async () => {
+      const fetchFn = mockedFetchWithError(
+        400,
+        "BadRequest",
+        `{"status": 400, "title": "Negotiation error", "detail": "Example detail"}`,
+        { "Content-Type": "application/problem+json" },
+      );
 
       const gateway = "https://fake.url/notifications/";
       const topic = "https://fake.url/some-resource";
-      const protocol = ["ws"] as Array<protocols>;
 
-      const notification = new BaseNotification(topic, protocol, {
+      const notification = new BaseNotification(topic, ["ws"], {
         gateway,
         fetch: fetchFn,
       });
 
-      await expect(
-        notification.fetchProtocolNegotiationInfo(),
-      ).rejects.toThrow();
+      const err: BadRequestError = await notification
+        .fetchProtocolNegotiationInfo()
+        .catch((e) => e);
+
+      expect(err).toBeInstanceOf(BadRequestError);
+      expect(err.problemDetails.status).toBe(400);
+      expect(err.problemDetails.title).toBe("Negotiation error");
+      expect(err.problemDetails.detail).toBe("Example detail");
+    });
+
+    test("throws an UnauthorizedError if the negotiation info fetch fails, not using problem details", async () => {
+      const fetchFn = mockedFetchWithError(401, "Unauthorized");
+
+      const gateway = "https://fake.url/notifications/";
+      const topic = "https://fake.url/some-resource";
+
+      const notification = new BaseNotification(topic, ["ws"], {
+        gateway,
+        fetch: fetchFn,
+      });
+
+      const err: UnauthorizedError = await notification
+        .fetchProtocolNegotiationInfo()
+        .catch((e) => e);
+
+      expect(err).toBeInstanceOf(UnauthorizedError);
+      expect(err.problemDetails.status).toBe(401);
+      expect(err.problemDetails.title).toBe("Unauthorized");
+      expect(err.problemDetails.detail).toBeUndefined();
     });
   });
 
@@ -414,13 +446,12 @@ describe("BaseNotification", () => {
     ])("fetches protocol negotiation info", async (mockerFn) => {
       const endpoint = "https://fake.url/some-endpoint";
       const topic = "https://fake.url/some-resource";
-      const protocol = ["ws"] as Array<protocols>;
 
       const fetchFn = mockerFn({
         endpoint,
       });
 
-      const notification = new BaseNotification(topic, protocol, {
+      const notification = new BaseNotification(topic, ["ws"], {
         fetch: fetchFn ?? undefined,
       });
 
@@ -437,13 +468,17 @@ describe("BaseNotification", () => {
       expect(notification.fetchProtocolNegotiationInfo).toHaveBeenCalled();
     });
 
-    test("throws a FetchError if the negotiation connection info fetch fails", async () => {
-      const fetchFn = mockedFetchWithError(400);
+    test("throws a BadRequestError if the negotiation connection info fetch fails, using problem details", async () => {
+      const fetchFn = mockedFetchWithError(
+        400,
+        "Bad Request",
+        `{"status": 400, "title": "Connection info error", "detail": "Connection info error detail"}`,
+        { "Content-Type": "application/problem+json" },
+      );
 
       const endpoint = "https://fake.url/some-endpoint";
       const topic = "https://fake.url/some-resource";
-      const protocol = ["ws"] as Array<protocols>;
-      const notification = new BaseNotification(topic, protocol, {
+      const notification = new BaseNotification(topic, ["ws"], {
         fetch: fetchFn,
       });
 
@@ -455,15 +490,46 @@ describe("BaseNotification", () => {
           features: {},
         });
 
-      await expect(
-        notification.fetchNotificationConnectionInfo(),
-      ).rejects.toThrow();
+      const err: BadRequestError = await notification
+        .fetchNotificationConnectionInfo()
+        .catch((e) => e);
+
+      expect(err).toBeInstanceOf(BadRequestError);
+      expect(err.problemDetails.status).toBe(400);
+      expect(err.problemDetails.title).toBe("Connection info error");
+      expect(err.problemDetails.detail).toBe("Connection info error detail");
+    });
+
+    test("throws a BadRequestError if the negotiation connection info fetch fails, without using problem details", async () => {
+      const fetchFn = mockedFetchWithError(400, "Bad Request");
+
+      const endpoint = "https://fake.url/some-endpoint";
+      const topic = "https://fake.url/some-resource";
+      const notification = new BaseNotification(topic, ["ws"], {
+        fetch: fetchFn,
+      });
+
+      notification.fetchProtocolNegotiationInfo = jest
+        .fn(notification.fetchProtocolNegotiationInfo)
+        .mockResolvedValue({
+          endpoint,
+          protocol: "ws",
+          features: {},
+        });
+
+      const err: BadRequestError = await notification
+        .fetchNotificationConnectionInfo()
+        .catch((e) => e);
+
+      expect(err).toBeInstanceOf(BadRequestError);
+      expect(err.problemDetails.status).toBe(400);
+      expect(err.problemDetails.title).toBe("Bad Request");
+      expect(err.problemDetails.detail).toBeUndefined();
     });
 
     test("fetches negotiation connection info", async () => {
       const endpoint = "https://fake.url/some-endpoint";
       const topic = "https://fake.url/some-resource";
-      const protocol = ["ws"] as Array<protocols>;
       const jsonResponse = {
         endpoint: "wss://fake.url/some-resource?extraInfo=some-code",
         features: ["ttl"],
@@ -473,7 +539,7 @@ describe("BaseNotification", () => {
 
       const fetchFn = mockedFetchWithJsonResponse(jsonResponse);
 
-      const notification = new BaseNotification(topic, protocol, {
+      const notification = new BaseNotification(topic, ["ws"], {
         fetch: fetchFn,
       });
 
