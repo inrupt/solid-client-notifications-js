@@ -39,13 +39,18 @@ const mockedFetch = () => {
 
 const mockedFetchWithJsonResponse = (json: object) => {
   return mockedFetch().mockResolvedValue(
-    new Response(JSON.stringify(json), { status: 200 }),
+    new Response(JSON.stringify(json), { status: 200, statusText: "OK" }),
   );
 };
 
-const mockedFetchWithError = (status: number, body = "", headers = {}) => {
+const mockedFetchWithError = (
+  status: number,
+  statusText: string,
+  body = "",
+  headers = {},
+) => {
   return mockedFetch().mockResolvedValue(
-    new Response(body, { status, headers }),
+    new Response(body, { status, statusText, headers }),
   );
 };
 
@@ -380,6 +385,7 @@ describe("BaseNotification", () => {
     test("throws a BadRequestError if the negotiation info fetch fails, using problem details", async () => {
       const fetchFn = mockedFetchWithError(
         400,
+        "BadRequest",
         `{"status": 400, "title": "Negotiation error", "detail": "Example detail"}`,
         { "Content-Type": "application/problem+json" },
       );
@@ -403,7 +409,7 @@ describe("BaseNotification", () => {
     });
 
     test("throws an UnauthorizedError if the negotiation info fetch fails, not using problem details", async () => {
-      const fetchFn = mockedFetchWithError(401);
+      const fetchFn = mockedFetchWithError(401, "Unauthorized");
 
       const gateway = "https://fake.url/notifications/";
       const topic = "https://fake.url/some-resource";
@@ -419,7 +425,7 @@ describe("BaseNotification", () => {
 
       expect(err).toBeInstanceOf(UnauthorizedError);
       expect(err.problemDetails.status).toBe(401);
-      expect(err.problemDetails.title).toBeFalsy();
+      expect(err.problemDetails.title).toBe("Unauthorized");
       expect(err.problemDetails.detail).toBeUndefined();
     });
   });
@@ -465,6 +471,7 @@ describe("BaseNotification", () => {
     test("throws a BadRequestError if the negotiation connection info fetch fails, using problem details", async () => {
       const fetchFn = mockedFetchWithError(
         400,
+        "Bad Request",
         `{"status": 400, "title": "Connection info error", "detail": "Connection info error detail"}`,
         { "Content-Type": "application/problem+json" },
       );
@@ -494,7 +501,7 @@ describe("BaseNotification", () => {
     });
 
     test("throws a BadRequestError if the negotiation connection info fetch fails, without using problem details", async () => {
-      const fetchFn = mockedFetchWithError(400);
+      const fetchFn = mockedFetchWithError(400, "Bad Request");
 
       const endpoint = "https://fake.url/some-endpoint";
       const topic = "https://fake.url/some-resource";
@@ -516,7 +523,7 @@ describe("BaseNotification", () => {
 
       expect(err).toBeInstanceOf(BadRequestError);
       expect(err.problemDetails.status).toBe(400);
-      expect(err.problemDetails.title).toBeFalsy();
+      expect(err.problemDetails.title).toBe("Bad Request");
       expect(err.problemDetails.detail).toBeUndefined();
     });
 
