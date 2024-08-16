@@ -20,12 +20,12 @@ a container.
    <https://docs.inrupt.com/ess/latest/>`__ version of `WebSocket
    notifications
    <https://docs.inrupt.com/ess/1.1/services/service-websocket/>`__.
-   
+
    The ESS Websocket Notifications protocol formed the basis of the new `Solid
    Notification Protocol 1.0 <https://solid.github.io/notifications/protocol>`__
    draft specification, which is undergoing technical review as it matures into
    a formal recommendation.
-   
+
    **Please note:** the `legacy WebSockets Specification
    <https://github.com/solid/solid-spec/blob/master/api-websockets.md>`__,
    referenced by the current `Solid Specification
@@ -75,8 +75,8 @@ e.g. ``Map``, ``Set``, ``Promise``, ``Headers``, ``Array.prototype.includes``,
 Node.js Support
 ^^^^^^^^^^^^^^^
 
-Our JavaScript Client Libraries track Node.js `LTS releases
-<https://nodejs.org/en/about/releases/>`__, and support 16.x, 18.x and 20.x.
+See `Inrupt Solid Javascript Client Libraries
+<https://docs.inrupt.com/developer-tools/javascript/client-libraries/#node-js-support>`__.
 
 .. _issues--help:
 
