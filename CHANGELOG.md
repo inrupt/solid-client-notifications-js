@@ -6,6 +6,10 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 
 The following changes have been implemented but not released yet:
 
+### New Features
+
+- Node 22 is now supported
+
 # [2.0.0](https://github.com/inrupt/solid-client-notifications-js/releases/tag/v2.0.0) - 2023-12-20
 
 ### Breaking changes
