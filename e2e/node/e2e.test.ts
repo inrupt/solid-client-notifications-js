@@ -42,9 +42,9 @@ import {
   teardownTestResources,
   createFetch,
 } from "@inrupt/internal-test-env";
+import { DEFAULT_TYPE } from "@inrupt/solid-client-errors";
 import type { ErrorEvent } from "../../src/index";
 import { WebsocketNotification } from "../../src/index";
-import { DEFAULT_TYPE } from "@inrupt/solid-client-errors";
 
 const env = getNodeTestingEnvironment();
 
