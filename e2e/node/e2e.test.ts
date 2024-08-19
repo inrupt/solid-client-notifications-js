@@ -44,6 +44,7 @@ import {
 } from "@inrupt/internal-test-env";
 import type { ErrorEvent } from "../../src/index";
 import { WebsocketNotification } from "../../src/index";
+import { DEFAULT_TYPE } from "@inrupt/solid-client-errors";
 
 const env = getNodeTestingEnvironment();
 
@@ -152,5 +153,33 @@ describe(`Authenticated end-to-end notifications tests for environment [${env.en
     });
 
     expect(ws.status).toBe("closed");
+  });
+
+  it("raises and error on connect if service returns an error response", async () => {
+    const customFetch: typeof fetch = async (
+      info: Parameters<typeof fetch>[0],
+      init?: Parameters<typeof fetch>[1],
+    ) => {
+      return fetchOptions.fetch(info, {
+        ...init,
+        method: "INVALID",
+      });
+    };
+
+    ws = new WebsocketNotification(sessionContainer, {
+      fetch: customFetch,
+    });
+
+    const error = await ws.connect().catch((err) => err);
+
+    expect(error.name).toBe("Error");
+    expect(error.message).toContain(`protocol negotiation info`);
+
+    const { problemDetails } = error;
+    expect(problemDetails.type).toBe(DEFAULT_TYPE);
+    expect(problemDetails.title).toBe("Method Not Allowed");
+    expect(problemDetails.status).toBe(405);
+    expect(problemDetails.detail).toBeDefined();
+    expect(problemDetails.instance).toBeDefined();
   });
 });
