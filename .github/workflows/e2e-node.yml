@@ -18,13 +18,9 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         node-version: [22.x, 20.x, 18.x]
-        environment-name: ["ESS PodSpaces", "ESS Dev-2-2"]
+        # PodSpaces doesn't support error descriptions yet.
+        environment-name: ["ESS Dev-2-3"]
         experimental: [false]
-        include:
-          - environment-name: "ESS Dev-2-3"
-            experimental: true
-            node-version: 22.x
-            os: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
