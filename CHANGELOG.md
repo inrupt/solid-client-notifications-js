@@ -14,7 +14,7 @@ The following changes have been implemented but not released yet:
 
 - Node 22 is now supported
 - `ClientHttpError` is thrown on HTTP error. It implements `WithErrorResponse` and `WithProblemDetails`,
-  meaning it has respectively a `.errorResponse` and a `.problemDetails` getters. The former provides
+  meaning it has respectively `.errorResponse` and `.problemDetails` getters. The former provides
   access to the raw HTTP response, and the latter to structured data about the error compliant with
   [RFC9457](https://www.rfc-editor.org/rfc/rfc9457).
 
