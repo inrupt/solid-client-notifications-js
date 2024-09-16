@@ -6,6 +6,8 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 
 The following changes have been implemented but not released yet:
 
+# [3.0.0](https://github.com/inrupt/solid-client-notifications-js/releases/tag/v3.0.0) - 2024-09-16
+
 ### Breaking change
 
 - `FetchError` is no longer thrown, and replaced with `ClientHttpError`. Please prefer using type guards from
