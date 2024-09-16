@@ -6,9 +6,9 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 
 The following changes have been implemented but not released yet:
 
-### Deprecations
+### Breaking change
 
-- `FetchError` is no longer thrown, and replaced with `ClientHttpError`.
+- `FetchError` is no longer thrown, and replaced with `ClientHttpError`. Please prefer using type guards from `@inrupt/solid-client-errors`, e.g. `hasErrorResponse` and `hasProblemDetails`, rather than `instanceof`.
 
 ### New Features
 
