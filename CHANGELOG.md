@@ -6,9 +6,18 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 
 The following changes have been implemented but not released yet:
 
+### Breaking change
+
+- `FetchError` is no longer thrown, and replaced with `ClientHttpError`. Please prefer using type guards from
+  `@inrupt/solid-client-errors`, e.g. `hasErrorResponse` and `hasProblemDetails`, rather than `instanceof`.
+
 ### New Features
 
 - Node 22 is now supported
+- `ClientHttpError` is thrown on HTTP error. It implements `WithErrorResponse` and `WithProblemDetails`,
+  meaning it has respectively `.errorResponse` and `.problemDetails` getters. The former provides
+  access to the raw HTTP response, and the latter to structured data about the error compliant with
+  [RFC9457](https://www.rfc-editor.org/rfc/rfc9457).
 
 # [2.0.0](https://github.com/inrupt/solid-client-notifications-js/releases/tag/v2.0.0) - 2023-12-20
 
