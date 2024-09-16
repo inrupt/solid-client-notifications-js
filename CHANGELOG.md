@@ -8,7 +8,8 @@ The following changes have been implemented but not released yet:
 
 ### Breaking change
 
-- `FetchError` is no longer thrown, and replaced with `ClientHttpError`. Please prefer using type guards from `@inrupt/solid-client-errors`, e.g. `hasErrorResponse` and `hasProblemDetails`, rather than `instanceof`.
+- `FetchError` is no longer thrown, and replaced with `ClientHttpError`. Please prefer using type guards from
+  `@inrupt/solid-client-errors`, e.g. `hasErrorResponse` and `hasProblemDetails`, rather than `instanceof`.
 
 ### New Features
 
