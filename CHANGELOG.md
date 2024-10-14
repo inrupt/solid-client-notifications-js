@@ -6,6 +6,12 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 
 The following changes have been implemented but not released yet:
 
+## [3.0.1](https://github.com/inrupt/solid-client-notifications-js/releases/tag/v3.0.1) - 2024-10-14
+
+### Internal change
+
+- This release has no impact on shipped code. A feature flag has been added to Problem Details end-to-end tests.
+
 # [3.0.0](https://github.com/inrupt/solid-client-notifications-js/releases/tag/v3.0.0) - 2024-09-16
 
 ### Breaking change
