@@ -37,7 +37,7 @@ export default function AppContainer() {
       // Login will redirect the user away so that they can log in the OIDC issuer,
       // and back to the provided redirect URL (which should be controlled by your app).
       await login({
-        redirectUrl: "http://localhost:3001",
+        redirectUrl: "http://localhost:3000",
         oidcIssuer: issuer,
         clientName: APP_NAME,
       });
