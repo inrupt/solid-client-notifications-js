@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect } from "react";
 import {
   login,
@@ -5,9 +7,8 @@ import {
   handleIncomingRedirect,
   ISessionInfo,
 } from "@inrupt/solid-client-authn-browser";
-import Notifications from "../notifications";
+import Notifications from "../components/notifications";
 
-const REDIRECT_URL = window.location.href;
 const APP_NAME = "Notifications browser-based tests app";
 const DEFAULT_ISSUER = "https://login.inrupt.com/";
 
@@ -36,7 +37,7 @@ export default function AppContainer() {
       // Login will redirect the user away so that they can log in the OIDC issuer,
       // and back to the provided redirect URL (which should be controlled by your app).
       await login({
-        redirectUrl: REDIRECT_URL,
+        redirectUrl: "http://localhost:3000",
         oidcIssuer: issuer,
         clientName: APP_NAME,
       });
