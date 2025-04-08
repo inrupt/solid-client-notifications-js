@@ -15,11 +15,8 @@ jobs:
     continue-on-error: ${{ matrix.experimental }}
     strategy:
       matrix:
-        environment-name: ["ESS PodSpaces", "ESS Dev-2-2"]
+        environment-name: ["ESS PodSpaces", "ESS Dev-2-3"]
         experimental: [false]
-        include:
-          - environment-name: "ESS Dev-2-3"
-            experimental: true
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
