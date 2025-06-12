@@ -1,5 +1,4 @@
-//
-// Copyright Inrupt Inc.
+// Copyright 2020 Inrupt Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal in
@@ -19,7 +18,6 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { setupEnv } from "@inrupt/internal-test-env";
 
 async function globalSetup() {

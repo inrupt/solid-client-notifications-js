@@ -1,5 +1,4 @@
-//
-// Copyright Inrupt Inc.
+// Copyright 2020 Inrupt Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal in
@@ -21,7 +20,6 @@
 
 // Assertions are made conditionally on problem details responses because not all
 // servers support this feature.
-/* eslint-disable jest/no-conditional-expect */
 
 import {
   describe,
@@ -104,7 +102,7 @@ describe(`Authenticated end-to-end notifications tests for environment [${env.en
 
   it("can connect to a websocket on the root container", async () => {
     // The following is required because the linter doesn't recognize testIf
-    /* eslint-disable jest/no-standalone-expect */
+
     ws = new WebsocketNotification(sessionContainer, fetchOptions);
 
     expect(ws.status).toBe("closed");
