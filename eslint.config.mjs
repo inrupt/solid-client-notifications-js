@@ -1,4 +1,4 @@
-// Copyright Inrupt Inc.
+// Copyright 2020 Inrupt Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal in
@@ -18,10 +18,12 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-import inruptCfg from "@inrupt/eslint-config-base";
+import inruptCfg, { ignoreTypedLinting } from "@inrupt/eslint-config-base";
 import next from "@next/eslint-plugin-next";
 
 import { defineConfig } from "eslint/config";
+
+ignoreTypedLinting(["jest.config.ts", "playwright.config.ts"]);
 
 export default defineConfig([
   inruptCfg,

@@ -13,7 +13,7 @@
     "lint": "npm run lint:check",
     "lint:fix": "npm run lint:eslint -- --fix",
     "lint:check": "npm run lint:eslint",
-    "lint:eslint": "eslint --config eslint.config.mjs src/ e2e/",
+    "lint:eslint": "eslint --config eslint.config.mjs .",
     "test": "jest --ignoreProjects e2e-node",
     "test:unit:browser": "jest --selectProjects browser",
     "test:unit:node": "jest --selectProjects node",
