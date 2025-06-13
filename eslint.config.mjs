@@ -18,40 +18,29 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-/**
- * @deprecated This error class should not be used.
- * Please use `ClientHttpError` from `@inrupt/solid-client-errors` instead.
- */
-export class FetchError extends Error {
-  response: Response;
+import inruptCfg, { ignoreTypedLinting } from "@inrupt/eslint-config-base";
+import next from "@next/eslint-plugin-next";
 
-  constructor(
-    url: string,
-    statusCode: number,
-    statusText: string,
-    fetchDescription: string,
-    response: Response,
-  ) {
-    super(statusText);
-    this.message = `Unable to fetch ${fetchDescription}: ${url} returned [${statusCode}] ${statusText}`;
-    this.response = response;
-  }
-}
+import { defineConfig } from "eslint/config";
 
-export class NotImplementedError extends Error {
-  constructor(message = "Not implemented by base class") {
-    super(message);
-  }
-}
+ignoreTypedLinting(["jest.config.ts", "playwright.config.ts"]);
 
-export class NotSupported extends Error {
-  cause?: Error;
-
-  constructor(cause?: Error) {
-    super("The server appears to not support notifications");
-    if (cause) {
-      this.message = `The server appears to not support notifications: ${cause.toString()}`;
-      this.cause = cause;
-    }
-  }
-}
+export default defineConfig([
+  inruptCfg,
+  {
+    plugins: {
+      "@next/next": next,
+    },
+    rules: {
+      ...next.configs.recommended.rules,
+      ...next.configs["core-web-vitals"].rules,
+    },
+    files: ["e2e/browser/test-app/"],
+  },
+  {
+    rules: {
+      "import/no-unresolved": "off",
+    },
+    files: ["**/e2e/browser/test-app/**"],
+  },
+]);
