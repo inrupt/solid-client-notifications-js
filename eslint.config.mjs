@@ -34,8 +34,13 @@ export default defineConfig([
     rules: {
       ...next.configs.recommended.rules,
       ...next.configs["core-web-vitals"].rules,
-      "import/no-unresolved": "off",
     },
     files: ["e2e/browser/test-app/"],
+  },
+  {
+    rules: {
+      "import/no-unresolved": "off",
+    },
+    files: ["**/e2e/browser/test-app/**"],
   },
 ]);
