@@ -1,4 +1,3 @@
-//
 // Copyright Inrupt Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -19,7 +18,6 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { setupEnv } from "@inrupt/internal-test-env";
 
 async function globalSetup() {

@@ -1,4 +1,3 @@
-//
 // Copyright Inrupt Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -70,13 +69,11 @@ export class LiveNotification
     return this;
   }
 
-  /* eslint @typescript-eslint/no-explicit-any: 0 */
   once(eventName: string | symbol, listener: (...args: any[]) => void): this {
     this.emitter.once(eventName, listener);
     return this;
   }
 
-  /* eslint @typescript-eslint/no-explicit-any: 0 */
   off(eventName: string, listener: (...args: any[]) => void): this {
     this.emitter.off(eventName, listener);
     return this;

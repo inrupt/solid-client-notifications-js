@@ -1,9 +1,0 @@
-# e2e browser testApp has it's own separate eslint configuration:
-e2e/browser/test-app
-# ignore JS config files:
-jest.config.js
-jest.setup.js
-jest.e2e.config.js
-license-header.js
-rollup.config.js
-tsconfig.json
