@@ -2,7 +2,7 @@
 
 This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## Unreleased
 
 The following changes have been implemented but not released yet:
 
@@ -16,7 +16,7 @@ The following changes have been implemented but not released yet:
 
 - This release has no impact on shipped code. A feature flag has been added to Problem Details end-to-end tests.
 
-# [3.0.0](https://github.com/inrupt/solid-client-notifications-js/releases/tag/v3.0.0) - 2024-09-16
+## [3.0.0](https://github.com/inrupt/solid-client-notifications-js/releases/tag/v3.0.0) - 2024-09-16
 
 ### Breaking change
 
@@ -31,7 +31,7 @@ The following changes have been implemented but not released yet:
   access to the raw HTTP response, and the latter to structured data about the error compliant with
   [RFC9457](https://www.rfc-editor.org/rfc/rfc9457).
 
-# [2.0.0](https://github.com/inrupt/solid-client-notifications-js/releases/tag/v2.0.0) - 2023-12-20
+## [2.0.0](https://github.com/inrupt/solid-client-notifications-js/releases/tag/v2.0.0) - 2023-12-20
 
 ### Breaking changes
 
@@ -42,42 +42,42 @@ The following changes have been implemented but not released yet:
 - Due to changes in the rollup config the `umd` output is now found at `dist/index.umd.js` rather than `umd/index.js`.
   The UMD module name is now `SolidClientNotifications` instead of `SolidClient`.
 
-## [1.3.1] - 2023-09-15
+## [1.3.1](https://github.com/inrupt/solid-client-notifications-js/releases/tag/v1.3.10) - 2023-09-15
 
 - Build system (bundler and TypeScript) updates. This should be transparent to dependants.
 
-## [1.3.0] - 2023-05-09
+## [1.3.0](https://github.com/inrupt/solid-client-notifications-js/releases/tag/v1.3.0) - 2023-05-09
 
 ### New features
 
 - Node 20 is now officially supported
 
-## [1.2.0] - 2023-04-14
+## [1.2.0](https://github.com/inrupt/solid-client-notifications-js/releases/tag/v1.2.0) - 2023-04-14
 
 ### New features
 
 - Node 18 is now officially supported
 
-## [1.1.2] - 2023-02-16
+## [1.1.2](https://github.com/inrupt/solid-client-notifications-js/releases/tag/v1.1.2) - 2023-02-16
 
 ### Bugfixes
 
 - Transitive dependencies updates
 
-## [1.1.1] - 2022-08-19
+## [1.1.1](https://github.com/inrupt/solid-client-notifications-js/releases/tag/v1.1.1) - 2022-08-19
 
 ### Bugfixes
 
 - Always pass through fetch from BaseNotification to `getWellKnownSolid`, such
   that `@inrupt/solid-client` doesn't have to load its own fetch implementation.
 
-## [1.1.0] - 2022-07-01
+## [1.1.0](https://github.com/inrupt/solid-client-notifications-js/releases/tag/v1.1.0) - 2022-07-01
 
 ### New Features
 
 - LiveNotification now supports `once` and `off` events.
 
-## [1.0.0] - 2022-06-06
+## [1.0.0](https://github.com/inrupt/solid-client-notifications-js/releases/tag/v1.0.0) - 2022-06-06
 
 ### Breaking Changes
 
@@ -93,13 +93,13 @@ The following changes have been implemented but not released yet:
 - improve documentation of entire package to be clearer and document only APIs that should be used by end-users of the SDK.
 - rework all tests to run successfully
 
-## [0.2.0] - 2021-12-15
+## [0.2.0](https://github.com/inrupt/solid-client-notifications-js/releases/tag/v0.2.0) - 2021-12-15
 
 ### Changes
 
 - Request .well-known file as json-ld
 
-## [0.1.0] - 2021-04-20
+## [0.1.0](https://github.com/inrupt/solid-client-notifications-js/releases/tag/v0.1.0) - 2021-04-20
 
 ### New features
 

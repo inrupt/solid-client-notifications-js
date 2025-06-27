@@ -1,3 +1,23 @@
+// Copyright Inrupt Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal in
+// the Software without restriction, including without limitation the rights to use,
+// copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the
+// Software, and to permit persons to whom the Software is furnished to do so,
+// subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+// INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+// PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+// HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+// OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+//
+
 import { WebsocketNotification } from "@inrupt/solid-client-notifications";
 import { useEffect, useState } from "react";
 import {
@@ -10,7 +30,7 @@ import { getDefaultSession } from "@inrupt/solid-client-authn-browser";
 
 const session = getDefaultSession();
 
-const MessageList = (props: { messages: Array<any> }) => {
+const MessageList = (props: { messages: Array<{ id: string }> }) => {
   const { messages } = props;
   return (
     <ul data-testid="eventList">
@@ -106,10 +126,10 @@ const DeleteResourceButton = ({
     <></>
   ) : (
     <button
-      onClick={async (e) => {
-        e.preventDefault();
+      type="button"
+      onClick={async () => {
         if (childContainerUrl !== undefined) {
-          deleteContainer(childContainerUrl, {
+          await deleteContainer(childContainerUrl, {
             fetch: getDefaultSession().fetch,
           });
           handleDeleteContainer();
@@ -165,7 +185,7 @@ export default function Notifications() {
   const [connectionStatus, setConnectionStatus] = useState<string>();
   const [parentContainerUrl, setParentContainerUrl] = useState<string>();
 
-  const [messageBus, setMessageBus] = useState<any[]>([]);
+  const [messageBus, setMessageBus] = useState<Array<{ id: string }>>([]);
 
   const onConnect = async () => {
     if (socket !== undefined) {
@@ -183,12 +203,14 @@ export default function Notifications() {
     if (session.info.webId !== undefined) {
       getPodUrlAll(session.info.webId as string, {
         fetch: session.fetch,
-      }).then((pods) => {
-        if (pods.length === 0) {
-          throw new Error("No pod root in webid profile");
-        }
-        setParentContainerUrl(pods[0]);
-      });
+      })
+        .then((pods) => {
+          if (pods.length === 0) {
+            throw new Error("No pod root in webid profile");
+          }
+          setParentContainerUrl(pods[0]);
+        })
+        .catch(console.error);
     }
   }, []);
 

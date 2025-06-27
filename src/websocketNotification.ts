@@ -1,4 +1,3 @@
-//
 // Copyright Inrupt Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -171,7 +170,6 @@ export class WebsocketNotification
     this.websocket.onmessage = (e: MessageEvent) => {
       // The protocol only transmits JSON as strings, and does not use binary messages
       if (typeof e.data !== "string") {
-        // eslint-disable-next-line no-console
         console.warn(
           `Received non-string websocket message, most likely an error:`,
           e.data,
@@ -183,7 +181,6 @@ export class WebsocketNotification
       try {
         payload = JSON.parse(e.data);
       } catch (err) {
-        // eslint-disable-next-line no-console
         console.warn(
           `Received non-JSON websocket message, most likely an error:`,
           e.data,
