@@ -44,6 +44,12 @@ export default defineConfig([
     files: ["**/e2e/browser/test-app/**"],
   },
   {
+    rules: {
+      "@typescript-eslint/no-non-null-assertion": "off",
+    },
+    files: ["**/*.test.ts"],
+  },
+  {
     // For some reason ESlint triest to parse the markdown files with the
     // wrong parser in this project.
     ignores: ["**/*.md"],
