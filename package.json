@@ -70,8 +70,6 @@
     "@inrupt/solid-client-authn-node": "^3.1.0",
     "@next/eslint-plugin-next": "^15.3.3",
     "@playwright/test": "~1.56.0",
-    "@rushstack/eslint-patch": "^1.1.4",
-    "@skypack/package-check": "^0.2.2",
     "@types/events": "^3.0.0",
     "@types/jest": "^30.0.0",
     "@types/node": "^24.0.0",
