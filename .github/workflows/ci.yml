@@ -25,7 +25,7 @@ jobs:
       - run: npm run build
       - run: npm test
       # Upload coverage for sonarcube (only matching OS and one node version required)
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         if: ${{ matrix.os == 'ubuntu-latest' && matrix.node-version == '22.x' }}
         with:
           name: code-coverage-${{matrix.os}}-${{matrix.node-version}}
@@ -41,7 +41,7 @@ jobs:
           # Sonar analysis needs the full history for features like automatic assignment of bugs. If the following step
           # is not included the project will show a warning about incomplete information.
           fetch-depth: 0
-      - uses: actions/download-artifact@v5
+      - uses: actions/download-artifact@v6
         with:
           name: code-coverage-ubuntu-latest-22.x
           path: coverage/
