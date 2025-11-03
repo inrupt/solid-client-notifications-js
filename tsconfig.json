@@ -15,30 +15,6 @@
     // Advanced Options
     "stripInternal": true
   },
-  "typedocOptions": {
-    "out": "docs/api/source/api",
-    "entryPoints": [
-      // The source files of everything listed under `exports` in our package.json
-      // (i.e. public API's that should be documented) should be listed here:
-      "src/interfaces.ts",
-      "src/websocketNotification.ts",
-      "src/errors.ts"
-    ],
-    "exclude": [
-      "node_modules/**",
-      "**/*.test.ts",
-      // Internal helpers:
-      "**/*.internal.ts",
-      // End-to-end tests:
-      "e2e/**",
-      // Re-exported functions are already documented in their own modules:
-      "src/index.ts"
-    ],
-    "theme": "markdown",
-    "readme": "none",
-    "entryDocument": "index.rst",
-    "plugin": ["typedoc-plugin-markdown"]
-  },
   "include": ["src/**/*.ts", ".eslintrc.js"],
   "exclude": ["**/node_modules", "tests/**/*.js", "**/*.test.ts"]
 }
