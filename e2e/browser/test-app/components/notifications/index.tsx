@@ -216,22 +216,36 @@ export default function Notifications() {
 
   useEffect(() => {
     if (parentContainerUrl !== undefined && socket === undefined) {
-      setSocket(
-        new WebsocketNotification(parentContainerUrl, {
-          fetch: session.fetch,
-        }),
-      );
+      // Setting the state should not be done synchronously in the useEffect hook.
+      // The async change will trigger another call to the hook when the state has
+      // been update.
+      new Promise(() => {
+        setSocket(
+          new WebsocketNotification(parentContainerUrl, {
+            fetch: session.fetch,
+          }),
+        );
+      }).catch((e) => {
+        console.error(`An error happened opening the socket: ${e}`);
+      });
     }
     if (socket !== undefined) {
-      setConnectionStatus("closed");
-      socket.on("connected", () => setConnectionStatus("connected"));
-      socket.on("closed", () => {
+      new Promise(() => {
         setConnectionStatus("closed");
-        setMessageBus([]);
-      });
-      socket.on("error", () => setConnectionStatus("error"));
-      socket.on("message", (message) => {
-        setMessageBus((previousMessageBus) => [message, ...previousMessageBus]);
+        socket.on("connected", () => setConnectionStatus("connected"));
+        socket.on("closed", () => {
+          setConnectionStatus("closed");
+          setMessageBus([]);
+        });
+        socket.on("error", () => setConnectionStatus("error"));
+        socket.on("message", (message) => {
+          setMessageBus((previousMessageBus) => [
+            message,
+            ...previousMessageBus,
+          ]);
+        });
+      }).catch((e) => {
+        console.error(`An error happened setting the callbacks: ${e}`);
       });
     }
   }, [socket, parentContainerUrl]);
