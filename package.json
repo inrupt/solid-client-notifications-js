@@ -66,7 +66,7 @@
     "@inrupt/internal-playwright-helpers": "^4.0.3",
     "@inrupt/internal-test-env": "^4.0.5",
     "@inrupt/jest-jsdom-polyfills": "^4.0.3",
-    "@inrupt/solid-client": "^2.0.0",
+    "@inrupt/solid-client": "^3.0.0",
     "@inrupt/solid-client-authn-node": "^3.1.0",
     "@next/eslint-plugin-next": "^16.0.1",
     "@playwright/test": "~1.58.1",
@@ -86,7 +86,7 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
-    "@inrupt/solid-client": "^2.0.0",
+    "@inrupt/solid-client": "^3.0.0",
     "@inrupt/solid-client-errors": "^0.0.3",
     "events": "^3.3.0",
     "isomorphic-ws": "^5.0.0",
