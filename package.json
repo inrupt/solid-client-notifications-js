@@ -67,7 +67,7 @@
     "@inrupt/internal-test-env": "^4.0.5",
     "@inrupt/jest-jsdom-polyfills": "^4.0.3",
     "@inrupt/solid-client": "^2.0.0",
-    "@inrupt/solid-client-authn-node": "^3.1.0",
+    "@inrupt/solid-client-authn-node": "^4.0.0",
     "@next/eslint-plugin-next": "^16.0.1",
     "@playwright/test": "~1.58.1",
     "@types/events": "^3.0.0",
