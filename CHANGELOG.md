@@ -6,6 +6,10 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 
 The following changes have been implemented but not released yet:
 
+# [4.0.1](https://github.com/inrupt/solid-client-notifications-js/releases/tag/v4.0.1) - 2026-06-03
+
+- Transitive dependencies upgrade
+
 ## [4.0.0](https://github.com/inrupt/solid-client-notifications-js/releases/tag/v4.0.0) - 2025-11-03
 
 ### Breaking Changes
