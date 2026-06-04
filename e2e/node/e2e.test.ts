@@ -30,7 +30,6 @@ import {
   jest,
 } from "@jest/globals";
 
-import type { Session } from "@inrupt/solid-client-authn-node";
 import {
   createContainerInContainer,
   deleteContainer,
@@ -71,7 +70,7 @@ describe(`Authenticated end-to-end notifications tests for environment [${env.en
   // jest.setTimeout(15000);
   // openidClient.custom.setHttpOptionsDefaults({ timeout: 5000 });
   let fetchOptions: { fetch: typeof global.fetch };
-  let session: Session;
+  let session: Awaited<ReturnType<typeof getAuthenticatedSession>>;
   let pod: string;
   let sessionContainer: string;
   let sessionResource: string;
