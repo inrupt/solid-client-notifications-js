@@ -19,8 +19,13 @@
 //
 
 import type { Config } from "jest";
+import { createRequire } from "node:module";
 
 type ArrayElement<MyArray> = MyArray extends Array<infer T> ? T : never;
+
+// Jest 30 loads .ts config files as ESM via Node's native TypeScript support,
+// so `require` is not available. Use createRequire for require.resolve calls.
+const esmRequire = createRequire(import.meta.url);
 
 const baseConfig: ArrayElement<NonNullable<Config["projects"]>> = {
   preset: "ts-jest",
@@ -29,6 +34,11 @@ const baseConfig: ArrayElement<NonNullable<Config["projects"]>> = {
   clearMocks: true,
   injectGlobals: false,
   modulePathIgnorePatterns: ["node_modules/"],
+  transformIgnorePatterns: ["node_modules[\\\\/](?!jose|uuid)"],
+  moduleNameMapper: {
+    "^jose": esmRequire.resolve("jose"),
+    "^uuid": esmRequire.resolve("uuid"),
+  },
 };
 
 export default {
