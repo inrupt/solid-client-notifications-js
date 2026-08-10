@@ -19,13 +19,11 @@
 //
 
 import type { Config } from "jest";
-import { createRequire } from "node:module";
+import { createDefaultPreset } from "ts-jest";
 
 type ArrayElement<MyArray> = MyArray extends Array<infer T> ? T : never;
 
-// Jest 30 loads .ts config files as ESM via Node's native TypeScript support,
-// so `require` is not available. Use createRequire for require.resolve calls.
-const esmRequire = createRequire(import.meta.url);
+const defaultPreset = createDefaultPreset();
 
 const baseConfig: ArrayElement<NonNullable<Config["projects"]>> = {
   preset: "ts-jest",
@@ -34,11 +32,22 @@ const baseConfig: ArrayElement<NonNullable<Config["projects"]>> = {
   clearMocks: true,
   injectGlobals: false,
   modulePathIgnorePatterns: ["node_modules/"],
-  transformIgnorePatterns: ["node_modules[\\\\/](?!jose|uuid)"],
-  moduleNameMapper: {
-    "^jose": esmRequire.resolve("jose"),
-    "^uuid": esmRequire.resolve("uuid"),
+  transform: {
+    ...defaultPreset.transform,
+    // [\\\\/] expands to [\\/], which makes the regex Windows-compatible.
+    // jose v6 ships as ESM only, and may be nested in a dependency's own
+    // node_modules (e.g. @inrupt/internal-test-env), so match it anywhere.
+    "node_modules[\\\\/](uuid|.*jose).+\\.js$": [
+      "ts-jest",
+      { tsconfig: { allowJs: true } },
+    ],
   },
+  // Ignore everything under node_modules except uuid and jose (the latter
+  // possibly nested in another package's node_modules), which ship ESM that
+  // must be transpiled before Jest can parse it.
+  transformIgnorePatterns: [
+    "node_modules[\\\\/](?!(.*[\\\\/])?(uuid|jose)[\\\\/])",
+  ],
 };
 
 export default {
