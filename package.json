@@ -80,7 +80,7 @@
     "jest-environment-jsdom": "^30.0.2",
     "jose": "^6.2.10",
     "rimraf": "^6.0.1",
-    "rollup": "^4.9.1",
+    "rollup": "^4.62.5",
     "ts-jest": "^29.1.1",
     "ts-node": "^10.9.1",
     "typedoc": "^0.28.0",
