@@ -40,10 +40,10 @@ These can be set via environment variables, or by creating a file
 
 To run the tests, run:
 
-1. `npm ci` at the root to install the test runner.
+1. `npm ci` at the root to install the test runner, and the dependencies of the
+   application under test: it is an npm workspace of this repository.
 2. `npx playwright install` to download the latest versions of all browsers the
-   tests run in. 3.`npm run test:e2e:browser:setup` to install the dependencies of the
-   application under test.
+   tests run in.
 
 You can then run the tests using `npm run test:e2e:browser` at the root.
 
