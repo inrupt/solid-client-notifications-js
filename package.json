@@ -78,7 +78,7 @@
     "eslint": "^9.28.0",
     "jest": "^30.0.3",
     "jest-environment-jsdom": "^30.5.1",
-    "jose": "^6.2.10",
+    "jose": "^6.2.12",
     "rimraf": "^6.0.1",
     "rollup": "^4.62.5",
     "ts-jest": "^29.1.1",
