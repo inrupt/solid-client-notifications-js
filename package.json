@@ -3,9 +3,6 @@
   "description": "Receive notifications linked to Solid resources.",
   "version": "4.0.1",
   "license": "MIT",
-  "workspaces": [
-    "e2e/browser/test-app"
-  ],
   "scripts": {
     "clean": "rimraf dist umd",
     "build": "rollup --config rollup.config.mjs",
