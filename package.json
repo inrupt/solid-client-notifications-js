@@ -3,7 +3,7 @@
   "description": "Receive notifications linked to Solid resources.",
   "version": "4.0.1",
   "license": "MIT",
-    "workspaces": [
+  "workspaces": [
     "e2e/browser/test-app"
   ],
   "scripts": {
