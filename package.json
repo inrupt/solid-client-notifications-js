@@ -62,11 +62,11 @@
     "url": "https://github.com/inrupt/solid-client-notifications-js.git"
   },
   "devDependencies": {
-    "@inrupt/base-rollup-config": "^4.0.3",
-    "@inrupt/eslint-config-base": "^4.1.2",
-    "@inrupt/internal-playwright-helpers": "^4.1.2",
+    "@inrupt/base-rollup-config": "^4.1.6",
+    "@inrupt/eslint-config-base": "^4.1.6",
+    "@inrupt/internal-playwright-helpers": "^4.1.6",
     "@inrupt/internal-test-env": "^4.1.2",
-    "@inrupt/jest-jsdom-polyfills": "^4.1.2",
+    "@inrupt/jest-jsdom-polyfills": "^4.1.6",
     "@next/eslint-plugin-next": "^16.4.3",
     "@playwright/test": "~1.64.1",
     "@types/events": "^3.0.0",
