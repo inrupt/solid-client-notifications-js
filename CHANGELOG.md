@@ -10,6 +10,10 @@ The following changes have been implemented but not released yet:
 
 - Support for Node.js v20.x has been dropped as that version has reached end-of-life.
 
+### Patch changes
+
+- NodeJS 26 is now officially supported.
+
 # [4.0.1](https://github.com/inrupt/solid-client-notifications-js/releases/tag/v4.0.1) - 2026-06-03
 
 - Transitive dependencies upgrade
